@@ -5,14 +5,41 @@ import entities.Hobbies;
 public class HobbiesDTO {
     private Integer id;
     private String name;
-    private int price;
+    private String wikiLink;
+    private String category;
+    private String type;
 
     public HobbiesDTO(Hobbies hobbies){
         if (hobbies.getId() != null)
             this.id = hobbies.getId();
         this.name = hobbies.getName();
-        this.price = hobbies.getPrice();
+        this.wikiLink = hobbies.getWikiLink();
+        this.category = hobbies.getCategory();
+        this.type = hobbies.getType();
+    }
 
+    public String getWikiLink() {
+        return wikiLink;
+    }
+
+    public void setWikiLink(String wikiLink) {
+        this.wikiLink = wikiLink;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Integer getId() {
@@ -31,11 +58,4 @@ public class HobbiesDTO {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
 }

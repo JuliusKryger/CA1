@@ -1,14 +1,23 @@
 package entities;
 
+import dtos.HobbiesDTO;
 import dtos.PersonDTO;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
-public class Person {
+@NamedQueries({
+        @NamedQuery(name = "Person.deleteAllRows", query = "DELETE FROM Person"),
+        @NamedQuery(name = "Person.getAll", query = "SELECT p FROM Person p"),
+        @NamedQuery(name = "Person.getByID", query = "SELECT p FROM Person p WHERE p.id = :id"),
+        @NamedQuery(name = "Person.deletePerson", query = "DELETE FROM Person p WHERE p.id = :id"),
+        @NamedQuery(name = "Person.updatePerson", query = "UPDATE Person SET firstName = :firstName, lastName = :lastName, phoneNumber = :phoneNumber")
+})
+public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -18,23 +27,30 @@ public class Person {
     private String phoneNumber;
     private String email;
     private int age;
-    private int zipcode;
-    private ArrayList<Hobbies> hobbies = new ArrayList<>();
+    private String zipcode;
+    private ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
 
     public Person(){
 
     }
 
-    public Person(String firstName, String lastName, String phoneNumber, String email, int age, int zipcode){
+    public Person(String firstName, String lastName, String phoneNumber, String email, int age, String zipcode, ArrayList<HobbiesDTO> hobbies){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.age = age;
         this.zipcode = zipcode;
+        this.hobbies = hobbies;
     }
 
+    public ArrayList<HobbiesDTO> getHobbies() {
+        return hobbies;
+    }
 
+    public void setHobbies(ArrayList<HobbiesDTO> hobbies) {
+        this.hobbies = hobbies;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -76,11 +92,11 @@ public class Person {
         this.age = age;
     }
 
-    public int getZipcode() {
+    public String getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(int zipcode) {
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 

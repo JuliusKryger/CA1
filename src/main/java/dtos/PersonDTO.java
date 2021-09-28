@@ -1,6 +1,8 @@
 package dtos;
 import entities.Person;
 
+import java.util.ArrayList;
+
 public class PersonDTO {
     private Integer id;
     private String firstName;
@@ -8,7 +10,8 @@ public class PersonDTO {
     private String phoneNumber;
     private String email;
     private int age;
-    private int zipcode;
+    private String zipcode;
+    private ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
 
 
     public PersonDTO(Person person){
@@ -20,6 +23,7 @@ public class PersonDTO {
         this.email = person.getEmail();
         this.age = person.getAge();
         this.zipcode = person.getZipcode();
+        this.hobbies = person.getHobbies();
     }
 
     public Integer getId() {
@@ -70,11 +74,11 @@ public class PersonDTO {
         this.age = age;
     }
 
-    public int getZipcode() {
+    public String getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode(int zipcode) {
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 }
