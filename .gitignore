@@ -11,6 +11,14 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/.gitignore
+.idea/**/compiler.xml
+.idea/**/encodings.xml
+.idea/**/jarRepositories.xml
+.idea/**/jpa-buddy.xml
+.idea/**/misc.xml
+.idea/**/runConfigurations.xml
+.idea/**/vcs.xml
 
 # AWS User-specific
 .idea/**/aws.xml
