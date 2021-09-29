@@ -1,5 +1,6 @@
 package entities;
 
+import dtos.CityInfoDTO;
 import dtos.HobbiesDTO;
 import dtos.PersonDTO;
 
@@ -15,7 +16,8 @@ import java.util.List;
         @NamedQuery(name = "Person.getAll", query = "SELECT p FROM Person p"),
         @NamedQuery(name = "Person.getByID", query = "SELECT p FROM Person p WHERE p.id = :id"),
         @NamedQuery(name = "Person.deletePerson", query = "DELETE FROM Person p WHERE p.id = :id"),
-        @NamedQuery(name = "Person.updatePerson", query = "UPDATE Person SET firstName = :firstName, lastName = :lastName, phoneNumber = :phoneNumber")
+        //ændre personens basis info, der skal laves en til hobbier og cityinformationer
+        @NamedQuery(name = "Person.updatePerson", query = "UPDATE Person SET firstName = :firstName, lastName = :lastName, phoneNumber = :phoneNumber, email = :email, age = :age")
 })
 public class Person implements Serializable {
     @Id
@@ -27,20 +29,20 @@ public class Person implements Serializable {
     private String phoneNumber;
     private String email;
     private int age;
-    private String zipcode;
+    private CityInfoDTO cityInfoDTO;
     private ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
 
     public Person(){
 
     }
 
-    public Person(String firstName, String lastName, String phoneNumber, String email, int age, String zipcode, ArrayList<HobbiesDTO> hobbies){
+    public Person(String firstName, String lastName, String phoneNumber, String email, int age, CityInfoDTO cityInfoDTO, ArrayList<HobbiesDTO> hobbies){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.age = age;
-        this.zipcode = zipcode;
+        this.cityInfoDTO = cityInfoDTO;
         this.hobbies = hobbies;
     }
 
@@ -92,12 +94,12 @@ public class Person implements Serializable {
         this.age = age;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public CityInfoDTO getCityInfoDTO() {
+        return cityInfoDTO;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
+        this.cityInfoDTO = cityInfoDTO;
     }
 
     public Integer getId() {

@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.CityInfoDTO;
 import dtos.HobbiesDTO;
 import dtos.PersonDTO;
 import entities.Person;
@@ -30,11 +31,11 @@ public class PersonFacade implements InterfacePersonFacade {
 
     //METODER
     //måske skal der laves test til
-    public PersonDTO createPerson(String firstName, String lastName, String phoneNumber, String email, int age, String zipcode, ArrayList<HobbiesDTO> hobbies){
+    public PersonDTO createPerson(String firstName, String lastName, String phoneNumber, String email, int age, CityInfoDTO cityInfoDTO, ArrayList<HobbiesDTO> hobbies){
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO;
         try{
-            personDTO = new PersonDTO(new Person(firstName, lastName, phoneNumber, email, age, zipcode, hobbies));
+            personDTO = new PersonDTO(new Person(firstName, lastName, phoneNumber, email, age, cityInfoDTO, hobbies));
             em.getTransaction().begin();
             em.persist(personDTO);
             em.getTransaction().commit();
@@ -58,5 +59,14 @@ public class PersonFacade implements InterfacePersonFacade {
         }else{
             return null;
         }
+    }
+
+    public PersonDTO editPersonBasisInformation(PersonDTO personDTO){
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        em.getTransaction().commit();
+        em.close();
+        return personDTO;
     }
 }

@@ -1,6 +1,8 @@
 package facades;
+import dtos.CityInfoDTO;
 import dtos.HobbiesDTO;
 import dtos.PersonDTO;
+import entities.CityInfo;
 import entities.Person;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -20,6 +22,8 @@ public class PersonFacadeTest {
     private static Person p1,p2,p3,p4;
     private PersonFacade personFacade;
     private static ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
+    private static CityInfo cityInfo = new CityInfo("2650", "Hvidovre");
+    private static CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
 
     @BeforeAll
     public static void setUpClass(){
@@ -41,10 +45,10 @@ public class PersonFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person("Kurt", "Verner", "12345678", "hej@email.dk", 36, 2660, hobbies);
-            p2 = new Person("Anna", "Jørgensen", "87653421", "hej2@email.dk", 39, 2620, hobbies);
-            p3 = new Person("Joe", "Johnson", "65748234", "minEmail@email.dk", 28, 2610, hobbies);
-            p4 = new Person("Suzuki", "Torben", "95915284", "torben@email.dk", 54, 2650, hobbies);
+            p1 = new Person("Kurt", "Verner", "12345678", "hej@email.dk", 36, cityInfoDTO, hobbies);
+            p2 = new Person("Anna", "Jørgensen", "87653421", "hej2@email.dk", 39, cityInfoDTO, hobbies);
+            p3 = new Person("Joe", "Johnson", "65748234", "minEmail@email.dk", 28, cityInfoDTO, hobbies);
+            p4 = new Person("Suzuki", "Torben", "95915284", "torben@email.dk", 54, cityInfoDTO, hobbies);
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
