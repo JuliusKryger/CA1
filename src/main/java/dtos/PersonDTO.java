@@ -10,8 +10,8 @@ public class PersonDTO {
     private String phoneNumber;
     private String email;
     private int age;
-    private CityInfoDTO cityInfoDTO;
-    private ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
+    private AddressDTO addressDTO;
+    private HobbiesListDTO hobbies;
 
 
     public PersonDTO(Person person){
@@ -22,8 +22,8 @@ public class PersonDTO {
         this.phoneNumber = person.getPhoneNumber();
         this.email = person.getEmail();
         this.age = person.getAge();
-        this.cityInfoDTO = person.getCityInfoDTO();
-        this.hobbies = person.getHobbies();
+        this.addressDTO = person.getAddressDTO();
+        this.hobbies = person.getHobbiesListDTO();
     }
 
     public Integer getId() {
@@ -74,19 +74,19 @@ public class PersonDTO {
         this.age = age;
     }
 
-    public CityInfoDTO getCityInfoDTO() {
-        return cityInfoDTO;
+    public AddressDTO getAddressDTO() {
+        return addressDTO;
     }
 
-    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
-        this.cityInfoDTO = cityInfoDTO;
+    public void setAddressDTO(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
     }
 
-    public ArrayList<HobbiesDTO> getHobbies() {
+    public HobbiesListDTO getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(ArrayList<HobbiesDTO> hobbies) {
+    public void setHobbies(HobbiesListDTO hobbies) {
         this.hobbies = hobbies;
     }
 }

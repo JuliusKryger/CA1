@@ -1,8 +1,8 @@
 package facades;
-import dtos.CityInfoDTO;
-import dtos.HobbiesDTO;
-import dtos.PersonDTO;
+import dtos.*;
+import entities.Address;
 import entities.CityInfo;
+import entities.Hobbies;
 import entities.Person;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import static junit.framework.Assert.assertEquals;
 
@@ -21,9 +22,13 @@ public class PersonFacadeTest {
     private static PersonFacade facade;
     private static Person p1,p2,p3,p4;
     private PersonFacade personFacade;
-    private static ArrayList<HobbiesDTO> hobbies = new ArrayList<>();
+
     private static CityInfo cityInfo = new CityInfo("2650", "Hvidovre");
     private static CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
+    private static Address address = new Address ("valbyvej", 2, cityInfoDTO);
+    private static AddressDTO addressDTO = new AddressDTO(address);
+
+    private PersonDTO personDTO1;
 
     @BeforeAll
     public static void setUpClass(){
@@ -42,13 +47,18 @@ public class PersonFacadeTest {
         //denne metode, gør alt klar inden man tester
         EntityManager em = emf.createEntityManager();
 
+        Hobbies hobbies = new Hobbies("Handball", "wiki.dk", "General", "Indendørs");
+        List <Hobbies> hobbiesList = new ArrayList<>();
+        hobbiesList.add(hobbies);
+        HobbiesListDTO hobbiesListDTO = new HobbiesListDTO(hobbiesList);
+
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person("Kurt", "Verner", "12345678", "hej@email.dk", 36, cityInfoDTO, hobbies);
-            p2 = new Person("Anna", "Jørgensen", "87653421", "hej2@email.dk", 39, cityInfoDTO, hobbies);
-            p3 = new Person("Joe", "Johnson", "65748234", "minEmail@email.dk", 28, cityInfoDTO, hobbies);
-            p4 = new Person("Suzuki", "Torben", "95915284", "torben@email.dk", 54, cityInfoDTO, hobbies);
+            p1 = new Person("Kurt", "Verner", "12345678", "hej@email.dk", 36, addressDTO, hobbiesListDTO);
+            p2 = new Person("Anna", "Jørgensen", "87653421", "hej2@email.dk", 39, addressDTO, hobbiesListDTO);
+            p3 = new Person("Joe", "Johnson", "65748234", "minEmail@email.dk", 28, addressDTO, hobbiesListDTO);
+            p4 = new Person("Suzuki", "Torben", "95915284", "torben@email.dk", 54, addressDTO, hobbiesListDTO);
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -61,13 +71,55 @@ public class PersonFacadeTest {
 
     @Test
     //VIRKER, do not touch
-    void getPersonByID(){
+    void getPersonByIDTest(){
         EntityManager em = emf.createEntityManager();
         try{
             em.getTransaction().begin();
             System.out.println("p1: " + p1.getId() + p1.getFirstName());
             PersonDTO result = facade.getPersonByID(p1.getId());
             assertEquals(p1.getFirstName(), result.getFirstName());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+
+    @Test
+    void editPersonBasisInformationTest(){
+        EntityManager em = emf.createEntityManager();
+
+        try{
+            em.getTransaction().begin();
+            PersonDTO updated = facade.editPersonBasisInformation(new PersonDTO(p1));
+            updated.setFirstName("Marie");
+            updated.setLastName("Andersen Hansen");
+            updated.setPhoneNumber("034233434");
+            updated.setEmail("MAH@email.dk");
+            updated.setAge(22);
+            System.out.println("p1" + p1.getFirstName());
+            assertEquals("Marie", updated.getFirstName());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Test
+    void seeAllPersonsTest(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            List<Person> persons = new ArrayList<>();
+            persons.add(p1);
+            persons.add(p2);
+            persons.add(p3);
+            persons.add(p4);
+            PersonsDTO personsDTO = new PersonsDTO(persons);
+            em.getTransaction().begin();
+            PersonsDTO resultList = facade.seeAllPersons();
+            assertEquals(resultList.toString(), personsDTO.toString());
             em.getTransaction().commit();
         }
         finally {
