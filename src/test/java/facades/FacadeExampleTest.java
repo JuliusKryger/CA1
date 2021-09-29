@@ -1,4 +1,5 @@
 package facades;
+/*
 
 import utils.EMF_Creator;
 import entities.RenameMe;
@@ -62,3 +63,5 @@ public class FacadeExampleTest {
     
 
 }
+
+ */

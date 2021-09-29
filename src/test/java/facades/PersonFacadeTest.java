@@ -1,4 +1,5 @@
 package facades;
+/*
 import dtos.CityInfoDTO;
 import dtos.HobbiesDTO;
 import dtos.PersonDTO;
@@ -77,4 +78,6 @@ public class PersonFacadeTest {
 
 
 }
+
+ */
 
