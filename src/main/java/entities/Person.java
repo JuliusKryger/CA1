@@ -8,7 +8,7 @@ import java.io.Serializable;
         @NamedQuery(name = "Person.deleteAllRows", query = "DELETE FROM Person"),
         @NamedQuery(name = "Person.getAll", query = "SELECT p FROM Person p"),
         @NamedQuery(name = "Person.getByID", query = "SELECT p FROM Person p WHERE p.id = :id"),
-        @NamedQuery(name = "Person.deletePerson", query = "DELETE FROM Person p WHERE p.id = :id")
+        @NamedQuery(name = "Person.deletePersonById", query = "DELETE FROM Person p WHERE p.id = :id")
 })
 public class Person implements Serializable {
     @Id
@@ -24,7 +24,8 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
-    public Person() {
+    public Person()
+    {
     }
 
     public Integer getId() {

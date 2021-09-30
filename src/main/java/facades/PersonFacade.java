@@ -106,7 +106,7 @@ public class PersonFacade implements InterfacePersonFacade {
         try {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Person p WHERE p.id = :id").setParameter("id", id).executeUpdate();
-            em.createNamedQuery("Person.deletePerson").setParameter("id", id).executeUpdate();
+            em.createNamedQuery("Person.deletePersonById").setParameter("id", id).executeUpdate();
             em.getTransaction().commit();
             return true;
         } finally {

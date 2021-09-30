@@ -54,20 +54,20 @@ public class PersonFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person(1, "Kurt", "Verner");
-            p2 = new Person(2,"Anna", "Jørgensen");
+           // p1 = new Person(1, "Kurt", "Verner");
+           // p2 = new Person(2,"Anna", "Jørgensen");
             p3 = new Person(3,"Joe", "Johnson");
-            p4 = new Person(4,"Suzuki", "Torben");
-            em.persist(p1);
-            em.persist(p2);
+           // p4 = new Person(4,"Suzuki", "Torben");
+           // em.persist(p1);
+           // em.persist(p2);
             em.persist(p3);
-            em.persist(p4);
+           // em.persist(p4);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
-
+/*
     @Test
     //VIRKER, do not touch
     void getPersonByIDTest(){
@@ -84,20 +84,22 @@ public class PersonFacadeTest {
         }
     }
 
+ */
+
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
         try {
             int id = 1;
-            System.out.println(p1.toString());
+            System.out.println("this is the person we will delete" + p3.toString());
             facade.deletePerson(id);
-            assertEquals(5, p1.getId());
-            System.out.println(p1.toString());
+            assertEquals(true, facade.deletePerson(id));
+            System.out.println("This person should no longer exist" + p3.toString());
         } finally {
             em.close();
         }
     }
-
+/*
     @Test
     void editPersonBasisInformationTest(){
         EntityManager em = emf.createEntityManager();
@@ -138,6 +140,8 @@ public class PersonFacadeTest {
             em.close();
         }
     }
+
+ */
 
 
 }
