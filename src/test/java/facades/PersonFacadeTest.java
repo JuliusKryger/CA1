@@ -25,7 +25,7 @@ public class PersonFacadeTest {
 
     private static CityInfo cityInfo = new CityInfo("2650", "Hvidovre");
     private static CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
-    private static Address address = new Address ("valbyvej", 2, cityInfoDTO);
+    private static Address address = new Address ("valbyvej", 2);
     private static AddressDTO addressDTO = new AddressDTO(address);
 
     private PersonDTO personDTO1;
@@ -50,15 +50,14 @@ public class PersonFacadeTest {
         Hobbies hobbies = new Hobbies("Handball", "wiki.dk", "General", "Indendørs");
         List <Hobbies> hobbiesList = new ArrayList<>();
         hobbiesList.add(hobbies);
-        HobbiesListDTO hobbiesListDTO = new HobbiesListDTO(hobbiesList);
 
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person("Kurt", "Verner", "12345678", "hej@email.dk", 36, addressDTO, hobbiesListDTO);
-            p2 = new Person("Anna", "Jørgensen", "87653421", "hej2@email.dk", 39, addressDTO, hobbiesListDTO);
-            p3 = new Person("Joe", "Johnson", "65748234", "minEmail@email.dk", 28, addressDTO, hobbiesListDTO);
-            p4 = new Person("Suzuki", "Torben", "95915284", "torben@email.dk", 54, addressDTO, hobbiesListDTO);
+            p1 = new Person(1, "Kurt", "Verner");
+            p2 = new Person(2,"Anna", "Jørgensen");
+            p3 = new Person(3,"Joe", "Johnson");
+            p4 = new Person(4,"Suzuki", "Torben");
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -86,12 +85,14 @@ public class PersonFacadeTest {
     }
 
     @Test
-    void deletePerson(int id) {
+    void deletePerson() {
         EntityManager em = emf.createEntityManager();
-        id = 1;
         try {
-        facade.deletePerson(id);
-        assertEquals(null, p1.getId());
+            int id = 1;
+            System.out.println(p1.toString());
+            facade.deletePerson(id);
+            assertEquals(5, p1.getId());
+            System.out.println(p1.toString());
         } finally {
             em.close();
         }
@@ -106,9 +107,9 @@ public class PersonFacadeTest {
             PersonDTO updated = facade.editPersonBasisInformation(new PersonDTO(p1));
             updated.setFirstName("Marie");
             updated.setLastName("Andersen Hansen");
-            updated.setPhoneNumber("034233434");
-            updated.setEmail("MAH@email.dk");
-            updated.setAge(22);
+            //updated.setPhoneNumber("034233434");
+            //updated.setEmail("MAH@email.dk");
+            //updated.setAge(22);
             System.out.println("p1" + p1.getFirstName());
             assertEquals("Marie", updated.getFirstName());
             em.getTransaction().commit();

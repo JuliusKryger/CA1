@@ -5,7 +5,7 @@ import dtos.*;
 import java.util.ArrayList;
 
 public interface InterfacePersonFacade {
-    public PersonDTO createPerson(String firstName, String lastName, String phoneNumber, String email, int age, AddressDTO addressDTO, HobbiesListDTO hobbiesListDTO);
+    public PersonDTO createPerson(int id, String firstName, String lastName);
     public PersonDTO getPersonByID(Integer id);
     public PersonDTO editPersonBasisInformation(PersonDTO personDTO);
     public PersonsDTO seeAllPersons();

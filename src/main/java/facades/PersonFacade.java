@@ -32,11 +32,11 @@ public class PersonFacade implements InterfacePersonFacade {
 
     //METODER
     //måske skal der laves test til
-    public PersonDTO createPerson(String firstName, String lastName, String phoneNumber, String email, int age, AddressDTO addressDTO, HobbiesListDTO hobbiesListDTO){
+    public PersonDTO createPerson(int id, String firstName, String lastName){
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO;
         try{
-            personDTO = new PersonDTO(new Person(firstName, lastName, phoneNumber, email, age, addressDTO, hobbiesListDTO));
+            personDTO = new PersonDTO(new Person(id, firstName, lastName));
             em.getTransaction().begin();
             em.persist(personDTO);
             em.getTransaction().commit();
@@ -70,9 +70,9 @@ public class PersonFacade implements InterfacePersonFacade {
             em.getTransaction().begin();
             updated.setFirstName(personDTO.getFirstName());
             updated.setLastName(personDTO.getLastName());
-            updated.setPhoneNumber(personDTO.getPhoneNumber());
-            updated.setEmail(personDTO.getEmail());
-            updated.setAge(personDTO.getAge());
+            //updated.setPhoneNumber(personDTO.getPhoneNumber());
+            //updated.setEmail(personDTO.getEmail());
+            //updated.setAge(personDTO.getAge());
             em.getTransaction().commit();
             return new PersonDTO(updated);
         }
