@@ -6,6 +6,7 @@ import entities.Person;
 import java.util.ArrayList;
 import java.util.List;
 
+// this class collects all persons
 public class PersonsDTO {
 
     List<PersonDTO> all = new ArrayList();

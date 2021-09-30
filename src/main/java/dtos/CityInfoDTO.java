@@ -2,9 +2,8 @@ package dtos;
 
 import entities.CityInfo;
 
-import java.io.Serializable;
 
-public class CityInfoDTO implements Serializable {
+public class CityInfoDTO {
     private String zipCode;
     private String city;
 
