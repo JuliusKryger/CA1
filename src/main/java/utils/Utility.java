@@ -5,10 +5,13 @@
  */
 package utils;
 
+import dtos.PersonDTO;
 import dtos.RenameMeDTO;
 import java.util.Properties;
 import java.util.Set;
 import com.google.gson.*;
+import entities.Person;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -20,6 +23,15 @@ import java.util.logging.Logger;
  */
 public class Utility {
     private static Gson gson = new GsonBuilder().create();
+
+    public static boolean ValidatePerson(Person p){
+        return p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null;
+    }
+
+    public static boolean ValidatePersonDto(PersonDTO p){
+        System.out.println("Validation: " + p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null);
+        return p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null;
+    }
     
     public static void printAllProperties() {
             Properties prop = System.getProperties();
