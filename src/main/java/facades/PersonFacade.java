@@ -7,6 +7,7 @@ import entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 
 public class PersonFacade implements InterfacePersonFacade {
@@ -68,5 +69,22 @@ public class PersonFacade implements InterfacePersonFacade {
         em.getTransaction().commit();
         em.close();
         return personDTO;
+    }
+
+
+    //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
+    //PersonResource.java
+    public boolean deletePerson(int id) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Person p WHERE p.id = :id").setParameter("id", id).executeUpdate();
+            em.createNamedQuery("Person.deletePerson").setParameter("id", id).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        } finally {
+            em.close();
+        }
     }
 }
