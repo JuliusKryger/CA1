@@ -55,5 +55,4 @@ public class Hobbies implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
-
 }
