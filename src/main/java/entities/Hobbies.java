@@ -7,8 +7,7 @@ import java.io.Serializable;
 public class Hobbies implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, length = 50)
-    private Integer id;
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
     private String wikiLink;
     private String category;
@@ -57,11 +56,4 @@ public class Hobbies implements Serializable {
         this.type = type;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

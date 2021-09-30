@@ -3,16 +3,14 @@ package dtos;
 import entities.Hobbies;
 
 public class HobbiesDTO {
-    private Integer id;
     private String name;
     private String wikiLink;
     private String category;
     private String type;
 
     public HobbiesDTO(Hobbies hobbies){
-        if (hobbies.getId() != null)
-            this.id = hobbies.getId();
-        this.name = hobbies.getName();
+        if (hobbies.getName() != null)
+            this.name = hobbies.getName();
         this.wikiLink = hobbies.getWikiLink();
         this.category = hobbies.getCategory();
         this.type = hobbies.getType();
@@ -42,13 +40,6 @@ public class HobbiesDTO {
         this.type = type;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
