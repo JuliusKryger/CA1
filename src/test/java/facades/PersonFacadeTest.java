@@ -31,17 +31,19 @@ public class PersonFacadeTest {
     private PersonDTO personDTO1;
 
     @BeforeAll
-    public static void setUpClass(){
+    public static void setUpClass()
+    {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
     }
 
     @AfterAll
-    public static void tearDownClass(){
+    public static void tearDownClass()
+    {
         //bruger en test database med drop-and-create,
         //derfor er det ikke nødvendigt at rydde op
-
     }
+
     @BeforeEach
     public void setUp() {
         //denne metode, gør alt klar inden man tester
