@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //import static junit.framework.Assert.assertEquals;
-/*
+
 public class PersonFacadeTest {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
@@ -140,5 +140,3 @@ public class PersonFacadeTest {
 
 
 }
-
- */
