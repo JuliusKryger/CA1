@@ -1,9 +1,8 @@
 package dtos;
 
 import entities.Address;
-import java.io.Serializable;
 
-public class AddressDTO implements Serializable {
+public class AddressDTO {
     private String streetName;
     private int number;
     private CityInfoDTO cityInfoDTO;
@@ -12,7 +11,7 @@ public class AddressDTO implements Serializable {
         if (address.getStreetName() !=null)
             this.streetName = address.getStreetName();
         this.number = address.getNumber();
-        this.cityInfoDTO = address.getCityInfoDTO();
+
     }
 
     public String getStreetName() {
