@@ -85,6 +85,17 @@ public class PersonFacadeTest {
         }
     }
 
+    @Test
+    void deletePerson(int id) {
+        EntityManager em = emf.createEntityManager();
+        id = 1;
+        try {
+        facade.deletePerson(id);
+        assertEquals(null, p1.getId());
+        } finally {
+            em.close();
+        }
+    }
 
     @Test
     void editPersonBasisInformationTest(){
@@ -129,5 +140,3 @@ public class PersonFacadeTest {
 
 
 }
-
- */

@@ -96,4 +96,21 @@ public class PersonFacade implements InterfacePersonFacade {
             em.close();
         }
     }
+
+
+    //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
+    //PersonResource.java
+    public boolean deletePerson(int id) {
+        EntityManager em = emf.createEntityManager();
+
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Person p WHERE p.id = :id").setParameter("id", id).executeUpdate();
+            em.createNamedQuery("Person.deletePerson").setParameter("id", id).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        } finally {
+            em.close();
+        }
+    }
 }

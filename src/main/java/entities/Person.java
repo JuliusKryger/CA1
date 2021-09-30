@@ -25,9 +25,13 @@ public class Person implements Serializable {
     private String phoneNumber;
     private String email;
     private int age;
-    @Transient
+
+
+/*    @Transient
     private AddressDTO addressDTO;
     private HobbiesListDTO hobbiesListDTO;
+
+ */
 
     public Person(){
 
@@ -39,16 +43,11 @@ public class Person implements Serializable {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.age = age;
+
+        /* TODO: Ingen DTO's i entities.
         this.addressDTO = addressDTO;
         this.hobbiesListDTO = hobbies;
-    }
-
-    public HobbiesListDTO getHobbiesListDTO() {
-        return hobbiesListDTO;
-    }
-
-    public void setHobbiesListDTO(HobbiesListDTO hobbiesListDTO) {
-        this.hobbiesListDTO = hobbiesListDTO;
+         */
     }
 
     public String getFirstName() {
@@ -89,14 +88,6 @@ public class Person implements Serializable {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public AddressDTO getAddressDTO() {
-        return addressDTO;
-    }
-
-    public void setAddressDTO(AddressDTO addressDTO) {
-        this.addressDTO = addressDTO;
     }
 
     public Integer getId() {
