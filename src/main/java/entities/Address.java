@@ -11,24 +11,14 @@ public class Address implements Serializable {
     @Column(name = "streetName", nullable = false)
     private String streetName;
     private int number;
-    private CityInfoDTO cityInfoDTO;
 
     public Address(){
 
     }
 
-    public Address(String streetName, int number, CityInfoDTO cityInfoDTO){
+    public Address(String streetName, int number) {
         this.streetName = streetName;
         this.number = number;
-        this.cityInfoDTO = cityInfoDTO;
-    }
-
-    public CityInfoDTO getCityInfoDTO() {
-        return cityInfoDTO;
-    }
-
-    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
-        this.cityInfoDTO = cityInfoDTO;
     }
 
     public String getStreetName() {
@@ -47,3 +37,4 @@ public class Address implements Serializable {
         this.number = number;
     }
 }
+
