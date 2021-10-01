@@ -11,6 +11,7 @@ public class Address implements Serializable {
     @Column(name = "streetName", nullable = false)
     private String streetName;
     private int number;
+    //TODO: HERE WE NEED CITYINFO.
 
     public Address(){
 
@@ -35,6 +36,15 @@ public class Address implements Serializable {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public void setCityInfo(CityInfo ci) {
+        //TODO DELETE THIS AND REPLACE WITH REAL SET
+    }
+
+    public CityInfo getCityInfo() {
+        //TODO DELETE THIS AND REPLACE WITH REAL GET
+        return null;
     }
 }
 

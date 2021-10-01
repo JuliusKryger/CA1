@@ -38,4 +38,9 @@ public class Phone {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void setPerson(Person person) {
+        //TODO: This method needs work.
+
+    }
 }
