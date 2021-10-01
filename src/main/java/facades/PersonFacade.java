@@ -78,6 +78,7 @@ public class PersonFacade implements InterfacePersonFacade {
                 person = new Person(personDTO);
 
                 em.getTransaction().begin();
+                //Why does this reference not work, person.getAddress().getCityInfo() //TODO: LOOK HERE.
                 if(person.getAddress() != null && person.getAddress().getCityInfo() != null){
                     Address a = person.getAddress();
                     CityInfo ci = a.getCityInfo();
@@ -118,6 +119,11 @@ public class PersonFacade implements InterfacePersonFacade {
             throw new WebApplicationException("Please check your data", 400);
         }
     }*/
+
+    private Hobby createHobby(HobbyDTO h) {
+        //TODO: HERE WE NEED TO CREATE A CREATE HOBBY METHOD.
+        return null;
+    }
 
     //test er lavet og virker
     public PersonDTO getPersonByID(Integer id){

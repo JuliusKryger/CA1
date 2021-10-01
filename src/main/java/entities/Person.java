@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.PersonDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -47,6 +49,10 @@ public class Person implements Serializable {
         this.phones = phones;
         this.address = address;
         this.cityInfo = cityInfo;
+    }
+
+    public Person(PersonDTO personDTO) {
+        //TODO: NEEDS TO INITIALIZE SOME DATA.
     }
 
     public Integer getId() {
@@ -105,11 +111,16 @@ public class Person implements Serializable {
         this.address = address;
     }
 
+    //TODO: THIS NEEDS TO BE CHANGED TO WORK WITH CREATE PERSON getCityInfo()
     public String getCityInfo() {
         return cityInfo;
     }
 
     public void setCityInfo(String cityInfo) {
         this.cityInfo = cityInfo;
+    }
+
+    public void addHobby(Hobby ho) {
+        //TODO: WE NEED ADD HOBBY METHOD IN PERSON ENTITY.
     }
 }

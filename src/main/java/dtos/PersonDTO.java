@@ -1,7 +1,7 @@
 package dtos;
 import entities.Person;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PersonDTO {
     private Integer id;
@@ -54,7 +54,7 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public String getHobbies() {
+    public List<HobbyDTO> getHobbies() {
         return hobbies;
     }
 
@@ -84,5 +84,9 @@ public class PersonDTO {
 
     public void setCityInfo(String cityInfo) {
         this.cityInfo = cityInfo;
+    }
+
+    public void setHobbies(List<HobbyDTO> h2) {
+        //TODO: THIS METHOD NEEDS TO BE DONE.
     }
 }
