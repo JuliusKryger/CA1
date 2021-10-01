@@ -9,7 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonFacade implements InterfacePersonFacade {
+public class PersonFacade {
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
