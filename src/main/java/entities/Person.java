@@ -4,6 +4,7 @@ import dtos.PersonDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -21,9 +22,15 @@ public class Person implements Serializable {
     private String lastName;
     private String email;
     private String hobbies;
-    private String phones;
-    private String address;
+    //private String phones;
+    //private String address;
     private String cityInfo;
+
+    @ManyToOne
+    private Address address;
+
+    @OneToMany
+    private List<Phone> phones;
 
     public Person(Integer id, String firstName, String lastName) {
         this.id = id;
@@ -40,18 +47,22 @@ public class Person implements Serializable {
     {
     }
 
-    public Person(Integer id, String firstName, String lastName, String email, String hobbies, String phones, String address, String cityInfo) {
+    public Person(Integer id, String firstName, String lastName, String email, String hobbies, List<Phone> phones, Address address, String cityInfo) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.hobbies = hobbies;
         this.phones = phones;
-        this.address = address;
+        this.address = null;
         this.cityInfo = cityInfo;
     }
 
     public Person(PersonDTO personDTO) {
+        this.firstName = personDTO.getFirstName();
+        this.lastName = personDTO.getLastName();
+        this.phones = personDTO.getPhones();
+        this.address = personDTO.getAddress();
         //TODO: NEEDS TO INITIALIZE SOME DATA.
     }
 
@@ -95,19 +106,19 @@ public class Person implements Serializable {
         this.hobbies = hobbies;
     }
 
-    public String getPhones() {
+    public List<Phone> getPhones() {
         return phones;
     }
 
-    public void setPhones(String phones) {
+    public void setPhones(List<Phone> phones) {
         this.phones = phones;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -120,7 +131,10 @@ public class Person implements Serializable {
         this.cityInfo = cityInfo;
     }
 
-    public void addHobby(Hobby ho) {
-        //TODO: WE NEED ADD HOBBY METHOD IN PERSON ENTITY.
+    //Methods
+    public void addHobby(Hobby hobby) {
+        if(hobby != null){
+            this.hobbies.add(hobby);
+            hobby.getPersons().add(this);
     }
 }

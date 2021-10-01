@@ -4,6 +4,7 @@ import dtos.CityInfoDTO;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class Address implements Serializable {
@@ -11,7 +12,12 @@ public class Address implements Serializable {
     @Column(name = "streetName", nullable = false)
     private String streetName;
     private int number;
-    //TODO: HERE WE NEED CITYINFO.
+
+    @ManyToOne
+    private CityInfo cityInfo;
+
+    @OneToMany
+    private List<Person> persons;
 
     public Address(){
 
@@ -38,13 +44,20 @@ public class Address implements Serializable {
         this.number = number;
     }
 
-    public void setCityInfo(CityInfo ci) {
-        //TODO DELETE THIS AND REPLACE WITH REAL SET
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
     }
 
     public CityInfo getCityInfo() {
-        //TODO DELETE THIS AND REPLACE WITH REAL GET
-        return null;
+        return cityInfo;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 }
 
