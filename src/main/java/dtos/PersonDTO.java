@@ -20,7 +20,23 @@ public class PersonDTO {
             this.id = person.getId();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
+        this.email = person.getEmail();
+        this.phones = person.getPhones();
+        this.address = person.getAddress();
+        this.cityInfo = person.getCityInfo();
 
+
+    }
+
+    //At the moment this has no purpose other than testing.
+    public PersonDTO(String firstName, String lastName, String email, String hobbies, String phones, String address, String cityInfo) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.hobbies = hobbies;
+        this.phones = phones;
+        this.address = address;
+        this.cityInfo = cityInfo;
     }
 
     public Integer getId() {
@@ -55,9 +71,9 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public List<HobbyDTO> getHobbies() {
+    /*public List<HobbyDTO> getHobbies() {
         return hobbies;
-    }
+    }*/
 
     public List getPhones() {
         return phones;

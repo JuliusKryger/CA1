@@ -2,11 +2,8 @@ package facades;
 
 import dtos.*;
 import entities.*;
-import utils.Utility;
-
 import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonFacade {
@@ -49,15 +46,16 @@ public class PersonFacade {
     public PersonDTO getPerson (int id){
         EntityManager em = emf.createEntityManager();
         try{
-            PersonDTO person1 = em.find(PersonDTO.class, id);
-            return person1;
+            Person person1 = em.find(Person.class, id);
+            PersonDTO pdto1 = new PersonDTO(person1);
+            return pdto1;
         }finally {
             em.close();
         }
     }
 
-    //
-    public List <Person> getAllPersons() {
+
+    public List<Person> getAllPersons() {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("Select person from Person person", Person.class);
@@ -90,6 +88,7 @@ public class PersonFacade {
 
     //METODER
     //måske skal der laves test til
+    /*
     public synchronized PersonDTO createPerson(PersonDTO personDTO) {
         if (Utility.ValidatePersonDto(personDTO) && !isEmailTaken(personDTO)) {
             Person person = null;
@@ -99,7 +98,6 @@ public class PersonFacade {
             EntityManager em = emf.createEntityManager();
             try {
                 person = new Person(personDTO);
-
                 em.getTransaction().begin();
                 //Why does this reference not work, person.getAddress().getCityInfo() //TODO: LOOK HERE.
                 if(person.getAddress() != null && person.getAddress() != null && person.getCityInfo() != null){
@@ -118,9 +116,7 @@ public class PersonFacade {
                         }
                     }
                 }
-
                 em.persist(person);
-
                 if(person.getHobbies() != null){
                     for(HobbyDTO h: hobbies){
                         Hobby ho = createHobby(h);
@@ -129,11 +125,8 @@ public class PersonFacade {
                         em.merge(person);
                     }
                 }
-
                 em.merge(person);
-
                 em.getTransaction().commit();
-
             } finally {
                 em.close();
             }
@@ -141,11 +134,10 @@ public class PersonFacade {
         } else {
             throw new WebApplicationException("Please check your data", 400);
         }
-    }
+    }*/
 
     private Hobby createHobby(HobbyDTO h) {
-        //TODO: HERE WE NEED TO CREATE A CREATE HOBBY METHOD.
-        return null;
+
     }
 
     //test er lavet og virker
@@ -155,7 +147,6 @@ public class PersonFacade {
         Person person = em.find(Person.class, id);
         em.getTransaction().commit();
         em.close();
-
         if (person != null){
             person.setId(id);
             return new PersonDTO(person);
@@ -164,17 +155,17 @@ public class PersonFacade {
         }
     }
 
+    //test er lavet og virker
     @SuppressWarnings("unchecked")
-    public PersonDTO editPersonBasisInformation(PersonDTO personDTO){
+    public synchronized PersonDTO editPersonBasisInformation(PersonDTO personDTO){
         EntityManager em = emf.createEntityManager();
+        Person updated = em.find(Person.class, personDTO.getId());
+
         try{
-            Person updated = em.find(Person.class, personDTO.getId());
             em.getTransaction().begin();
             updated.setFirstName(personDTO.getFirstName());
             updated.setLastName(personDTO.getLastName());
-            //updated.setPhoneNumber(personDTO.getPhoneNumber());
-            //updated.setEmail(personDTO.getEmail());
-            //updated.setAge(personDTO.getAge());
+            em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
         }
@@ -184,6 +175,77 @@ public class PersonFacade {
 
     }
 
+
+    //test er lavet
+    @SuppressWarnings("unchecked")
+    public synchronized PersonDTO editAddressForPerson (PersonDTO personToEdit){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(personToEdit.getId());
+        Person updated = em.find(Person.class, personDTO.getId());
+
+        try{
+            em.getTransaction().begin();
+                updated.setAddress(personToEdit.getAddress());
+                updated.setCityInfo(personToEdit.getCityInfo());
+                em.merge(updated);
+            em.getTransaction().commit();
+            return new PersonDTO(updated) ;
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    // test er lavet
+    @SuppressWarnings("unchecked")
+    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(personToEdit.getId());
+        Person updated = em.find(Person.class, personDTO.getId());
+        try{
+            em.getTransaction().begin();
+                updated.setPhones(personToEdit.getPhones());
+                em.merge(updated);
+            em.getTransaction().commit();
+
+            return new PersonDTO(updated);
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    // addHobbiesToPerson
+    public synchronized PersonDTO addHobbiesToPerson(Integer id){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(id);
+        try{
+            em.getTransaction().begin();
+
+            em.getTransaction().commit();
+            return personDTO;
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    // deleteHobbiesFromPerson
+    public synchronized PersonDTO deleteHobbiesFromPerson(Integer id){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(id);
+        try{
+            em.getTransaction().begin();
+
+            em.getTransaction().commit();
+            return personDTO;
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    //See all persons
     @SuppressWarnings("unchecked")
     public PersonsDTO seeAllPersons() {
         EntityManager em = emf.createEntityManager();

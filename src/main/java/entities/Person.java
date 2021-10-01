@@ -38,10 +38,10 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
-    public Person(String firstName, String lastName) {
+    /*public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-    }
+    }*/
 
     public Person()
     {
@@ -133,8 +133,8 @@ public class Person implements Serializable {
 
     //Methods
     public void addHobby(Hobby hobby) {
-        if(hobby != null){
-            this.hobbies.add(hobby);
-            hobby.getPersons().add(this);
+       // if(hobby != null){
+       //     this.hobbies.add(hobby);
+       //     hobby.getPersons().add(this);
     }
 }

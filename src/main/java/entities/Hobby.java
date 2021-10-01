@@ -7,9 +7,11 @@ import java.util.List;
 @Entity
 public class Hobby {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+    private String wikiLink;
+    private String category;
+    private String type;
 
     @ManyToMany
     private List<Person> persons;
@@ -22,7 +24,7 @@ public class Hobby {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setType(String type) {
+        this.type = type;
     }
 }
