@@ -45,6 +45,29 @@ public class PersonFacade implements InterfacePersonFacade {
         }
     }
 
+    //The methods read the person
+    public PersonDTO getPerson (int id){
+        EntityManager em = emf.createEntityManager();
+        try{
+            PersonDTO person1 = em.find(PersonDTO.class, id);
+            return person1;
+        }finally {
+            em.close();
+        }
+    }
+
+    //
+    public List <Person> getAllPersons() {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("Select person from Person person", Person.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+
     private boolean isEmailTaken(PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -128,6 +151,7 @@ public class PersonFacade implements InterfacePersonFacade {
         em.close();
 
         if (person != null){
+            person.setId(id);
             return new PersonDTO(person);
         }else{
             return null;
