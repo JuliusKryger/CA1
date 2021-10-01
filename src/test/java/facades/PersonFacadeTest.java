@@ -4,6 +4,7 @@ import entities.Address;
 import entities.CityInfo;
 import entities.Hobbies;
 import entities.Person;
+import org.eclipse.persistence.internal.jpa.EntityManagerFactoryDelegate;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -22,6 +23,7 @@ public class PersonFacadeTest {
     private static PersonFacade facade;
     private static Person p1,p2,p3,p4;
     private PersonFacade personFacade;
+
 
     private static CityInfo cityInfo = new CityInfo("2650", "Hvidovre");
     private static CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
@@ -101,6 +103,24 @@ public class PersonFacadeTest {
             em.close();
         }
     }
+
+    @Test
+    public void testGetPersonById () throws Exception {
+        System.out.println("getPerson");
+        Integer id = p3.getId();
+        EntityManagerFactory _emf = null;
+        PersonFacade instance = PersonFacade.getPersonFacade(_emf);
+        PersonDTO expResult = new PersonDTO(p3);
+        PersonDTO result = instance.getPerson(id);
+        assertEquals(expResult,result);
+
+
+
+    }
+
+
+
+
 /*
     @Test
     void editPersonBasisInformationTest(){

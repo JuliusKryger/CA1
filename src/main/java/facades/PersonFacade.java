@@ -9,7 +9,7 @@ import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonFacade implements InterfacePersonFacade {
+public class PersonFacade {
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
@@ -56,8 +56,8 @@ public class PersonFacade implements InterfacePersonFacade {
         }
     }
 
-    //
-    public List <Person> getAllPersons() {
+
+    public List<Person> getAllPersons() {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("Select person from Person person", Person.class);
