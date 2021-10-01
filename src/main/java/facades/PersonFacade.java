@@ -2,14 +2,11 @@ package facades;
 
 import dtos.*;
 import entities.*;
-import utils.Utility;
-
 import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class PersonFacade implements InterfacePersonFacade {
+public class PersonFacade {
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
@@ -49,15 +46,16 @@ public class PersonFacade implements InterfacePersonFacade {
     public PersonDTO getPerson (int id){
         EntityManager em = emf.createEntityManager();
         try{
-            PersonDTO person1 = em.find(PersonDTO.class, id);
-            return person1;
+            Person person1 = em.find(Person.class, id);
+            PersonDTO pdto1 = new PersonDTO(person1);
+            return pdto1;
         }finally {
             em.close();
         }
     }
 
-    //
-    public List <Person> getAllPersons() {
+
+    public List<Person> getAllPersons() {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("Select person from Person person", Person.class);

@@ -1,24 +1,26 @@
 package facades;
+
 import dtos.*;
 import entities.*;
+import entities.Address;
+import entities.CityInfo;
+import entities.Hobbies;
+import entities.Person;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//import static junit.framework.Assert.assertEquals;
 
 public class PersonFacadeTest {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
     private static Person p1,p2,p3,p4;
     private PersonFacade personFacade;
+
 
     private static CityInfo cityInfo = new CityInfo("2650", "Hvidovre");
     private static CityInfoDTO cityInfoDTO = new CityInfoDTO(cityInfo);
@@ -66,8 +68,23 @@ public class PersonFacadeTest {
         Hobbies hobbies = new Hobbies("Handball", "wiki.dk", "General", "Indendørs");
         List <Hobbies> hobbiesList = new ArrayList<>();
         hobbiesList.add(hobbies);
+        EntityManager em = emf.createEntityManager();
 
-
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Person.deleteAllRows", Person.class);
+           // p1 = new Person(1, "Kurt", "Verner");
+           // p2 = new Person(2,"Anna", "Jørgensen");
+            p3 = new Person(1,"Joe", "Johnson");
+           // p4 = new Person(4,"Suzuki", "Torben");
+           // em.persist(p1);
+           // em.persist(p2);
+            em.persist(p3);
+           // em.persist(p4);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @Test
@@ -99,6 +116,24 @@ public class PersonFacadeTest {
             em.close();
         }
     }
+
+    @Test
+    public void testGetPersonById () throws Exception {
+        System.out.println("getPerson");
+        int id = p3.getId();
+        EntityManagerFactory _emf = null;
+        PersonFacade instance = PersonFacade.getPersonFacade(_emf);
+        PersonDTO expResult = new PersonDTO(p3);
+        System.out.println("This is the test person we have created in our database, with an ID of: " + p3.getId().toString());
+        PersonDTO result = instance.getPerson(id);
+        System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPerson(id).getId().toString());
+        assertEquals(expResult.getId(),result.getId());
+
+
+
+    }
+
+/*
     @Test
     void editPersonBasisInformationTest(){
         EntityManager em = emf.createEntityManager();

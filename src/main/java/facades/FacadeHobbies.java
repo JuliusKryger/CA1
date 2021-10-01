@@ -1,13 +1,8 @@
 package facades;
 
-import entities.Hobbies;
-import entities.Person;
-
 import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
-import java.util.List;
 
-public class FacadeHobbies implements InterfaceHobbies {
+public class FacadeHobbies {
 
     private static FacadeHobbies instance;
     private static EntityManagerFactory emf;
