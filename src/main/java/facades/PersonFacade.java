@@ -102,7 +102,7 @@ public class PersonFacade {
 
                 em.getTransaction().begin();
                 //Why does this reference not work, person.getAddress().getCityInfo() //TODO: LOOK HERE.
-                if(person.getAddress() != null && person.getAddress().getCityInfo() != null){
+                if(person.getAddress() != null && person.getAddress() != null && person.getCityInfo() != null){
                     Address a = person.getAddress();
                     CityInfo ci = a.getCityInfo();
                     em.persist(ci);
