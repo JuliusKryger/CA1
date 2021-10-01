@@ -19,6 +19,11 @@ public class PersonDTO {
             this.id = person.getId();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
+        this.email = person.getEmail();
+        this.phones = person.getPhones();
+        this.address = person.getAddress();
+        this.cityInfo = person.getCityInfo();
+
 
     }
 
@@ -54,9 +59,9 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public List<HobbyDTO> getHobbies() {
+    /*public List<HobbyDTO> getHobbies() {
         return hobbies;
-    }
+    }*/
 
     public void setHobbies(String hobbies) {
         this.hobbies = hobbies;

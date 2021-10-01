@@ -8,7 +8,10 @@ public interface InterfacePersonFacade {
     //PersonDTO createPerson(int id, String firstName, String lastName);
     PersonDTO getPersonByID(Integer id);
     PersonDTO editPersonBasisInformation(PersonDTO personDTO);
-    PersonDTO editAddressForPerson(Integer id);
+    PersonDTO editAddressForPerson(PersonDTO personDTO);
+    PersonDTO editPersonPhone(PersonDTO personDTO);
+    PersonDTO addHobbiesToPerson(Integer id);
+    PersonDTO deleteHobbiesFromPerson(Integer id);
     PersonsDTO seeAllPersons();
     //public PersonDTO seeHobbiesForOnePerson(PersonDTO personDTO);
     /*

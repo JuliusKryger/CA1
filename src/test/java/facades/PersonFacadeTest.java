@@ -39,10 +39,10 @@ public class PersonFacadeTest {
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person(1, "Kurt", "Verner");
-            p2 = new Person(2,"Anna", "Jørgensen");
-            p3 = new Person(3,"Joe", "Johnson");
-            p4 = new Person(4,"Suzuki", "Torben");
+            p1 = new Person(1, "Kurt", "Verner", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
+            p2 = new Person(2,"Anna", "Jørgensen", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
+            p3 = new Person(3,"Joe", "Johnson", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
+            p4 = new Person(4,"Suzuki", "Torben", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -69,7 +69,7 @@ public class PersonFacadeTest {
 
 
     }
-/*
+
     @Test
     //VIRKER, do not touch
     void getPersonByIDTest(){
@@ -86,17 +86,15 @@ public class PersonFacadeTest {
         }
     }
 
- */
-
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
         try {
-            int id = 1;
-            System.out.println("this is the person we will delete" + p3.toString());
+            int id = p3.getId();
+            System.out.println("this is the person we will delete" + p3.getFirstName());
             facade.deletePerson(id);
             assertEquals(true, facade.deletePerson(id));
-            System.out.println("This person should no longer exist" + p3.toString());
+            System.out.println("This person should no longer exist" + p3.getFirstName());
         } finally {
             em.close();
         }
@@ -106,12 +104,50 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
 
         try{
+            p1.setFirstName("Marie");
+            p1.setLastName("Andersen Hansen");
             em.getTransaction().begin();
-            PersonDTO updated = facade.editPersonBasisInformation(new PersonDTO(p1));
-            updated.setFirstName("Marie");
-            updated.setLastName("Andersen Hansen");
-            System.out.println("p1" + p1.getFirstName());
+            PersonDTO updated = new PersonDTO(p1);
+            updated = facade.editPersonBasisInformation(updated);
+            //System.out.println("p1" + p1.getFirstName());
             assertEquals("Marie", updated.getFirstName());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Test
+    void editPersonAddressTest(){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO updated;
+        PersonDTO personToUpdate = new PersonDTO(p2);
+        try{
+            personToUpdate.setAddress("Malervej 5");
+            personToUpdate.setCityInfo("Randers");
+            em.getTransaction().begin();
+                updated = facade.editAddressForPerson(personToUpdate);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+        assertEquals("Randers", updated.getCityInfo());
+    }
+
+    @Test
+    void editPersonPhone(){
+        EntityManager em  = emf.createEntityManager();
+        PersonDTO updated;
+        PersonDTO personToUpdate = new PersonDTO(p3);
+        try{
+            personToUpdate.setPhones("90340843");
+            em.getTransaction().begin();
+                updated = facade.editPersonPhone(personToUpdate);
+            System.out.println("Person der ændres: " + updated.getFirstName());
+            assertEquals("90340843", updated.getPhones());
+
             em.getTransaction().commit();
         }
         finally {

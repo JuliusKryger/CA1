@@ -67,7 +67,8 @@ public class PersonFacade implements InterfacePersonFacade {
 
     //METODER
     //måske skal der laves test til
-    /*public synchronized PersonDTO createPerson(PersonDTO personDTO) {
+    /*
+    public synchronized PersonDTO createPerson(PersonDTO personDTO) {
         if (Utility.ValidatePersonDto(personDTO) && !isEmailTaken(personDTO)) {
             Person person = null;
             List<HobbyDTO> hobbies = personDTO.getHobbies();
@@ -76,7 +77,6 @@ public class PersonFacade implements InterfacePersonFacade {
             EntityManager em = emf.createEntityManager();
             try {
                 person = new Person(personDTO);
-
                 em.getTransaction().begin();
                 //Why does this reference not work, person.getAddress().getCityInfo() //TODO: LOOK HERE.
                 if(person.getAddress() != null && person.getAddress().getCityInfo() != null){
@@ -95,9 +95,7 @@ public class PersonFacade implements InterfacePersonFacade {
                         }
                     }
                 }
-
                 em.persist(person);
-
                 if(person.getHobbies() != null){
                     for(HobbyDTO h: hobbies){
                         Hobby ho = createHobby(h);
@@ -106,11 +104,8 @@ public class PersonFacade implements InterfacePersonFacade {
                         em.merge(person);
                     }
                 }
-
                 em.merge(person);
-
                 em.getTransaction().commit();
-
             } finally {
                 em.close();
             }
@@ -132,7 +127,6 @@ public class PersonFacade implements InterfacePersonFacade {
         Person person = em.find(Person.class, id);
         em.getTransaction().commit();
         em.close();
-
         if (person != null){
             return new PersonDTO(person);
         }else{
@@ -140,14 +134,17 @@ public class PersonFacade implements InterfacePersonFacade {
         }
     }
 
+    //test er lavet og virker
     @SuppressWarnings("unchecked")
     public synchronized PersonDTO editPersonBasisInformation(PersonDTO personDTO){
         EntityManager em = emf.createEntityManager();
+        Person updated = em.find(Person.class, personDTO.getId());
+
         try{
-            Person updated = em.find(Person.class, personDTO.getId());
             em.getTransaction().begin();
             updated.setFirstName(personDTO.getFirstName());
             updated.setLastName(personDTO.getLastName());
+            em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
         }
@@ -156,22 +153,78 @@ public class PersonFacade implements InterfacePersonFacade {
         }
 
     }
-    //editPersonAddress
-    public synchronized PersonDTO editAddressForPerson (Integer id){
+
+
+    //test er lavet
+    @SuppressWarnings("unchecked")
+    public synchronized PersonDTO editAddressForPerson (PersonDTO personToEdit){
         EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(personToEdit.getId());
+        Person updated = em.find(Person.class, personDTO.getId());
+
         try{
             em.getTransaction().begin();
-
+                updated.setAddress(personToEdit.getAddress());
+                updated.setCityInfo(personToEdit.getCityInfo());
+                em.merge(updated);
             em.getTransaction().commit();
+            return new PersonDTO(updated) ;
         }
         finally {
             em.close();
         }
     }
-    // editPersonPhone
-    // addHobbiesToPerson
-    // deleteHobbiesFromPerson
 
+    // test er lavet
+    @SuppressWarnings("unchecked")
+    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(personToEdit.getId());
+        Person updated = em.find(Person.class, personDTO.getId());
+        try{
+            em.getTransaction().begin();
+                updated.setPhones(personToEdit.getPhones());
+                em.merge(updated);
+            em.getTransaction().commit();
+
+            return new PersonDTO(updated);
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    // addHobbiesToPerson
+    public synchronized PersonDTO addHobbiesToPerson(Integer id){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(id);
+        try{
+            em.getTransaction().begin();
+
+            em.getTransaction().commit();
+            return personDTO;
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    // deleteHobbiesFromPerson
+    public synchronized PersonDTO deleteHobbiesFromPerson(Integer id){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = getPersonByID(id);
+        try{
+            em.getTransaction().begin();
+
+            em.getTransaction().commit();
+            return personDTO;
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    //See all persons
     @SuppressWarnings("unchecked")
     public PersonsDTO seeAllPersons() {
         EntityManager em = emf.createEntityManager();

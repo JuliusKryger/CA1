@@ -6,7 +6,6 @@ import java.io.Serializable;
 @Entity
 public class Hobbies implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "name", nullable = false, length = 50)
     private String name;
     private String wikiLink;
