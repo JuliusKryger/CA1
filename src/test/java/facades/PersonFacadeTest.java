@@ -60,7 +60,7 @@ public class PersonFacadeTest {
             em.createNamedQuery("Person.deleteAllRows", Person.class);
            // p1 = new Person(1, "Kurt", "Verner");
            // p2 = new Person(2,"Anna", "Jørgensen");
-            p3 = new Person(3,"Joe", "Johnson");
+            p3 = new Person(1,"Joe", "Johnson");
            // p4 = new Person(4,"Suzuki", "Torben");
            // em.persist(p1);
            // em.persist(p2);
@@ -107,12 +107,14 @@ public class PersonFacadeTest {
     @Test
     public void testGetPersonById () throws Exception {
         System.out.println("getPerson");
-        Integer id = p3.getId();
+        int id = p3.getId();
         EntityManagerFactory _emf = null;
         PersonFacade instance = PersonFacade.getPersonFacade(_emf);
         PersonDTO expResult = new PersonDTO(p3);
+        System.out.println("This is the test person we have created in our database, with an ID of: " + p3.getId().toString());
         PersonDTO result = instance.getPerson(id);
-        assertEquals(expResult,result);
+        System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPerson(id).getId().toString());
+        assertEquals(expResult.getId(),result.getId());
 
 
 

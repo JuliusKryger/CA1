@@ -7,6 +7,7 @@ import utils.Utility;
 import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PersonFacade {
@@ -49,8 +50,9 @@ public class PersonFacade {
     public PersonDTO getPerson (int id){
         EntityManager em = emf.createEntityManager();
         try{
-            PersonDTO person1 = em.find(PersonDTO.class, id);
-            return person1;
+            Person person1 = em.find(Person.class, id);
+            PersonDTO pdto1 = new PersonDTO(person1);
+            return pdto1;
         }finally {
             em.close();
         }
