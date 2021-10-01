@@ -1,9 +1,6 @@
 package facades;
 import dtos.*;
-import entities.Address;
-import entities.CityInfo;
-import entities.Hobbies;
-import entities.Person;
+import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -36,13 +33,16 @@ public class PersonFacadeTest {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
         EntityManager em = emf.createEntityManager();
+        Phone phone = new Phone(874123, "number");
+        List <Phone> phones = new ArrayList<>();
+        phones.add(phone);
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows", Person.class);
-            p1 = new Person(1, "Kurt", "Verner", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
-            p2 = new Person(2,"Anna", "Jørgensen", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
-            p3 = new Person(3,"Joe", "Johnson", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
-            p4 = new Person(4,"Suzuki", "Torben", "hej@hej.dk", "Håndbold", "828392", "Valbyvej 2", "Kolding");
+            p1 = new Person(1, "Kurt", "Verner", "hej@hej.dk", "Håndbold",phones , new Address("valbyvej", 2), "Kolding");
+            p2 = new Person(2,"Anna", "Jørgensen", "hej@hej.dk", "Håndbold", phones, new Address("valbyvej", 2), "Kolding");
+            p3 = new Person(3,"Joe", "Johnson", "hej@hej.dk", "Håndbold", phones, new Address("valbyvej", 2), "Kolding");
+            p4 = new Person(4,"Suzuki", "Torben", "hej@hej.dk", "Håndbold", phones,  new Address("valbyvej", 2), "Kolding");
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -124,7 +124,7 @@ public class PersonFacadeTest {
         PersonDTO updated;
         PersonDTO personToUpdate = new PersonDTO(p2);
         try{
-            personToUpdate.setAddress("Malervej 5");
+            personToUpdate.setAddress(new Address("malervej", 2));
             personToUpdate.setCityInfo("Randers");
             em.getTransaction().begin();
                 updated = facade.editAddressForPerson(personToUpdate);
@@ -141,12 +141,15 @@ public class PersonFacadeTest {
         EntityManager em  = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToUpdate = new PersonDTO(p3);
+        Phone phoneNumber = new Phone(9834334, "number");
+        List<Phone> phoneList = new ArrayList<>();
+        phoneList.add(phoneNumber);
         try{
-            personToUpdate.setPhones("90340843");
+            personToUpdate.setPhones(phoneList);
             em.getTransaction().begin();
                 updated = facade.editPersonPhone(personToUpdate);
             System.out.println("Person der ændres: " + updated.getFirstName());
-            assertEquals("90340843", updated.getPhones());
+            assertEquals(phoneList, updated.getPhones());
 
             em.getTransaction().commit();
         }

@@ -132,9 +132,9 @@ public class Person implements Serializable {
     }
 
     //Methods
-    public void addHobby(Hobby hobby) {
+    /*public void addHobby(Hobby hobby) {
         if(hobby != null){
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
-    }
+    }*/
 }
