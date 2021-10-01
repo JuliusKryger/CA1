@@ -35,6 +35,22 @@ public class PersonFacadeTest {
     {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = PersonFacade.getPersonFacade(emf);
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("Person.deleteAllRows", Person.class);
+            p1 = new Person(1, "Kurt", "Verner");
+            p2 = new Person(2,"Anna", "Jørgensen");
+            p3 = new Person(3,"Joe", "Johnson");
+            p4 = new Person(4,"Suzuki", "Torben");
+            em.persist(p1);
+            em.persist(p2);
+            em.persist(p3);
+            em.persist(p4);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
     }
 
     @AfterAll
@@ -47,27 +63,11 @@ public class PersonFacadeTest {
     @BeforeEach
     public void setUp() {
         //denne metode, gør alt klar inden man tester
-        EntityManager em = emf.createEntityManager();
-
         Hobbies hobbies = new Hobbies("Handball", "wiki.dk", "General", "Indendørs");
         List <Hobbies> hobbiesList = new ArrayList<>();
         hobbiesList.add(hobbies);
 
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("Person.deleteAllRows", Person.class);
-           // p1 = new Person(1, "Kurt", "Verner");
-           // p2 = new Person(2,"Anna", "Jørgensen");
-            p3 = new Person(3,"Joe", "Johnson");
-           // p4 = new Person(4,"Suzuki", "Torben");
-           // em.persist(p1);
-           // em.persist(p2);
-            em.persist(p3);
-           // em.persist(p4);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
+
     }
 /*
     @Test
@@ -101,7 +101,6 @@ public class PersonFacadeTest {
             em.close();
         }
     }
-/*
     @Test
     void editPersonBasisInformationTest(){
         EntityManager em = emf.createEntityManager();
@@ -111,9 +110,6 @@ public class PersonFacadeTest {
             PersonDTO updated = facade.editPersonBasisInformation(new PersonDTO(p1));
             updated.setFirstName("Marie");
             updated.setLastName("Andersen Hansen");
-            //updated.setPhoneNumber("034233434");
-            //updated.setEmail("MAH@email.dk");
-            //updated.setAge(22);
             System.out.println("p1" + p1.getFirstName());
             assertEquals("Marie", updated.getFirstName());
             em.getTransaction().commit();
@@ -122,7 +118,7 @@ public class PersonFacadeTest {
             em.close();
         }
     }
-
+/*
     @Test
     void seeAllPersonsTest(){
         EntityManager em = emf.createEntityManager();

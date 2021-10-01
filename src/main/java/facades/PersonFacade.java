@@ -67,7 +67,7 @@ public class PersonFacade implements InterfacePersonFacade {
 
     //METODER
     //måske skal der laves test til
-    public synchronized PersonDTO createPerson(PersonDTO personDTO) {
+    /*public synchronized PersonDTO createPerson(PersonDTO personDTO) {
         if (Utility.ValidatePersonDto(personDTO) && !isEmailTaken(personDTO)) {
             Person person = null;
             List<HobbyDTO> hobbies = personDTO.getHobbies();
@@ -117,7 +117,7 @@ public class PersonFacade implements InterfacePersonFacade {
         } else {
             throw new WebApplicationException("Please check your data", 400);
         }
-    }
+    }*/
 
     //test er lavet og virker
     public PersonDTO getPersonByID(Integer id){
@@ -135,16 +135,13 @@ public class PersonFacade implements InterfacePersonFacade {
     }
 
     @SuppressWarnings("unchecked")
-    public PersonDTO editPersonBasisInformation(PersonDTO personDTO){
+    public synchronized PersonDTO editPersonBasisInformation(PersonDTO personDTO){
         EntityManager em = emf.createEntityManager();
         try{
             Person updated = em.find(Person.class, personDTO.getId());
             em.getTransaction().begin();
             updated.setFirstName(personDTO.getFirstName());
             updated.setLastName(personDTO.getLastName());
-            //updated.setPhoneNumber(personDTO.getPhoneNumber());
-            //updated.setEmail(personDTO.getEmail());
-            //updated.setAge(personDTO.getAge());
             em.getTransaction().commit();
             return new PersonDTO(updated);
         }
@@ -153,6 +150,21 @@ public class PersonFacade implements InterfacePersonFacade {
         }
 
     }
+    //editPersonAddress
+    public synchronized PersonDTO editAddressForPerson (Integer id){
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+    // editPersonPhone
+    // addHobbiesToPerson
+    // deleteHobbiesFromPerson
 
     @SuppressWarnings("unchecked")
     public PersonsDTO seeAllPersons() {
