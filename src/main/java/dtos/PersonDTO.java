@@ -1,4 +1,5 @@
 package dtos;
+import entities.Address;
 import entities.Person;
 
 import java.util.List;
@@ -8,9 +9,9 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String hobbies;
-    private String phones;
-    private String address;
+    private List hobbies;
+    private List phones;
+    private Address address;
     private String cityInfo;
 
 
@@ -63,23 +64,19 @@ public class PersonDTO {
         return hobbies;
     }*/
 
-    public void setHobbies(String hobbies) {
-        this.hobbies = hobbies;
-    }
-
-    public String getPhones() {
+    public List getPhones() {
         return phones;
     }
 
-    public void setPhones(String phones) {
+    public void setPhones(List phones) {
         this.phones = phones;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

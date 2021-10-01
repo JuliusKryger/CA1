@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "hobby")
 @Entity
@@ -12,36 +13,15 @@ public class Hobby {
     private String category;
     private String type;
 
-    public Hobby(){
+    @ManyToMany
+    private List<Person> persons;
 
+    public List<Person> getPersons(){
+        return persons;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWikiLink() {
-        return wikiLink;
-    }
-
-    public void setWikiLink(String wikiLink) {
-        this.wikiLink = wikiLink;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getType() {
-        return type;
+    public Integer getId() {
+        return id;
     }
 
     public void setType(String type) {
