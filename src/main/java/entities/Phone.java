@@ -6,8 +6,7 @@ import javax.persistence.*;
 @Entity
 public class Phone {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "number", nullable = false)
     private Integer id;
     private int number;
     private String description;
@@ -21,6 +20,10 @@ public class Phone {
     }
 
     public Phone() {
+    }
+    public Phone(int number, String description){
+        this.number = number;
+        this.description = description;
     }
 
     public int getNumber() {
