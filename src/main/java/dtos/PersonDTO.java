@@ -22,6 +22,17 @@ public class PersonDTO {
 
     }
 
+    //At the moment this has no purpose other than testing.
+    public PersonDTO(String firstName, String lastName, String email, String hobbies, String phones, String address, String cityInfo) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.hobbies = hobbies;
+        this.phones = phones;
+        this.address = address;
+        this.cityInfo = cityInfo;
+    }
+
     public Integer getId() {
         return id;
     }

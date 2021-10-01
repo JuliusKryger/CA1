@@ -112,7 +112,7 @@ public class PersonFacadeTest {
             updated.setFirstName("Marie");
             updated.setLastName("Andersen Hansen");
             //updated.setPhoneNumber("034233434");
-            //updated.setEmail("MAH@email.dk");
+            //updated.setEmail("MAH@il.dk"ema);
             //updated.setAge(22);
             System.out.println("p1" + p1.getFirstName());
             assertEquals("Marie", updated.getFirstName());
@@ -144,6 +144,25 @@ public class PersonFacadeTest {
     }
 
  */
+
+    @Test //Not working seen as createPerson method is not done. (This is Jons test)
+    public void testAddPerson() throws Exception {
+        System.out.println("Testing ... add person method");
+        String fName = "Jan";
+        String lName = "Malkeko";
+        String email = "MalkeJan@muh.dk";
+        String hobby = "fluefisker";
+        String phone = "30402053";
+        String address = "malkekosvej 69";
+        String cityInfo = "3200";
+        EntityManagerFactory _emf = null;
+        PersonFacade instance = PersonFacade.getPersonFacade(_emf);
+        PersonDTO p1DTO = new PersonDTO(fName,lName,email,hobby,phone,address,cityInfo)
+        PersonDTO result = instance.createPerson(p1DTO);
+        PersonDTO expResult = new PersonDTO(fName,lName,email,hobby,phone,address,cityInfo);
+        expResult.setId(result.getId());
+        assertEquals(expResult, result);
+    }
 
 
 }

@@ -144,8 +144,7 @@ public class PersonFacade implements InterfacePersonFacade {
     }
 
     private Hobby createHobby(HobbyDTO h) {
-        //TODO: HERE WE NEED TO CREATE A CREATE HOBBY METHOD.
-        return null;
+
     }
 
     //test er lavet og virker
