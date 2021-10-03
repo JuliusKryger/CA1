@@ -17,12 +17,9 @@ public class AddressDTO {
     }
 
     public AddressDTO(Address entity) {
-        this.street = entity.getStreet();
+        this.street = entity.getStreet() == null ? null : entity.getStreet();
         this.additionalInfo = entity.getAdditionalInfo();
-        if (entity.getCityInfo() == null) {
-            new CityInfoDTO(entity.getCityInfo());
-        }
-        this.cityInfo = entity.getCityInfo();
+        this.cityInfo = entity.getCityInfo() == null ? null : new CityInfoDTO(entity.getCityInfo());
     }
 
     public String getStreet() {

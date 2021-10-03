@@ -2,8 +2,11 @@ package facades;
 
 import dtos.*;
 import entities.*;
+import utils.Utility;
+
 import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonFacade {
@@ -42,7 +45,8 @@ public class PersonFacade {
         }
     }
 
-    //The methods read the person
+    //This method gets a single person based on ID.
+    /* //TODO: THIS IS ACTUALLY JUST DUPLICATE CODE SEE BELOW FOR ACTUAL METHOD.
     public PersonDTO getPerson (int id){
         EntityManager em = emf.createEntityManager();
         try{
@@ -53,8 +57,9 @@ public class PersonFacade {
             em.close();
         }
     }
+    */
 
-
+    //This method get all persons.
     public List<Person> getAllPersons() {
         EntityManager em = getEntityManager();
         try {
@@ -65,7 +70,7 @@ public class PersonFacade {
         }
     }
 
-
+    //checks if the email is already taken.
     private boolean isEmailTaken(PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -80,15 +85,13 @@ public class PersonFacade {
         } catch (NoResultException ex) {
             return false;
         } catch (RuntimeException ex) {
-            throw new WebApplicationException("Internal Server Problem. We are sorry for the inconvenience", 500);
+            throw new WebApplicationException("ERROR: 500", 500);
         } finally {
             em.close();
         }
     }
 
-    //METODER
-    //måske skal der laves test til
-    /*
+    //This is the method we use to create a person.
     public synchronized PersonDTO createPerson(PersonDTO personDTO) {
         if (Utility.ValidatePersonDto(personDTO) && !isEmailTaken(personDTO)) {
             Person person = null;
@@ -99,8 +102,7 @@ public class PersonFacade {
             try {
                 person = new Person(personDTO);
                 em.getTransaction().begin();
-                //Why does this reference not work, person.getAddress().getCityInfo() //TODO: LOOK HERE.
-                if(person.getAddress() != null && person.getAddress() != null && person.getCityInfo() != null){
+                if(person.getAddress() != null && person.getAddress().getCityInfo() != null){
                     Address a = person.getAddress();
                     CityInfo ci = a.getCityInfo();
                     em.persist(ci);
@@ -120,7 +122,7 @@ public class PersonFacade {
                 if(person.getHobbies() != null){
                     for(HobbyDTO h: hobbies){
                         Hobby ho = createHobby(h);
-                        em.find(Hobby.class, ho.getId());
+                        em.find(Hobby.class, ho.getName());
                         person.addHobby(ho);
                         em.merge(person);
                     }
@@ -132,12 +134,28 @@ public class PersonFacade {
             }
             return new PersonDTO(person);
         } else {
-            throw new WebApplicationException("Please check your data", 400);
+            throw new WebApplicationException("Invalid data ... ", 400);
         }
-    }*/
+    }
 
-    private Hobby createHobby(HobbyDTO h) {
-
+    private Hobby createHobby(HobbyDTO hobby) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
+            query.setParameter("name", hobby.getName());
+            //query.setParameter("wikiLink", hobby.getWikiLink());
+            //query.setParameter("category", hobby.getCategory());
+            //query.setParameter("type", hobby.getType());
+            return (Hobby) query.getSingleResult();
+        } catch (NoResultException ex) {
+            Hobby h = new Hobby(hobby);
+            em.getTransaction().begin();
+            em.persist(h);
+            em.getTransaction().commit();
+            return h;
+        } finally {
+            em.close();
+        }
     }
 
     //test er lavet og virker
@@ -175,9 +193,6 @@ public class PersonFacade {
 
     }
 
-
-    //test er lavet
-    @SuppressWarnings("unchecked")
     public synchronized PersonDTO editAddressForPerson (PersonDTO personToEdit){
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
@@ -196,8 +211,6 @@ public class PersonFacade {
         }
     }
 
-    // test er lavet
-    @SuppressWarnings("unchecked")
     public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit){
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());

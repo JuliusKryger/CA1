@@ -165,11 +165,10 @@ public class Person implements Serializable {
         return list;
     }
 
-    //TODO NEEDS ALL THE INFOMATION FROM H:HOBBY GET...
     public List<Hobby> getHobbyList(List<HobbyDTO> hobbyDTOS){
         ArrayList<Hobby> list = new ArrayList<>();
         for(HobbyDTO h: hobbyDTOS){
-            list.add(new Hobby(h.getName(), h.getDescription()));
+            list.add(new Hobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType()));
         }
         return list;
     }
