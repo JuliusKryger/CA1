@@ -7,8 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "hobby")
 @Entity
+@Table(name = "hobby")
+@NamedQueries({
+        @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+})
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

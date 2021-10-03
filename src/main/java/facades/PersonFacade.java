@@ -69,7 +69,7 @@ public class PersonFacade {
 
     //TODO: CRUD Checklist.
     //Create - done ...
-    //Read - done ... 
+    //Read - done ...
     //Update - done ...
     //Delete - done ...
     // ... Which means we atleast have achived full crud.
@@ -209,6 +209,7 @@ public class PersonFacade {
     }
 
     //TODO: ONLY BASIS INFOMATION? CAN WE PLEASE EXPAND THIS METHOD TO EDIT ALL PERSON INFO.
+    //TODO: IT ALSO NEEDS TO UPDATE PERSON ON A GIVEN ID, NOT A PERSON DTO GET ID.
     public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         Person updated = em.find(Person.class, personDTO.getId());
@@ -309,10 +310,10 @@ public class PersonFacade {
     }
 
 
-    //TODO: THIS IS VERY IMPORTANT - WE STILL NEED SOME GETTER'S. EX.
+    //TODO: THIS IS IF WE HAVE EXTRA TIME (NICE TO HAVE BUT NOT NECESSARY) - WE STILL NEED SOME GETTER'S. EX.
     // public List<Phone> getPhoneByPersonId(Integer id)
     // public List<Hobby> getHobbyByPersonId(Integer id)
     // public Address getAddressByPersonId(Integer id)
-    // public List<PersonDTO> getPersonListByZip(CityInfo cityInfo)
-    // public List<PersonDTO> getPersonListByHobby(String hobbyname)
+    // public List<PersonDTO> getPersonListByZip(CityInfo ci)
+    // public List<PersonDTO> getPersonListByHobbyName(String hn)
 }

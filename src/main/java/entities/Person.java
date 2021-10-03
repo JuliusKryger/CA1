@@ -58,7 +58,7 @@ public class Person implements Serializable {
         this.address = dto.getAddress() != null ? new Address(dto.getAddress()) : null;
     }
 
-    public Person(String email, String firstName, String lastName, List<Phone> phones, Address address, List<Hobby> hobbies) {
+    public Person(String firstName, String lastName, String email, List<Phone> phones, Address address, List<Hobby> hobbies) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
