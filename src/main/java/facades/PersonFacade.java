@@ -13,19 +13,19 @@ public class PersonFacade {
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
-    private PersonFacade(){
+    private PersonFacade() {
 
     }
 
-    public static PersonFacade getPersonFacade(EntityManagerFactory _emf){
-        if (instance == null){
+    public static PersonFacade getPersonFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
             emf = _emf;
             instance = new PersonFacade();
         }
         return instance;
     }
 
-    private EntityManager getEntityManager(){
+    private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
@@ -93,16 +93,16 @@ public class PersonFacade {
 */
 
     //This finds a person from an given ID.
-    public PersonDTO getPersonByID(Integer id){
+    public PersonDTO getPersonByID(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Person person = em.find(Person.class, id);
         em.getTransaction().commit();
         em.close();
-        if (person != null){
+        if (person != null) {
             person.setId(id);
             return new PersonDTO(person);
-        }else{
+        } else {
             return null;
         }
     }
@@ -145,7 +145,7 @@ public class PersonFacade {
             try {
                 person = new Person(personDTO);
                 em.getTransaction().begin();
-                if(person.getAddress() != null && person.getAddress().getCityInfo() != null){
+                if (person.getAddress() != null && person.getAddress().getCityInfo() != null) {
                     Address a = person.getAddress();
                     CityInfo ci = a.getCityInfo();
                     em.persist(ci);
@@ -162,8 +162,8 @@ public class PersonFacade {
                     }
                 }
                 em.persist(person);
-                if(person.getHobbies() != null){
-                    for(HobbyDTO h: hobbies){
+                if (person.getHobbies() != null) {
+                    for (HobbyDTO h : hobbies) {
                         Hobby ho = createHobby(h);
                         em.find(Hobby.class, ho.getName());
                         person.addHobby(ho);
@@ -202,87 +202,82 @@ public class PersonFacade {
     }
 
     //TODO: ONLY BASIS INFOMATION? CAN WE PLEASE EXPAND THIS METHOD TO EDIT ALL PERSON INFO.
-    public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO){
+    public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         Person updated = em.find(Person.class, personDTO.getId());
 
-        try{
+        try {
             em.getTransaction().begin();
             updated.setFirstName(personDTO.getFirstName());
             updated.setLastName(personDTO.getLastName());
             em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
-        }
-        finally {
+        } finally {
             em.close();
         }
 
     }
 
     //TODO: THIS ONE NEEDS SOME WORK DONE.
-    public synchronized PersonDTO editAddressForPerson (PersonDTO personToEdit){
+    public synchronized PersonDTO editAddressForPerson(PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
 
-        try{
+        try {
             em.getTransaction().begin();
-                updated.setAddress(personToEdit.getAddress());
-                updated.setCityInfo(personToEdit.getCityInfo());
-                em.merge(updated);
+            updated.setAddress(personToEdit.getAddress());
+            updated.setCityInfo(personToEdit.getCityInfo());
+            em.merge(updated);
             em.getTransaction().commit();
-            return new PersonDTO(updated) ;
-        }
-        finally {
+            return new PersonDTO(updated);
+        } finally {
             em.close();
         }
     }
 
     //TODO: THIS ONE ALSO NEEDS SOME FIXIN' (BUT DO WE EVEN NEED IT?)
-    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit){
+    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
-        try{
+        try {
             em.getTransaction().begin();
-                updated.setPhones(personToEdit.getPhones());
-                em.merge(updated);
+            updated.setPhones(personToEdit.getPhones());
+            em.merge(updated);
             em.getTransaction().commit();
 
             return new PersonDTO(updated);
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
 
     //TODO: QUITE CERTAIN WE CAN JUST REMOVE THIS ONE.
-    public synchronized PersonDTO addHobbiesToPerson(Integer id){
+    public synchronized PersonDTO addHobbiesToPerson(Integer id) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(id);
-        try{
+        try {
             em.getTransaction().begin();
 
             em.getTransaction().commit();
             return personDTO;
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
 
     // deleteHobbiesFromPerson
-    public synchronized PersonDTO deleteHobbiesFromPerson(Integer id){
+    public synchronized PersonDTO deleteHobbiesFromPerson(Integer id) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(id);
-        try{
+        try {
             em.getTransaction().begin();
 
             em.getTransaction().commit();
             return personDTO;
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
@@ -302,7 +297,6 @@ public class PersonFacade {
             em.close();
         }
     }
-
 
 
     //TODO: THIS IS VERY IMPORTANT - WE STILL NEED SOME GETTER'S. EX.

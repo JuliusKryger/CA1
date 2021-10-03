@@ -1,6 +1,7 @@
 package entities;
 
 import dtos.PhoneDTO;
+
 import javax.persistence.*;
 
 @Table(name = "phone")
@@ -29,7 +30,7 @@ public class Phone {
         this.description = description;
     }
 
-    public Phone(PhoneDTO dto){
+    public Phone(PhoneDTO dto) {
         this.number = dto.getNumber();
         this.description = dto.getDescription();
     }

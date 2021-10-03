@@ -49,7 +49,7 @@ public class Person implements Serializable {
         this.address = null;
     }
 
-    public Person(PersonDTO dto){
+    public Person(PersonDTO dto) {
         this.firstName = dto.getFirstName();
         this.lastName = dto.getLastName();
         this.email = dto.getEmail();
@@ -120,14 +120,14 @@ public class Person implements Serializable {
         return address;
     }
 
-    public List<Hobby> getHobbies(){
+    public List<Hobby> getHobbies() {
         return hobbies;
     }
 
 
     //Methods
-    public void addHobby(Hobby hobby){
-        if(hobby != null){
+    public void addHobby(Hobby hobby) {
+        if (hobby != null) {
             this.hobbies.add(hobby);
             hobby.getPersons().add(this);
         }
@@ -140,14 +140,14 @@ public class Person implements Serializable {
         }
     }
 
-    public void removeHobby(Hobby hobby){
-        if(hobby != null){
+    public void removeHobby(Hobby hobby) {
+        if (hobby != null) {
             this.hobbies.remove(hobby);
             hobby.getPersons().remove(this);
         }
     }
 
-    public List<Phone> getNumberList(List<PhoneDTO> phoneDTOS){
+    public List<Phone> getNumberList(List<PhoneDTO> phoneDTOS) {
         ArrayList<Phone> list = new ArrayList<>();
         for (PhoneDTO p : phoneDTOS) {
             list.add(new Phone(p.getNumber()));
@@ -155,7 +155,7 @@ public class Person implements Serializable {
         return list;
     }
 
-    public List<PhoneDTO> getPhonesDTOList(List<Phone> phones){
+    public List<PhoneDTO> getPhonesDTOList(List<Phone> phones) {
         ArrayList<PhoneDTO> list = new ArrayList<>();
         if (phones != null) {
             for (Phone p : phones) {
@@ -165,17 +165,17 @@ public class Person implements Serializable {
         return list;
     }
 
-    public List<Hobby> getHobbyList(List<HobbyDTO> hobbyDTOS){
+    public List<Hobby> getHobbyList(List<HobbyDTO> hobbyDTOS) {
         ArrayList<Hobby> list = new ArrayList<>();
-        for(HobbyDTO h: hobbyDTOS){
+        for (HobbyDTO h : hobbyDTOS) {
             list.add(new Hobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType()));
         }
         return list;
     }
 
-    public List<HobbyDTO> getHobbyDTOList(List<Hobby> hobby){
+    public List<HobbyDTO> getHobbyDTOList(List<Hobby> hobby) {
         ArrayList<HobbyDTO> list = new ArrayList<>();
-        for(Hobby h: hobby){
+        for (Hobby h : hobby) {
             list.add(new HobbyDTO(h));
         }
         return list;

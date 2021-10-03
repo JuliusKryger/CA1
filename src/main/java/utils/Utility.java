@@ -20,61 +20,60 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author tha
  */
 public class Utility {
 
     private static final Gson gson = new GsonBuilder().create();
 
-    public static boolean ValidatePerson(Person p){
+    public static boolean ValidatePerson(Person p) {
         return p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null;
     }
 
-    public static boolean ValidatePersonDto(PersonDTO p){
+    public static boolean ValidatePersonDto(PersonDTO p) {
         System.out.println("Validation: " + p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null);
         return p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null;
     }
-    
+
     public static void printAllProperties() {
-            Properties prop = System.getProperties();
-            Set<Object> keySet = prop.keySet();
-            for (Object obj : keySet) {
-                    System.out.println("System Property: {" 
-                                    + obj.toString() + "," 
-                                    + System.getProperty(obj.toString()) + "}");
-            }
+        Properties prop = System.getProperties();
+        Set<Object> keySet = prop.keySet();
+        for (Object obj : keySet) {
+            System.out.println("System Property: {"
+                    + obj.toString() + ","
+                    + System.getProperty(obj.toString()) + "}");
+        }
     }
-    
-    public static RenameMeDTO json2DTO(String json) throws UnsupportedEncodingException{
-            return gson.fromJson(new String(json.getBytes("UTF8")), RenameMeDTO.class);
+
+    public static RenameMeDTO json2DTO(String json) throws UnsupportedEncodingException {
+        return gson.fromJson(new String(json.getBytes("UTF8")), RenameMeDTO.class);
     }
-    
-    public static String DTO2json(RenameMeDTO rmDTO){
+
+    public static String DTO2json(RenameMeDTO rmDTO) {
         return gson.toJson(rmDTO, RenameMeDTO.class);
     }
-    
+
     public static void main(String[] args) throws UnsupportedEncodingException {
 //        printAllProperties();
-        
+
         //Test json2DTO and back again
         String str2 = "{'id':1, 'str1':'Dette er den første tekst', 'str2':'Her er den ANDEN'}";
         RenameMeDTO rmDTO = json2DTO(str2);
         System.out.println(rmDTO);
-        
+
         String backAgain = DTO2json(rmDTO);
         System.out.println(backAgain);
     }
 
-    public static List convertList(Class<?> type, List list){
+    public static List convertList(Class<?> type, List list) {
         List l = new ArrayList();
-        for(Object p: list){
-            if(type == Phone.class) l.add(new Phone((PhoneDTO) p));
-            if(type == PhoneDTO.class) l.add(new PhoneDTO((Phone) p));
-            if(type == Hobby.class) l.add(new Hobby((HobbyDTO) p));
-            if(type == HobbyDTO.class) l.add(new HobbyDTO((Hobby) p));
-            if(type == CityInfo.class) l.add(new CityInfoDTO((CityInfo) p));
-            if(type == PersonDTO.class) l.add(new PersonDTO((Person) p));
+        for (Object p : list) {
+            if (type == Phone.class) l.add(new Phone((PhoneDTO) p));
+            if (type == PhoneDTO.class) l.add(new PhoneDTO((Phone) p));
+            if (type == Hobby.class) l.add(new Hobby((HobbyDTO) p));
+            if (type == HobbyDTO.class) l.add(new HobbyDTO((Hobby) p));
+            if (type == CityInfo.class) l.add(new CityInfoDTO((CityInfo) p));
+            if (type == PersonDTO.class) l.add(new PersonDTO((Person) p));
         }
         return l;
     }

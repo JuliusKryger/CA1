@@ -9,8 +9,8 @@ public class CityInfoDTO {
     public CityInfoDTO() {
     }
 
-    public CityInfoDTO(CityInfo entity){
-        if(entity.getZipCode() != null)
+    public CityInfoDTO(CityInfo entity) {
+        if (entity.getZipCode() != null)
             this.zipCode = entity.getZipCode();
         this.city = entity.getCity();
     }

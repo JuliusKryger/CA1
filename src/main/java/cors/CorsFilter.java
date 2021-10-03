@@ -26,7 +26,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 
     // A preflight request is an OPTIONS request with an Origin header.
     private static boolean isPreflightRequest(ContainerRequestContext request) {
-        return request.getHeaderString("Origin") != null  && request.getMethod().equalsIgnoreCase("OPTIONS");
+        return request.getHeaderString("Origin") != null && request.getMethod().equalsIgnoreCase("OPTIONS");
     }
 
     // Method for ContainerResponseFilter.
@@ -41,7 +41,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         // If it is a preflight request add all the CORS headers here.
         if (isPreflightRequest(request)) {
             response.getHeaders().add("Access-Control-Allow-Credentials", "true");
-            response.getHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS, HEAD");
+            response.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
             response.getHeaders().add("Access-Control-Allow-Headers",
                     // Whatever other non-standard/safe headers (see list above)
                     // you want the client to be able to send to the server,

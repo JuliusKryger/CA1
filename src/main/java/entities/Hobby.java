@@ -81,21 +81,22 @@ public class Hobby implements Serializable {
     public List<Person> getPersons() {
         return persons;
     }
-/*
-    public void addPerson(Person person){
-        if(person != null){
-            this.persons.add(person);
-            person.getHobbies().add(this);
-        }
-    }
 
-    public void removePerson(Person person){
-        if(person != null){
-            this.persons.add(person);
-            person.getHobbies().remove(this);
+    /*
+        public void addPerson(Person person){
+            if(person != null){
+                this.persons.add(person);
+                person.getHobbies().add(this);
+            }
         }
-    }
- */
+
+        public void removePerson(Person person){
+            if(person != null){
+                this.persons.add(person);
+                person.getHobbies().remove(this);
+            }
+        }
+     */
     @Override
     public String toString() {
         return "Hobby{" +
