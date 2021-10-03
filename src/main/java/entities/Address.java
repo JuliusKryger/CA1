@@ -1,5 +1,6 @@
 package entities;
 
+import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 
 import javax.persistence.*;
@@ -7,42 +8,50 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
+@Table(name = "addresses")
+@NamedQueries({
+        @NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address"),
+        @NamedQuery(name = "Address.getAllRows", query = "SELECT a from Address a"),
+        @NamedQuery(name = "Address.getAddress", query = "SELECT a from Address a WHERE a.street = :street")
+})
 public class Address implements Serializable {
-    @Id
-    @Column(name = "streetName", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String streetName;
-    private int number;
 
-    @ManyToOne
-    private CityInfo cityInfo;
+    //variables
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name = "street")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String street;
+    private String additionalInfo;
 
     @OneToMany
     private List<Person> persons;
+    @ManyToOne
+    private CityInfo cityInfo;
 
-    public Address(){
-
+    //Constructors
+    public Address() {
     }
 
-    public Address(String streetName, int number) {
-        this.streetName = streetName;
-        this.number = number;
+    public Address(String street, String additionalInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
     }
 
-    public String getStreetName() {
-        return streetName;
+    public Address(String street, CityInfo cityInfo) {
+        this.street = street;
+        this.cityInfo = cityInfo;
     }
 
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public Address(AddressDTO dto) {
+        this.street = dto.getStreet();
+        this.additionalInfo = dto.getAdditionalInfo();
+        this.cityInfo = new CityInfo(dto.getCityInfo());
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
+    //getter and setters
+    public List<Person> getPersons() {
+        return persons;
     }
 
     public void setCityInfo(CityInfo cityInfo) {
@@ -53,12 +62,37 @@ public class Address implements Serializable {
         return cityInfo;
     }
 
-    public List<Person> getPersons() {
-        return persons;
+    public String getStreet() {
+        return street;
     }
 
-    public void setPersons(List<Person> persons) {
-        this.persons = persons;
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+    public void addPerson(Person person) {
+        if (person != null) {
+            person.setAddress(this);
+            this.persons.add(person);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", additionalInfo='" + additionalInfo + '\'' +
+                ", persons=" + persons +
+                ", cityInfo=" + cityInfo +
+                '}';
     }
 }
 
