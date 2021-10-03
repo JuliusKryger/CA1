@@ -67,6 +67,13 @@ public class PersonFacade {
         }
     }
 
+    //TODO: CRUD Checklist.
+    //Create - done ...
+    //Read - done ... 
+    //Update - done ...
+    //Delete - done ...
+    // ... Which means we atleast have achived full crud.
+
     //This method gets a single person based on ID.
     /* //TODO: THIS IS ACTUALLY JUST DUPLICATE CODE SEE BELOW FOR ACTUAL METHOD.
     public PersonDTO getPerson (int id){
@@ -219,6 +226,7 @@ public class PersonFacade {
 
     }
 
+    /*
     //TODO: THIS ONE NEEDS SOME WORK DONE.
     public synchronized PersonDTO editAddressForPerson(PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
@@ -254,6 +262,7 @@ public class PersonFacade {
         }
     }
 
+
     //TODO: QUITE CERTAIN WE CAN JUST REMOVE THIS ONE.
     public synchronized PersonDTO addHobbiesToPerson(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -281,6 +290,7 @@ public class PersonFacade {
             em.close();
         }
     }
+     */
 
     //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
     //PersonResource.java
