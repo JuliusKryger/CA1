@@ -3,38 +3,56 @@ package dtos;
 import entities.Address;
 
 public class AddressDTO {
-    private String streetName;
-    private int number;
-    private CityInfoDTO cityInfoDTO;
+    private String street;
+    private String additionalInfo;
+    private CityInfoDTO cityInfo;
 
-    public AddressDTO(Address address){
-        if (address.getStreetName() !=null)
-            this.streetName = address.getStreetName();
-        this.number = address.getNumber();
-
+    public AddressDTO() {
     }
 
-    public String getStreetName() {
-        return streetName;
+    public AddressDTO(String street, String additionalInfo, CityInfoDTO cityInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
     }
 
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public AddressDTO(Address entity) {
+        this.street = entity.getStreet() == null ? null : entity.getStreet();
+        this.additionalInfo = entity.getAdditionalInfo();
+        this.cityInfo = entity.getCityInfo() == null ? null : new CityInfoDTO(entity.getCityInfo());
     }
 
-    public int getNumber() {
-        return number;
+    public String getStreet() {
+        return street;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public CityInfoDTO getCityInfoDTO() {
-        return cityInfoDTO;
+    public String getAdditionalInfo() {
+        return additionalInfo;
     }
 
-    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
-        this.cityInfoDTO = cityInfoDTO;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+
+    public CityInfoDTO getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfoDTO cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "AddressDTO{" +
+                "street='" + street + '\'' +
+                ", additionalInfo='" + additionalInfo + '\'' +
+                ", cityInfo=" + cityInfo +
+                '}';
     }
 }

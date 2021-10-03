@@ -5,15 +5,17 @@
  */
 package utils;
 
-import dtos.PersonDTO;
-import dtos.RenameMeDTO;
-import java.util.Properties;
-import java.util.Set;
+import dtos.*;
+
+import java.util.*;
+
 import com.google.gson.*;
+import entities.CityInfo;
+import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,7 +24,8 @@ import java.util.logging.Logger;
  * @author tha
  */
 public class Utility {
-    private static Gson gson = new GsonBuilder().create();
+
+    private static final Gson gson = new GsonBuilder().create();
 
     public static boolean ValidatePerson(Person p){
         return p.getEmail() != null || p.getFirstName() != null || p.getLastName() != null;
@@ -61,6 +64,19 @@ public class Utility {
         
         String backAgain = DTO2json(rmDTO);
         System.out.println(backAgain);
+    }
+
+    public static List convertList(Class<?> type, List list){
+        List l = new ArrayList();
+        for(Object p: list){
+            if(type == Phone.class) l.add(new Phone((PhoneDTO) p));
+            if(type == PhoneDTO.class) l.add(new PhoneDTO((Phone) p));
+            if(type == Hobby.class) l.add(new Hobby((HobbyDTO) p));
+            if(type == HobbyDTO.class) l.add(new HobbyDTO((Hobby) p));
+            if(type == CityInfo.class) l.add(new CityInfoDTO((CityInfo) p));
+            if(type == PersonDTO.class) l.add(new PersonDTO((Person) p));
+        }
+        return l;
     }
 
 }
