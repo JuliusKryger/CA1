@@ -10,6 +10,7 @@ import java.util.List;
 public class Address implements Serializable {
     @Id
     @Column(name = "streetName", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String streetName;
     private int number;
 

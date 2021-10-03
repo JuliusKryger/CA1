@@ -12,8 +12,8 @@ import java.util.List;
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "name", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String name;
     private String wikiLink;
     private String category;

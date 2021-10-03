@@ -4,7 +4,6 @@ import dtos.*;
 import entities.*;
 import entities.Address;
 import entities.CityInfo;
-import entities.Hobbies;
 import entities.Person;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
