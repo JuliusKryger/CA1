@@ -2,15 +2,22 @@ package dtos;
 
 import entities.CityInfo;
 
-
 public class CityInfoDTO {
     private String zipCode;
     private String city;
 
-    public CityInfoDTO(CityInfo cityInfo){
-        if(cityInfo.getZipCode() != null)
-            this.zipCode = cityInfo.getZipCode();
-        this.city = cityInfo.getCity();
+    public CityInfoDTO() {
+    }
+
+    public CityInfoDTO(CityInfo entity){
+        if(entity.getZipCode() != null)
+            this.zipCode = entity.getZipCode();
+        this.city = entity.getCity();
+    }
+
+    public CityInfoDTO(String zipCode, String city) {
+        this.zipCode = zipCode;
+        this.city = city;
     }
 
     public String getZipCode() {
@@ -27,5 +34,13 @@ public class CityInfoDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "CityInfoDTO{" +
+                "zipCode='" + zipCode + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 }

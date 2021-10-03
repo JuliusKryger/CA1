@@ -86,6 +86,34 @@ public class PersonFacade {
         }
     }
 
+    @Override
+    public PersonDTO addPerson(String fName, String lName, String phone, String street, String zip, String city) throws MissingInputException {
+        if ((fName.length() == 0) || (lName.length() == 0)){
+            throw new MissingInputException("First Name and/or Last Name is missing");
+        }
+        EntityManager em = getEntityManager();
+        Person person = new Person(fName, lName, phone);
+
+        try {
+            em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
+            query.setParameter("street", street);
+            query.setParameter("zip", zip);
+            query.setParameter("city", city);
+            List<Address> addresses = query.getResultList();
+            if (addresses.size() > 0){
+                person.setAddress(addresses.get(0)); // The address already exists
+            } else {
+                person.setAddress(new Address(street,zip,city));
+            }
+            em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
+    }
+
     //METODER
     //måske skal der laves test til
     /*
