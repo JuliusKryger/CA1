@@ -155,7 +155,7 @@ public class Person implements Serializable {
         return list;
     }
 
-    public List<PhoneDTO> getNumberDTOList(List<Phone> phones){
+    public List<PhoneDTO> getPhonesDTOList(List<Phone> phones){
         ArrayList<PhoneDTO> list = new ArrayList<>();
         if (phones != null) {
             for (Phone p : phones) {
