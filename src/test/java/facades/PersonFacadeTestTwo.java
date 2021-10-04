@@ -56,7 +56,7 @@ class PersonFacadeTestTwo {
         CityInfo ci = new CityInfo("3400", "Hillerød");
 
         //Creating an Address Object for our Person Const.
-        Address address = new Address("Milnersvang 42", "kælder", ci);
+        Address address = new Address("Milnersvej", "52", ci);
 
         //Lastly we're setting up an array of hobbies for the person const.
         List <Hobby >hobbyList = new ArrayList<>();
@@ -161,6 +161,7 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
+
 
     @Test
     void updatePerson() {
