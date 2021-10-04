@@ -37,14 +37,13 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
     /*public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-    }*/
-
-    public Person()
-    {
+    }
+    */
+    
+    public Person() {
     }
 
     public Person(Integer id, String firstName, String lastName, String email, String hobbies, List<Phone> phones, Address address, String cityInfo) {
@@ -133,8 +132,9 @@ public class Person implements Serializable {
 
     //Methods
     public void addHobby(Hobby hobby) {
-       // if(hobby != null){
-       //     this.hobbies.add(hobby);
-       //     hobby.getPersons().add(this);
+        // if(hobby != null){
+        //     this.hobbies.add(hobby);
+        //     hobby.getPersons().add(this);
     }
 }
+
