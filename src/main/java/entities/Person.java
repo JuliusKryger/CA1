@@ -147,13 +147,6 @@ public class Person implements Serializable {
         }
     }
 
-<<<<<<< HEAD
-    //Methods
-    public void addHobby(Hobby hobby) {
-        // if(hobby != null){
-        //     this.hobbies.add(hobby);
-        //     hobby.getPersons().add(this);
-=======
     public List<Phone> getNumberList(List<PhoneDTO> phoneDTOS) {
         ArrayList<Phone> list = new ArrayList<>();
         for (PhoneDTO p : phoneDTOS) {
@@ -203,7 +196,5 @@ public class Person implements Serializable {
                 ", address=" + address +
                 ", hobbies=" + hobbies +
                 '}';
->>>>>>> main
     }
 }
-
