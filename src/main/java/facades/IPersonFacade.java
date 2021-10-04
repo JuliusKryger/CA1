@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
 
 import java.util.List;
 
@@ -12,13 +13,17 @@ public interface IPersonFacade {
     PersonDTO getPersonByID(Integer id);
 
     //Enter Comment Here!
-    List<PersonDTO> getAllPersons();
+    PersonsDTO getAllPersons();
 
     //Enter Comment Here!
     PersonDTO createPerson(PersonDTO personDTO);
 
     //Enter Comment Here!
     PersonDTO updatePerson(Integer id, PersonDTO personDTO);
+
+    PersonDTO editPersonPhone(int phone, String description, PersonDTO personDTO);
+
+    PersonDTO editAddressForPerson (String street, String addInfo, String zipCode, String city, PersonDTO personDTO);
 
     //Enter Comment Here!
     boolean deletePerson(int id);
