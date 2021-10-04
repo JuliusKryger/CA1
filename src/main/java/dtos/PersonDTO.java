@@ -1,7 +1,9 @@
 package dtos;
+
 import entities.Address;
 import entities.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonDTO {
@@ -9,34 +11,34 @@ public class PersonDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private List hobbies;
-    private List phones;
-    private Address address;
-    private String cityInfo;
+    private List<PhoneDTO> phones;
+    private List<HobbyDTO> hobbies;
+    private AddressDTO address;
 
-
-    public PersonDTO(Person person){
-        if(person.getId() != null)
-            this.id = person.getId();
-        this.firstName = person.getFirstName();
-        this.lastName = person.getLastName();
-        this.email = person.getEmail();
-        this.phones = person.getPhones();
-        this.address = person.getAddress();
-        this.cityInfo = person.getCityInfo();
-
-
+    public PersonDTO() {
     }
 
-    //At the moment this has no purpose other than testing.
-    public PersonDTO(String firstName, String lastName, String email, String hobbies, String phones, String address, String cityInfo) {
+    public PersonDTO(Person entity) {
+        this.id = entity.getId();
+        this.firstName = entity.getFirstName();
+        this.lastName = entity.getLastName();
+        this.email = entity.getEmail();
+        this.phones = entity.getPhones() != null ? entity.getPhonesDTOList(entity.getPhones()) : new ArrayList<>();
+        this.hobbies = entity.getHobbies() != null ? entity.getHobbyDTOList(entity.getHobbies()) : new ArrayList<>();
+        this.address = entity.getAddress() == null ? new AddressDTO() : new AddressDTO(entity.getAddress());
+    }
+
+    public PersonDTO(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.hobbies = hobbies;
+    }
+
+    public PersonDTO(String firstName, String lastName, String email, List<PhoneDTO> phones) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.phones = phones;
-        this.address = address;
-        this.cityInfo = cityInfo;
     }
 
     public Integer getId() {
@@ -71,35 +73,40 @@ public class PersonDTO {
         this.email = email;
     }
 
-    /*public List<HobbyDTO> getHobbies() {
-        return hobbies;
-    }*/
-
-    public List getPhones() {
+    public List<PhoneDTO> getPhones() {
         return phones;
     }
 
-    public void setPhones(List phones) {
+    public void setPhones(List<PhoneDTO> phones) {
         this.phones = phones;
     }
 
-    public Address getAddress() {
+    public List<HobbyDTO> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<HobbyDTO> hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
 
-    public String getCityInfo() {
-        return cityInfo;
-    }
-
-    public void setCityInfo(String cityInfo) {
-        this.cityInfo = cityInfo;
-    }
-
-    public void setHobbies(List<HobbyDTO> h2) {
-        //TODO: THIS METHOD NEEDS TO BE DONE.
+    @Override
+    public String toString() {
+        return "PersonDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phones=" + phones +
+                ", hobbies=" + hobbies +
+                ", address=" + address +
+                '}';
     }
 }
