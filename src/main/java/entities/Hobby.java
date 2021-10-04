@@ -7,8 +7,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "hobby")
 @Entity
+@Table(name = "hobby")
+@NamedQueries({
+        @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+})
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -81,21 +84,22 @@ public class Hobby implements Serializable {
     public List<Person> getPersons() {
         return persons;
     }
-/*
-    public void addPerson(Person person){
-        if(person != null){
-            this.persons.add(person);
-            person.getHobbies().add(this);
-        }
-    }
 
-    public void removePerson(Person person){
-        if(person != null){
-            this.persons.add(person);
-            person.getHobbies().remove(this);
+    /*
+        public void addPerson(Person person){
+            if(person != null){
+                this.persons.add(person);
+                person.getHobbies().add(this);
+            }
         }
-    }
- */
+
+        public void removePerson(Person person){
+            if(person != null){
+                this.persons.add(person);
+                person.getHobbies().remove(this);
+            }
+        }
+     */
     @Override
     public String toString() {
         return "Hobby{" +

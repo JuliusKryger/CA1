@@ -1,10 +1,14 @@
 package entities;
 
 import dtos.PhoneDTO;
+
 import javax.persistence.*;
 
-@Table(name = "phone")
 @Entity
+@Table(name = "phone")
+@NamedQueries({
+        @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
+})
 public class Phone {
     private static final long serialVersionUID = 1L;
     @Id
@@ -29,7 +33,7 @@ public class Phone {
         this.description = description;
     }
 
-    public Phone(PhoneDTO dto){
+    public Phone(PhoneDTO dto) {
         this.number = dto.getNumber();
         this.description = dto.getDescription();
     }
