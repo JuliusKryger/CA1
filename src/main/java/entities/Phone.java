@@ -66,7 +66,7 @@ public class Phone {
         return "Phone{" +
                 "number=" + number +
                 ", description='" + description + '\'' +
-                ", person=" + person +
+
                 '}';
     }
 }

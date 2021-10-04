@@ -27,21 +27,6 @@ public class Populator {
         fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
         fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
         fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
-
-
-        Person p1 = new Person("kaj@mail.dk", "Kaj", "Testesen");
-        Phone phone = new Phone(54667283, "This is Kaj's phone");
-        p1.addPhone(phone);
-        Hobby hobby = new Hobby("Turisme", "https://da.wikipedia.org/wiki/Turisme", "General", "Fritid");
-        p1.addHobby(hobby);
-        Address address = new Address("Lyngby Hovedgade 5", "Lyngby");
-        p1.setAddress(address);
-        CityInfo cityInfo = new CityInfo("2800", "Kongens Lyngby");
-        address.setCityInfo(cityInfo);
-
-        PersonFacade pf = PersonFacade.getPersonFacade(emf);
-        pf.createPerson(new PersonDTO(p1));
-
     }
 
     public static void main(String[] args) {

@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import entities.Person;
 import facades.IPersonFacade;
 import facades.PersonFacade;
 import utils.EMF_Creator;
@@ -15,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final IPersonFacade iPersonFacade = null;
+    private static final IPersonFacade iPersonFacade = PersonFacade.getPersonFacade(EMF);
     private static final PersonFacade personFacade = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -33,9 +34,8 @@ public class PersonResource {
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonById(@PathParam("id")int id){
-        PersonDTO personDTO = personFacade.getPersonByID(id);
-        return GSON.toJson(personDTO);
+    public String getPersonById(@PathParam("id")int id) {
+        return GSON.toJson(iPersonFacade.getPersonByID(id), PersonDTO.class);
     }
 
     @Path("/createPerson")
@@ -48,6 +48,17 @@ public class PersonResource {
         return GSON.toJson(newPersonDTO);
     }
 
+    @Path("/createPerson")
+    @POST
+    @Produces("application/json")
+    public String getFirstName(String firstname) {
+        Person newPersonFirstName = new Person();
+        String personFirstName = newPersonFirstName.getFirstName();
+
+        return GSON.toJson(personFirstName);
+    }
+
+    /*
     @Path("/updatePerson")
     @PUT
     @Produces("application/json")
@@ -57,5 +68,5 @@ public class PersonResource {
 
         return GSON.toJson();
     }
-
+*/
 }
