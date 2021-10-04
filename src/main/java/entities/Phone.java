@@ -1,29 +1,49 @@
 package entities;
 
+import dtos.PhoneDTO;
+
 import javax.persistence.*;
 
-@Table(name = "phone")
 @Entity
+@Table(name = "phone")
+@NamedQueries({
+        @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
+})
 public class Phone {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "number", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int number;
     private String description;
 
-    public Integer getId() {
-        return id;
-    }
+    @ManyToOne
+    private Person person;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Phone() {
     }
-    public Phone(int number, String description){
+
+    public Phone(int number) {
+        this.number = number;
+    }
+
+    public Phone(int number, String description) {
         this.number = number;
         this.description = description;
+    }
+
+    public Phone(PhoneDTO dto) {
+        this.number = dto.getNumber();
+        this.description = dto.getDescription();
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
     }
 
     public int getNumber() {
@@ -42,8 +62,12 @@ public class Phone {
         this.description = description;
     }
 
-    public void setPerson(Person person) {
-        //TODO: This method needs work.
-
+    @Override
+    public String toString() {
+        return "Phone{" +
+                "number=" + number +
+                ", description='" + description + '\'' +
+                ", person=" + person +
+                '}';
     }
 }
