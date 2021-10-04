@@ -18,10 +18,9 @@ public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "zipCode")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String zipCode;
     private String city;
-    @OneToMany
+    @OneToMany (mappedBy = "cityInfo")
     private List<Address> addresses;
 
     public CityInfo() {

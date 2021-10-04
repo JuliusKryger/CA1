@@ -30,11 +30,11 @@ public class Person implements Serializable {
     private String lastName;
     private String email;
 
-    @OneToMany
+    @OneToMany (mappedBy = "person")
     private List<Phone> phones;
     @ManyToOne
     private Address address;
-    @ManyToMany
+    @ManyToMany (mappedBy = "persons")
     private List<Hobby> hobbies;
 
     public Person() {
