@@ -19,12 +19,13 @@ public class Address implements Serializable {
     //variables
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "street")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String street;
     private String additionalInfo;
 
-    @OneToMany
+    @OneToMany (mappedBy = "address")
     private List<Person> persons;
     @ManyToOne
     private CityInfo cityInfo;

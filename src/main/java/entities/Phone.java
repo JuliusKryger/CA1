@@ -13,7 +13,6 @@ public class Phone {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "number", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int number;
     private String description;
 

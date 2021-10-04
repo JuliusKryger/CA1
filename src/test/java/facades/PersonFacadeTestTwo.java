@@ -34,6 +34,16 @@ class PersonFacadeTestTwo {
 
     @BeforeEach
     void setUp() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.getTransaction().commit();
+
         //Setting up the Phone Array and populating it for our Person const.
         ArrayList phonesList = new ArrayList<Phone>();
         Phone po = new Phone(25758290, "privat");
@@ -51,8 +61,6 @@ class PersonFacadeTestTwo {
         hobbyList.add(h);
 
         //PERSON CONSTRUCTOR: - String email, String firstName, String lastName, List<Phone> phones, Address address, List<Hobby> hobbies
-        EntityManager em = emf.createEntityManager();
-        try {
             em.getTransaction().begin();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             p1 = new Person("Henrik", "Hansen", "23@dk.dk", phonesList, address, hobbyList);
@@ -67,18 +75,6 @@ class PersonFacadeTestTwo {
 
     @AfterEach
     void tearDown() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
     }
 
     @Test
