@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "address")
 @NamedQueries({
         @NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address"),
         @NamedQuery(name = "Address.getAllRows", query = "SELECT a from Address a"),
