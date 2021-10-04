@@ -23,7 +23,7 @@ public interface IPersonFacade {
 
     PersonDTO editPersonPhone(int phone, String description, PersonDTO personDTO);
 
-    //PersonDTO editAddressForPerson (PersonDTO personDTO);
+    PersonDTO editAddressForPerson (String street, String addInfo, String zipCode, String city, PersonDTO personDTO);
 
     //Enter Comment Here!
     boolean deletePerson(int id);
