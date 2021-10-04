@@ -12,7 +12,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
+/*
 @Path("/person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -21,7 +21,7 @@ public class PersonResource {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 
-/* @Operation(summary = "Get person by ID"),
+ @Operation(summary = "Get person by ID"),
     tags = {"person"},
     responses = {
         @ApiResponse(
@@ -29,7 +29,7 @@ public class PersonResource {
                 schema = @Schema(implementation = PersonDTO.class))
         ),
         @ApiResponse(responseCode = "200", description = "Found person"),
-        @ApiResponse(responseCode = "400", description = "No persons found")})*/
+        @ApiResponse(responseCode = "400", description = "No persons found")})
 
     @Path("/{id}")
     @GET
@@ -69,4 +69,4 @@ public class PersonResource {
         return GSON.toJson();
     }
 */
-}
+

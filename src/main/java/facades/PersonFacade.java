@@ -1,6 +1,5 @@
 package facades;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import dtos.*;
 import entities.*;
 import utils.Utility;
@@ -206,9 +205,42 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    private Hobby createHobby(HobbyDTO hobby) {
+    public Hobby createHobby(HobbyDTO hobby) {
         EntityManager em = emf.createEntityManager();
+        Hobby hobbyEntity = new Hobby(hobby.getName(), hobby.getWikiLink(), hobby.getCategory(), hobby.getType());
         try {
+            em.getTransaction().begin();
+            em.persist(hobbyEntity);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new Hobby(hobby);
+    }
+
+    public boolean deleteHobby (int id){
+    EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Hobby h WHERE h.id = :id").setParameter("id", id).executeUpdate();
+           // em.createNamedQuery("H").setParameter("id", hobby).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        }finally {
+            em.close();
+        }
+
+    }
+
+
+
+
+
+
+
+
+    //til createhobby hvis det skal bruges
+        /*try {
             Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
             query.setParameter("name", hobby.getName());
             //query.setParameter("wikiLink", hobby.getWikiLink());
@@ -223,8 +255,8 @@ public class PersonFacade implements IPersonFacade {
             return h;
         } finally {
             em.close();
-        }
-    }
+        }*/
+
 
     public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();

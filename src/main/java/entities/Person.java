@@ -26,15 +26,20 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id;
+    @Column(name = "firstname", length = 175, nullable = false, unique = false)
     private String firstName;
+    @Column(name = "lastname", length = 175, nullable = false, unique = false)
     private String lastName;
+    @Column(name = "email", length = 175, nullable = false, unique = true)
     private String email;
 
-    @OneToMany (mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Phone> phones;
+
     @ManyToOne
     private Address address;
-    @ManyToMany (mappedBy = "persons")
+
+    @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Hobby> hobbies;
 
     public Person() {

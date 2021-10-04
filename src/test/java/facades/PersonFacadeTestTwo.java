@@ -47,29 +47,20 @@ class PersonFacadeTestTwo {
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.getTransaction().commit();
 
-        //Setting up the Phone Array and populating it for our Person const.
-        List <Phone> phonesList = new ArrayList<>();
-        Phone po = new Phone(25758290, "privat");
-        phonesList.add(po);
 
-        //Creating an CityInfo Object for our Address Object.
-        CityInfo ci = new CityInfo("3400", "Hillerød");
+            Person p1 = new Person("Jack", "Nicklaus", "email@mail.dk");
+            Phone phone = new Phone(35604570, "privat");
+            Hobby hobby = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
+            Address address = new Address();
+            p1.addPhone(phone);
+            p1.addHobby(hobby);
+            p1.setAddress(address);
+            CityInfo cityInfo = new CityInfo("3450", "Allerød");
+            address.setCityInfo(cityInfo);
 
-        //Creating an Address Object for our Person Const.
-        Address address = new Address("Milnersvang 42", "kælder", ci);
+            PersonDTO pers = new PersonDTO(p1);
+            facade.createPerson(pers);
 
-        //Lastly we're setting up an array of hobbies for the person const.
-        List <Hobby >hobbyList = new ArrayList<>();
-        Hobby h = new Hobby("Fodbold", "www.fodbold.dk", "boldsport", "undendørs");
-        hobbyList.add(h);
-
-        //PERSON CONSTRUCTOR: - String email, String firstName, String lastName, List<Phone> phones, Address address, List<Hobby> hobbies
-            em.getTransaction().begin();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            p1 = new Person("Henrik", "Hansen", "23@dk.dk", phonesList, address, hobbyList);
-            p2 = new Person("Micheal", "Laudrup", "Juleglad@dk.dk", phonesList, address, hobbyList);
-            em.persist(p1);
-            em.persist(p2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -161,6 +152,7 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
+
 
     @Test
     void updatePerson() {

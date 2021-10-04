@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "address")
 @NamedQueries({
         @NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address"),
         @NamedQuery(name = "Address.getAllRows", query = "SELECT a from Address a"),
@@ -22,11 +22,14 @@ public class Address implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "street", length = 255, nullable = false, unique = false)
     private String street;
+    @Column(name = "info", length = 255, nullable = true, unique = false)
     private String additionalInfo;
 
-    @OneToMany (mappedBy = "address")
+    @OneToMany(mappedBy = "address", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Person> persons;
+
     @ManyToOne
     private CityInfo cityInfo;
 
@@ -34,10 +37,10 @@ public class Address implements Serializable {
     public Address() {
     }
 
-    /*public Address(String street, String additionalInfo) {
+    public Address(String street, String additionalInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
-    }*/
+    }
 
     public Address(String street,String additionalInfo, CityInfo cityInfo) {
         this.street = street;

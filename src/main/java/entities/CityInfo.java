@@ -17,10 +17,14 @@ import java.util.List;
 public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "zipCode")
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "zipcode", length = 4, unique = true)
     private String zipCode;
+    @Column(name = "city", length=35, unique = false)
     private String city;
-    @OneToMany (mappedBy = "cityInfo")
+
+    @OneToMany(mappedBy = "cityInfo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Address> addresses;
 
     public CityInfo() {
