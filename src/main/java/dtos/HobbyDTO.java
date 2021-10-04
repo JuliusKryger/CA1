@@ -1,10 +1,22 @@
 package dtos;
 
+import entities.Hobby;
+
 public class HobbyDTO {
     private String name;
     private String wikiLink;
     private String category;
     private String type;
+
+    public HobbyDTO() {
+    }
+
+    public HobbyDTO(Hobby entity) {
+        this.name = entity.getName();
+        this.wikiLink = entity.getWikiLink();
+        this.category = entity.getCategory();
+        this.type = entity.getType();
+    }
 
     public HobbyDTO(String name, String wikiLink, String category, String type) {
         this.name = name;
@@ -43,5 +55,15 @@ public class HobbyDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "HobbyDTO{" +
+                "name='" + name + '\'' +
+                ", wikiLink='" + wikiLink + '\'' +
+                ", category='" + category + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }
