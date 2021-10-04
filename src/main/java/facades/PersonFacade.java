@@ -1,5 +1,6 @@
 package facades;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import dtos.*;
 import entities.*;
 import utils.Utility;
@@ -112,6 +113,7 @@ public class PersonFacade implements IPersonFacade {
         } else {
             return null;
         }
+
     }
 
     /* //TODO: WELL THIS METHOD IS SMARTER, BUT IT NEED SOME PREREQUISITES.
@@ -134,11 +136,27 @@ public class PersonFacade implements IPersonFacade {
     }
      */
 
-    //This method get all persons.
-    public List<PersonDTO> getAllPersons() {
+    //TODO: This method should be removed
+    public List<PersonDTO> getAllPersons2() {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.phones pp JOIN p.hobbies ph JOIN p.address pa", Person.class);
         return Utility.convertList(PersonDTO.class, query.getResultList());
+    }
+
+    //This method get all persons.
+    public PersonsDTO getAllPersons(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            TypedQuery <Person> typedQuery = em.createNamedQuery("Person.getAllRows", Person.class);
+            List<Person> personList = typedQuery.getResultList();
+            PersonsDTO personsDTO = new PersonsDTO(personList);
+            em.getTransaction().commit();
+            return personsDTO;
+        }
+        finally {
+            em.close();
+        }
     }
 
     //This is the method we use to create a person.
@@ -208,8 +226,6 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //TODO: ONLY BASIS INFOMATION? CAN WE PLEASE EXPAND THIS METHOD TO EDIT ALL PERSON INFO.
-    //TODO: IT ALSO NEEDS TO UPDATE PERSON ON A GIVEN ID, NOT A PERSON DTO GET ID.
     public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         Person updated = em.find(Person.class, personDTO.getId());
@@ -226,18 +242,18 @@ public class PersonFacade implements IPersonFacade {
         }
 
     }
-
-    /*
-    //TODO: THIS ONE NEEDS SOME WORK DONE.
-    public synchronized PersonDTO editAddressForPerson(PersonDTO personToEdit) {
+    //test er lavet og skal afprøves
+    public synchronized PersonDTO editAddressForPerson(String street, String addInfo, String zip, String city, PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
 
+        CityInfo cityInfo = new CityInfo(zip, city);
+        Address address =  new Address(street, addInfo, cityInfo);
+
         try {
             em.getTransaction().begin();
-            updated.setAddress(personToEdit.getAddress());
-            updated.setCityInfo(personToEdit.getCityInfo());
+            updated.setAddress(address);
             em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
@@ -246,14 +262,19 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //TODO: THIS ONE ALSO NEEDS SOME FIXIN' (BUT DO WE EVEN NEED IT?)
-    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit) {
+    //skal testes og se om den virker, test er skrevet
+    public synchronized PersonDTO editPersonPhone(int phoneNumber, String description, PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
+
+        Phone phone = new Phone(phoneNumber, description);
+        List <Phone> newPhoneNumber = new ArrayList<>();
+        newPhoneNumber.add(phone);
+
         try {
             em.getTransaction().begin();
-            updated.setPhones(personToEdit.getPhones());
+            updated.setPhones(newPhoneNumber);
             em.merge(updated);
             em.getTransaction().commit();
 
@@ -291,7 +312,6 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
     }
-     */
 
     //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
     //PersonResource.java

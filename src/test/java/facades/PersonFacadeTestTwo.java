@@ -1,6 +1,9 @@
 package facades;
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
+import dtos.PhoneDTO;
 import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -45,7 +48,7 @@ class PersonFacadeTestTwo {
             em.getTransaction().commit();
 
         //Setting up the Phone Array and populating it for our Person const.
-        ArrayList phonesList = new ArrayList<Phone>();
+        List <Phone> phonesList = new ArrayList<>();
         Phone po = new Phone(25758290, "privat");
         phonesList.add(po);
 
@@ -53,10 +56,10 @@ class PersonFacadeTestTwo {
         CityInfo ci = new CityInfo("3400", "Hillerød");
 
         //Creating an Address Object for our Person Const.
-        Address address = new Address("Milnersvang 42", ci);
+        Address address = new Address("Milnersvang 42", "kælder", ci);
 
         //Lastly we're setting up an array of hobbies for the person const.
-        ArrayList hobbyList = new ArrayList<Hobby>();
+        List <Hobby >hobbyList = new ArrayList<>();
         Hobby h = new Hobby("Fodbold", "www.fodbold.dk", "boldsport", "undendørs");
         hobbyList.add(h);
 
@@ -107,14 +110,16 @@ class PersonFacadeTestTwo {
     @Test
     void getAllPersons() {
         EntityManager em = emf.createEntityManager();
-        List<Person> arrayContent = null;
+        List<Person> arrayContent = new ArrayList<>();
         arrayContent.add(p1);
         arrayContent.add(p2);
+        PersonsDTO listOfPeeps = new PersonsDTO(arrayContent);
         try {
             em.getTransaction().begin();
-            List<PersonDTO> result = facade.getAllPersons();
-            assertEquals(false, result.isEmpty());
-            assertEquals(true, result.containsAll(arrayContent));
+            PersonsDTO result = facade.getAllPersons();
+            assertEquals(listOfPeeps, result);
+            em.getTransaction().commit();
+
         } finally {
             em.close();
         }
@@ -135,7 +140,7 @@ class PersonFacadeTestTwo {
         CityInfo ci = new CityInfo("3450", "Allerød");
 
         //Creating an Address Object for our Person Const.
-        Address address = new Address("Søvænget 58", ci);
+        Address address = new Address("Søvænget 58", "5 th", ci);
 
         //Lastly we're setting up an array of hobbies for the person const.
         ArrayList hobbyList = new ArrayList<Hobby>();
@@ -151,6 +156,7 @@ class PersonFacadeTestTwo {
             PersonDTO result = facade.createPerson(p3);
             PersonDTO expResult = new PersonDTO(entity);
             assertEquals(expResult, result);
+            em.getTransaction().commit();
         } finally {
             em.close();
         }
@@ -160,14 +166,14 @@ class PersonFacadeTestTwo {
     void updatePerson() {
         EntityManager em = emf.createEntityManager();
         try {
+            em.getTransaction().begin();
             //Henrik Hansen besluttede sig for et køns skifte.
             p1.setFirstName("Marie");
             p1.setLastName("Andersen");
-
             em.getTransaction().begin();
             PersonDTO updated = new PersonDTO(p1);
-            updated = facade.updatePerson(1, updated);
 
+            updated = facade.updatePerson(1, updated);
             assertEquals("Marie", updated.getFirstName());
             em.getTransaction().commit();
         } finally {
@@ -179,13 +185,68 @@ class PersonFacadeTestTwo {
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
         try {
+            em.getTransaction().begin();
             int id = p2.getId();
             System.out.println("this is the person we will delete" + p2.getFirstName());
             facade.deletePerson(id);
             assertEquals(true, facade.deletePerson(id));
             System.out.println("This person should no longer exist" + p2.getFirstName());
+            em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
+
+    @Test
+    void editPersonPhone(){
+        /* for at kunne teste denne metode, skal der bruges 2 personDTO
+        * en liste derindeholder en phoneDTO, lavet udfra en int og en String
+        * */
+        EntityManager em = emf.createEntityManager();
+        PersonDTO updated;
+        PersonDTO personToUpdate =  new PersonDTO(p2);
+        int phoneNumber = 723832;
+        String description = "Arbejde";
+        PhoneDTO phone = new PhoneDTO(phoneNumber, description);
+        List<PhoneDTO> newPhoneNumber = new ArrayList<>();
+        newPhoneNumber.add(phone);
+        try{
+            personToUpdate.setPhones(newPhoneNumber);
+            em.getTransaction().begin();
+            updated = facade.editPersonPhone(phoneNumber,description, personToUpdate);
+            assertEquals(newPhoneNumber.get(0), updated.getPhones().get(0));
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Test
+    void updateAddress(){
+        EntityManager em = emf.createEntityManager();
+        PersonDTO updated;
+        PersonDTO personToEdit = new PersonDTO(p2);
+        String street = "villavej 3";
+        String addInfo = "2th";
+        String zipcode = "2650";
+        String city = "Hvidovre";
+        CityInfo cityInfo = new CityInfo(zipcode, city);
+        Address address = new Address(street, addInfo, cityInfo);
+        AddressDTO addressDTO = new AddressDTO(address);
+
+        try{
+            personToEdit.setAddress(addressDTO);
+            em.getTransaction().begin();
+            updated = facade.editAddressForPerson(street, addInfo, zipcode, city, personToEdit);
+            assertEquals(personToEdit.getAddress().getStreet(),  updated.getAddress().getStreet());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+
+    }
+
+
+
 }
