@@ -1,9 +1,6 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
-import dtos.PersonsDTO;
-import dtos.PhoneDTO;
+import dtos.*;
 import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -252,6 +249,44 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
+
+    @Test
+    void createHobby(){
+        EntityManager em = emf.createEntityManager();
+        String name = "Tennis";
+        String link = "tennis.dk";
+        String type = "boldspil";
+        String category = "udendørs";
+        Hobby hobby;
+
+        try {
+            em.getTransaction().begin();
+            hobby = new Hobby(name, link, category, type);
+            HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+            assertEquals(hobbyDTO.getName(),"Tennis");
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+
+    @Test
+    void deleteHobby() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            h1.setId(1);
+            int id = h1.getId();
+            System.out.println("This hobby will be deleted" + h1.getName());
+            facade.deleteHobby(id);
+            assertTrue(facade.deleteHobby(id));
+            System.out.println("This hobby should not exist" + h1.getName());
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+
 
     @Test
     void addHobbies(){
