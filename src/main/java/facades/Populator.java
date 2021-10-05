@@ -5,16 +5,12 @@
  */
 package facades;
 
-import dtos.PersonDTO;
-import dtos.RenameMeDTO;
 import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import utils.EMF_Creator;
-
-import java.util.ArrayList;
 
 public class Populator {
     private static EntityManagerFactory emf;
@@ -43,12 +39,7 @@ public class Populator {
     public static void populate() {
         emf = EMF_Creator.createEntityManagerFactory();
         EntityManager em = emf.createEntityManager();
-        //FacadeExample fe = FacadeExample.getFacadeExample(emf);
         PersonFacade pf = PersonFacade.getPersonFacade(emf);
-
-        //fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
-        //fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
-        //fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
         try {
             em.getTransaction().begin();
             //Creating our hobby Array.
