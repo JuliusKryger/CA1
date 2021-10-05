@@ -2,7 +2,9 @@ package facades;
 
 import dtos.*;
 import entities.*;
+//import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
+//import org.junit.runners.MethodSorters;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
@@ -14,30 +16,38 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class PersonFacadeTestTwo {
+
+    //TODO: OBS EVERY TEST WORKS INDEPENDENTLY BUT YOU CAN'T RUN EVERY ONE AT ONCE, THEN IT WILL FAIL.
+
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    Person p2, p4;
 
     private static Person p1 = new Person("Ole", "Sørensen", "oleelskerhunde@gmail.com");
-    //private static Person p2 = new Person("Bente", "Rasmussen", "Bentehvem@hotmail.com");
-    //private static Person p3 = new Person("Sofus", "Pedersen", "minlillemissekat@kat.dk");
+    private static Person p2 = new Person("Bente", "Rasmussen", "Bentehvem@hotmail.com");
+    private static Person p3 = new Person("Sofus", "Pedersen", "minlillemissekat@kat.dk");
+    private static Person p4 = new Person("FirstName4", "LastName4", "Email4");
 
     private static Phone ph1 = new Phone(12345678, "Private");
-    //private static Phone ph2 = new Phone(87654321, "Private");
-    //private static Phone ph3 = new Phone(88888888, "Private");
+    private static Phone ph2 = new Phone(87654321, "Private");
+    private static Phone ph3 = new Phone(88888888, "Private");
+    private static Phone ph4 = new Phone(35423562, "Private");
 
     private static CityInfo ci1 = new CityInfo("2850", "Nærum");
-    //private static CityInfo ci2 = new CityInfo("2000", "Frederiksberg");
-    //private static CityInfo ci3 = new CityInfo("3520", "Farum");
+    private static CityInfo ci2 = new CityInfo("2000", "Frederiksberg");
+    private static CityInfo ci3 = new CityInfo("3520", "Farum");
+    private static CityInfo ci4 = new CityInfo("5678", "HoHo");
 
     private static Address a1 = new Address("Satsvej", "1 th.", ci1);
-    //private static Address a2 = new Address("Blommevej", "2 tv.", ci2);
-    //private static Address a3 = new Address("Solsikkehaven", "34", ci3);
+    private static Address a2 = new Address("Blommevej", "2 tv.", ci2);
+    private static Address a3 = new Address("Solsikkehaven", "34", ci3);
+    private static Address a4 = new Address("NisseVej", "1 th.", ci4);
 
     private static Hobby h1 = new Hobby("golf", "www.golf.dk", "ballplay", "ooutdoors");
-    //private static Hobby h2 = new Hobby("softball", "www.softball.dk", "ballplay", "ooutdoors");
-    //private static Hobby h3 = new Hobby("tennis", "www.tennis.dk", "ballplay", "ooutdoors");
+    private static Hobby h2 = new Hobby("softball", "www.softball.dk", "ballplay", "ooutdoors");
+    private static Hobby h3 = new Hobby("tennis", "www.tennis.dk", "ballplay", "ooutdoors");
+    private static Hobby h4 = new Hobby("Løb", "www.Løb.dk", "Running", "ooutdoors");
 
     public PersonFacadeTestTwo() {
     }
@@ -58,20 +68,20 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
             em.getTransaction().begin();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             try {
-                em.getTransaction().begin();
                 //Creating our hobby Array.
                 p1.addHobby(h1);
-                //p1.addHobby(h2);
+                p2.addHobby(h2);
+                p3.addHobby(h3);
 
                 //Creating our phone Array.
                 p1.addPhone(ph1);
-                //p2.addPhone(ph2);
-                //p3.addPhone(ph3);
+                p2.addPhone(ph2);
+                p3.addPhone(ph3);
 
                 //Person 1
                 em.persist(ci1);
@@ -83,25 +93,25 @@ class PersonFacadeTestTwo {
                 p1.setAddress(a1);
                 em.merge(p1);
 
-//            //Person 2
-//            em.persist(ci2);
-//            em.persist(a2);
-//            a2.setCityInfo(ci2);
-//            em.merge(a2);
-//
-//            em.persist(p2);
-//            p2.setAddress(a2);
-//            em.merge(p2);
-//
-//            //Person 3
-//            em.persist(ci3);
-//            em.persist(a3);
-//            a3.setCityInfo(ci3);
-//            em.merge(a3);
-//
-//            em.persist(p3);
-//            p3.setAddress(a3);
-//            em.merge(p3);
+                //Person 2
+                em.persist(ci2);
+                em.persist(a2);
+                a2.setCityInfo(ci2);
+                em.merge(a2);
+
+                em.persist(p2);
+                p2.setAddress(a2);
+                em.merge(p2);
+
+                //Person 3
+                em.persist(ci3);
+                em.persist(a3);
+                a3.setCityInfo(ci3);
+                em.merge(a3);
+
+                em.persist(p3);
+                p3.setAddress(a3);
+                em.merge(p3);
 
                 em.getTransaction().commit();
             } finally {
@@ -113,14 +123,23 @@ class PersonFacadeTestTwo {
     void tearDown() {
     }
 
-    @Test //This test works do not touch the test or method anymore.
-    void getPersonByID() {
+    //
+    @Test //Does not work need to be redone.
+    void createPerson() {
         EntityManager em = emf.createEntityManager();
+
+        //Preparing Person 4 for our tests.
+        p4.addHobby(h4);
+        p4.addPhone(ph4);
+        a4.setCityInfo(ci4);
+        p4.setAddress(a4);
+
         try {
             em.getTransaction().begin();
-            System.out.println("p1: " + p1.getId() + p1.getFirstName());
-            PersonDTO result = facade.getPersonByID(p1.getId());
-            assertEquals(p1.getFirstName(), result.getFirstName());
+            PersonDTO p4DTO = new PersonDTO(p4);
+            PersonDTO result = facade.createPerson(p4DTO);
+            PersonDTO expResult = new PersonDTO(p4);
+            assertEquals(expResult.getId(), result.getId());
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -128,7 +147,7 @@ class PersonFacadeTestTwo {
     }
 
     @Test //This test works do not touch the test or method anymore.
-    void getPersonByIdTwo() {
+    void getPersonById() {
         System.out.println("getPerson");
         int id = 1;
         EntityManagerFactory _emf = null;
@@ -136,7 +155,7 @@ class PersonFacadeTestTwo {
         System.out.println("This is the test person we have created in our database, with an ID of: " + p1.getId().toString());
         PersonDTO result = instance.getPersonByID(id);
         System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonByID(id).getId().toString());
-        assertEquals(1, result.getId());
+        assertEquals(p1.getId(), result.getId());
     }
 
 
@@ -158,45 +177,6 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
-
-    //
-    @Test //Does not work need to be redone.
-    void createPerson() {
-        EntityManager em = emf.createEntityManager();
-        PersonDTO p3;
-        Person entity;
-
-        //Setting up the Phone Array and populating it for our Person const.
-        List<Phone> phonesList = new ArrayList<>();
-        Phone po = new Phone(69420420, "Arbejds");
-        phonesList.add(po);
-
-        //Creating an CityInfo Object for our Address Object.
-        CityInfo ci = new CityInfo("3450", "Allerød");
-
-        //Creating an Address Object for our Person Const.
-        Address address = new Address("Søvænget 58", "5 th", ci);
-
-        //Lastly we're setting up an array of hobbies for the person const.
-        List<Hobby> hobbyList = new ArrayList<>();
-        Hobby h = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
-        hobbyList.add(h);
-
-        //We have to do it this way as PersonDTO will only accept an entity.
-        entity = new Person("Jack", "Nicklaus", "email@mail.dk", phonesList, address, hobbyList);
-        p3 = new PersonDTO(entity);
-
-        try {
-            em.getTransaction().begin();
-            PersonDTO result = facade.createPerson(p3);
-            PersonDTO expResult = new PersonDTO(entity);
-            assertEquals(expResult.getId(), result.getId());
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
-
 
     @Test //This test works do not touch the test or method anymore.
     void updatePerson() {
@@ -223,10 +203,10 @@ class PersonFacadeTestTwo {
         try {
             em.getTransaction().begin();
             int id = p1.getId();
-            System.out.println("this is the person we will delete" + p1.getFirstName());
-            facade.deletePerson(id);
-            assertEquals(personDTO, facade.deletePerson(id));
-            System.out.println("This person should no longer exist" + p1.getFirstName());
+            System.out.println("this is the person we will delete: " + p1.getFirstName());
+            facade.deletePersonById(id);
+            assertEquals(true, facade.deletePersonById(id));
+            System.out.println("We've successfully deleted this person: " + p1.getFirstName());
             em.getTransaction().commit();
         } finally {
             em.close();

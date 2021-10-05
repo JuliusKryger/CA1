@@ -30,7 +30,7 @@ public interface IPersonFacade {
     PersonDTO editAddressForPerson (int id, AddressDTO addressDTO);
 
     //Enter Comment Here!
-    PersonDTO deletePerson(int id);
+    boolean deletePersonById(int id);
 
     //static PersonFacade getPersonFacade(EntityManagerFactory _emf);
 

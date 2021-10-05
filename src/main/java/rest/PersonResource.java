@@ -55,7 +55,7 @@ public class PersonResource {
     @Produces("application/json")
     @Consumes("application/json")
     public String deletePerson(@PathParam("id") int id){
-        PersonDTO personDeleted = personFacade.deletePerson(id);
+        boolean personDeleted = personFacade.deletePersonById(id);
         return GSON.toJson(personDeleted);
     }
 

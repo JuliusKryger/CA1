@@ -163,6 +163,20 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
+    public boolean deletePersonById(int id) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Phone p WHERE p.person.id = :id").setParameter("id", id).executeUpdate();
+            em.createNamedQuery("Person.deletePersonById").setParameter("id", id).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        } finally {
+            em.close();
+        }
+    }
+
+    /*
     //endpoint er lavet
     public PersonDTO deletePerson(int id) {
         EntityManager em = emf.createEntityManager();
@@ -180,6 +194,7 @@ public class PersonFacade implements IPersonFacade {
             return new PersonDTO(person);
         }
     }
+    */
 
     //endpoint er lavet
     public synchronized PersonDTO updatePerson(PersonDTO personDTO) {
