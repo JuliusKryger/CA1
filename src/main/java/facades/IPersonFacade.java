@@ -1,7 +1,9 @@
 package facades;
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
+import dtos.PhoneDTO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,12 +25,12 @@ public interface IPersonFacade {
     //Enter Comment Here!
     PersonDTO updatePerson(PersonDTO personDTO);
 
-    PersonDTO editPersonPhone(int phone, String description, PersonDTO personDTO);
+    PersonDTO editPersonPhone(int id, PhoneDTO phoneDTO);
 
-    PersonDTO editAddressForPerson (String street, String addInfo, String zipCode, String city, PersonDTO personDTO);
+    PersonDTO editAddressForPerson (int id, AddressDTO addressDTO);
 
     //Enter Comment Here!
-    boolean deletePerson(int id);
+    PersonDTO deletePerson(int id);
 
     //static PersonFacade getPersonFacade(EntityManagerFactory _emf);
 

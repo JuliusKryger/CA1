@@ -16,15 +16,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonFacadeTestTwo {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    private ArrayList arrP = new ArrayList();
-    private ArrayList arrH = new ArrayList();
+    private ArrayList phoneArray = new ArrayList();
+    private ArrayList hobbyArray = new ArrayList();
     private Person p4;
     private Person p1 = new Person("email 1", "First 1", "Last 1");
     private Person p2 = new Person("email 2", "First 2", "Last 2");
     private Phone ph1 = new Phone(111, "Privat");
     private Phone ph2 = new Phone(222, "Arbejds");
     private CityInfo c1 = new CityInfo("2000", "Frederiksberg");
+    private CityInfo c2 = new CityInfo("2000", "Frederiksberg");
     private Address a1 = new Address("street 1", "1 th.", c1);
+    private Address a2 = new Address("street 1", "1 th.", c1);
     private Hobby h1 = new Hobby("name1", "wikiLink1", "category1", "type1");
     private Hobby h2 = new Hobby("name2", "wikiLink2", "category2", "type2");
 
@@ -47,19 +49,61 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+
+            //Creating our hobby Array.
+            hobbyArray.add(h1);
+            hobbyArray.add(h2);
+
+            //Creating our phone Array.
+            phoneArray.add(ph1);
+            phoneArray.add(ph2);
+
+            //Person 1
+            em.persist(c1);
+            em.persist(a1);
+            a1.setCityInfo(c1);
+            em.merge(a1);
+
             em.persist(p1);
+            p1.setAddress(a1);
+            em.merge(p1);
+
+            em.persist(hobbyArray);
+            p1.setHobbies(hobbyArray);
+            em.merge(p1);
+
+            em.persist(phoneArray);
+            p1.setHobbies(phoneArray);
+            em.merge(p1);
+
+            //Person 2
+            em.persist(c2);
+            em.persist(a2);
+            a2.setCityInfo(c2);
+            em.merge(a2);
+
             em.persist(p2);
-            arrP.add(ph1);
-            arrH.add(h1);
-            p4 = new Person("hej", "hej", "hej", arrP, a1, arrH);
-            PersonDTO p1DTO = new PersonDTO(p4);
-            //em.persist(p4);
-            em.getTransaction().commit();
+            p2.setAddress(a2);
+            em.merge(p2);
+
+            em.persist(hobbyArray);
+            p2.setHobbies(hobbyArray);
+            em.merge(p2);
+
+            em.persist(hobbyArray);
+            p2.setHobbies(hobbyArray);
+            em.merge(p2);
+
+            em.persist(phoneArray);
+            p2.setHobbies(phoneArray);
+            em.merge(p2);
+
+
         } finally {
             em.close();
         }
@@ -178,12 +222,13 @@ class PersonFacadeTestTwo {
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = new PersonDTO(p2);
         try {
             em.getTransaction().begin();
             int id = p2.getId();
             System.out.println("this is the person we will delete" + p2.getFirstName());
             facade.deletePerson(id);
-            assertTrue(facade.deletePerson(id));
+            assertEquals(personDTO, facade.deletePerson(id));
             System.out.println("This person should no longer exist" + p2.getFirstName());
             em.getTransaction().commit();
         } finally {
@@ -192,11 +237,11 @@ class PersonFacadeTestTwo {
     }
 
     //virker
-    @Test
+    /*@Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
         * en liste der indeholder en phoneDTO, lavet udfra en int og en String
-        * */
+        * *//*
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToUpdate =  new PersonDTO(p2);
@@ -214,10 +259,10 @@ class PersonFacadeTestTwo {
         finally {
             em.close();
         }
-    }
+    }*/
 
     //virker
-    @Test
+    /*@Test
     void updateAddress(){
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
@@ -241,14 +286,14 @@ class PersonFacadeTestTwo {
             em.close();
         }
 
-    }
+    }*/
 
     @Test
     void getPersonListZip(){
         EntityManager em = emf.createEntityManager();
         List <Person> personList = new ArrayList<>();
-        personList.add(p1);
-        personList.add(p2);
+        personList.add(p4);
+        //personList.add(p2);
 
         String zipcode = "2000";
         PersonsDTO personlistDTO = new PersonsDTO(personList);
@@ -256,7 +301,7 @@ class PersonFacadeTestTwo {
         try{
             em.getTransaction().begin();
             personsDTO = facade.getPersonListByZip(zipcode);
-            assertEquals(personlistDTO.equals(p2), personsDTO.equals(p2));
+            assertEquals(personlistDTO.equals(p4), personsDTO.equals(p4));
             em.getTransaction().commit();
         }
         finally {
@@ -293,7 +338,7 @@ class PersonFacadeTestTwo {
             int id = h1.getId();
             System.out.println("This hobby will be deleted" + h1.getName());
             facade.deleteHobby(id);
-            assertEquals(true, facade.deleteHobby(id));
+            assertTrue(facade.deleteHobby(id));
             System.out.println("This hobby should not exist" + h1.getName());
             em.getTransaction().commit();
         }finally {
@@ -302,15 +347,10 @@ class PersonFacadeTestTwo {
     }
 
 
-
-
-
-
     @Test
     void addHobbies(){
         EntityManager em = emf.createEntityManager();
         String hobbyName = "ridning";
-        //TODO: This needs to be an list not an object.
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
         List <Hobby> hobbies = new ArrayList<>();
