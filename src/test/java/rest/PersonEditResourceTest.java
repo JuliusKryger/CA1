@@ -2,6 +2,7 @@ package rest;
 
 import dtos.PersonDTO;
 import entities.*;
+import io.restassured.http.ContentType;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 
@@ -29,8 +30,6 @@ public class PersonEditResourceTest {
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
     private static Person p1, p2;
-    private static PersonDTO pdto1 = new PersonDTO(p1);
-    private static PersonDTO pdto2 = new PersonDTO(p2);
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -78,6 +77,38 @@ public class PersonEditResourceTest {
         p2.setAddress(address);
         p1.setPhones(phoneList);
         p2.setHobbies(hobbyList);
+        try{
+            em.getTransaction().begin();
+                em.createNamedQuery("Person.deleteAllRows", Person.class).executeUpdate();
+                em.createNamedQuery("Address.deleteAllRows", Address.class).executeUpdate();
+                em.persist(p1);
+                em.persist(p2);
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
 
     }
+    @Test
+    void testServerIsRunning(){
+        given().when().get("/personedit").then().statusCode(200);
+    }
+
+    @Test
+    void updatePersonTest(){
+        PersonDTO personDTO = new PersonDTO(p1);
+        personDTO.setFirstName("Ib");
+        personDTO.setLastName("Jensen");
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(personDTO)
+                .when().put("personedit/basis/"+personDTO.getId())
+                .then()
+                .body("firstName", equalTo("Ib"))
+                .body("lastName", equalTo("Jense"))
+                .body("id", equalTo((int)personDTO.getId()));
+    }
+
 }
