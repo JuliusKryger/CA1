@@ -3,6 +3,8 @@ package dtos;
 
 import entities.Phone;
 
+import java.util.Objects;
+
 public class PhoneDTO {
     private int number;
     private String description;

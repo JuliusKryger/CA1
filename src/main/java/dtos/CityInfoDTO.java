@@ -2,6 +2,8 @@ package dtos;
 
 import entities.CityInfo;
 
+import java.util.Objects;
+
 public class CityInfoDTO {
     private String zipCode;
     private String city;

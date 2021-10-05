@@ -20,13 +20,13 @@ public class Hobby implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
-    @Column(name = "name", length = 175, nullable = false, unique = true)
+    @Column(name = "name", length = 175, nullable = false)
     private String name;
-    @Column(name = "wikiLink", length = 175, nullable = false, unique = true)
+    @Column(name = "wikiLink", length = 175, nullable = false)
     private String wikiLink;
-    @Column(name = "category", length = 175, nullable = false, unique = true)
+    @Column(name = "category", length = 175, nullable = false)
     private String category;
-    @Column(name = "type", length = 175, nullable = false, unique = true)
+    @Column(name = "type", length = 175, nullable = false)
     private String type;
 
     @ManyToMany

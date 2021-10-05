@@ -75,7 +75,7 @@ public class PersonFacade implements IPersonFacade {
     //Delete - done ...
     // ... Which means we atleast have achived full crud.
 
-    //This finds a person from an given ID.
+    //Endpoint er lavet
     public PersonDTO getPersonByID(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -99,7 +99,7 @@ public class PersonFacade implements IPersonFacade {
         return Utility.convertList(PersonDTO.class, query.getResultList());
     }
 
-    //This method get all persons.
+    //Endpoint mangler
     public PersonsDTO getAllPersons(){
         EntityManager em = emf.createEntityManager();
         try{
@@ -115,7 +115,7 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //This is the method we use to create a person.
+    //Endpoint er lavet
     public synchronized PersonDTO createPerson(PersonDTO personDTO) {
         if (Utility.ValidatePersonDto(personDTO) && !isEmailTaken(personDTO)) {
             Person person = null;
@@ -146,7 +146,7 @@ public class PersonFacade implements IPersonFacade {
                 if (person.getHobbies() != null) {
                     for (HobbyDTO h : hobbies) {
                         HobbyDTO hobby = createHobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType());
-                        em.find(Hobby.class, hobby.getName());
+                        em.find(Hobby.class, hobby.getId());
                         Hobby hentity = new Hobby(hobby);
                         person.addHobby(hentity);
                         em.merge(person);
@@ -163,58 +163,25 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    public HobbyDTO createHobby(String name, String link, String type, String category) {
+    //endpoint er lavet
+    public PersonDTO deletePerson(int id) {
         EntityManager em = emf.createEntityManager();
-        Hobby hobby = new Hobby();
-
-        try {
-            em.getTransaction().begin();
-            hobby.setName(name);
-            hobby.setCategory(category);
-            hobby.setWikiLink(link);
-            hobby.setType(type);
-            em.persist(hobby);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
+        Person person = em.find(Person.class, id);
+        if (person == null) {
+            throw new WebApplicationException("This person do not exist" + id);
+        } else {
+            try {
+                em.getTransaction().begin();
+                em.remove(person);
+                em.getTransaction().commit();
+            } finally {
+                em.close();
+            }
+            return new PersonDTO(person);
         }
-        return new HobbyDTO(hobby);
     }
 
-    public boolean deleteHobby (int id){
-    EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM Hobby h WHERE h.id = :id").setParameter("id", id).executeUpdate();
-           // em.createNamedQuery("H").setParameter("id", hobby).executeUpdate();
-            em.getTransaction().commit();
-            return true;
-        }finally {
-            em.close();
-        }
-
-    }
-
-
-    //til createhobby hvis det skal bruges
-        /*try {
-            Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
-            query.setParameter("name", hobby.getName());
-            //query.setParameter("wikiLink", hobby.getWikiLink());
-            //query.setParameter("category", hobby.getCategory());
-            //query.setParameter("type", hobby.getType());
-            return (Hobby) query.getSingleResult();
-        } catch (NoResultException ex) {
-            Hobby h = new Hobby(hobby);
-            em.getTransaction().begin();
-            em.persist(h);
-            em.getTransaction().commit();
-            return h;
-        } finally {
-            em.close();
-        }*/
-
-
+    //endpoint er lavet
     public synchronized PersonDTO updatePerson(PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         Person updated = em.find(Person.class, personDTO.getId());
@@ -279,6 +246,71 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
+    //endpoint er lavet
+    public synchronized PersonsDTO getPersonListByZip(String zipCode){
+        EntityManager em = emf.createEntityManager();
+        List <Person> personList;
+        List<Person> withGivenZip = new ArrayList<>();
+        PersonsDTO personsDTO;
+        try{
+            em.getTransaction().begin();
+            //TypedQuery <CityInfo> typedQuery = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode",CityInfo.class);
+            //typedQuery.setParameter("zipCode", zipCode);
+            TypedQuery <Person> typedQuery1 = em.createNamedQuery("Person.getAllRows",Person.class);
+            personList = typedQuery1.getResultList();
+            for (int i = 0; i < personList.size(); i++){
+                Person person = personList.get(i);
+                String foundZip = person.getAddress().getCityInfo().getZipCode();
+                if(Objects.equals(zipCode, foundZip)){
+                    withGivenZip.add(personList.get(i));
+                    personsDTO = new PersonsDTO(withGivenZip);
+                    return personsDTO;
+                }
+                else{
+                    String text = "There is either not a zip with that value or persons with that zip";
+                    System.out.println(text);
+                }
+            }
+            em.getTransaction().commit();
+            return null;
+
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    public HobbyDTO createHobby(String name, String link, String type, String category) {
+        EntityManager em = emf.createEntityManager();
+        Hobby hobby = new Hobby();
+
+        try {
+            em.getTransaction().begin();
+            hobby.setName(name);
+            hobby.setCategory(category);
+            hobby.setWikiLink(link);
+            hobby.setType(type);
+            em.persist(hobby);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new HobbyDTO(hobby);
+    }
+
+    public boolean deleteHobby (int id){
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Hobby h WHERE h.id = :id").setParameter("id", id).executeUpdate();
+            // em.createNamedQuery("H").setParameter("id", hobby).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        }finally {
+            em.close();
+        }
+
+    }
 
     //TODO: QUITE CERTAIN WE CAN JUST REMOVE THIS ONE or edit it, so i works
     public synchronized PersonDTO addHobbiesToPerson(Integer id, String hobbyName) {
@@ -313,56 +345,7 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
-    //PersonResource.java
-    public boolean deletePerson(int id) {
-        EntityManager em = emf.createEntityManager();
 
-        try {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM Person p WHERE p.id = :id").setParameter("id", id).executeUpdate();
-            em.createNamedQuery("Person.deletePersonById").setParameter("id", id).executeUpdate();
-            em.getTransaction().commit();
-            return true;
-        } finally {
-            em.close();
-        }
-
-    }
-
-    //test er lavet, men ikke kørt
-    public synchronized PersonsDTO getPersonListByZip(String zipCode){
-        EntityManager em = emf.createEntityManager();
-        List <Person> personList;
-        List<Person> withGivenZip = new ArrayList<>();
-        PersonsDTO personsDTO;
-        try{
-            em.getTransaction().begin();
-            //TypedQuery <CityInfo> typedQuery = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode",CityInfo.class);
-            //typedQuery.setParameter("zipCode", zipCode);
-            TypedQuery <Person> typedQuery1 = em.createNamedQuery("Person.getAllRows",Person.class);
-            personList = typedQuery1.getResultList();
-            for (int i = 0; i < personList.size(); i++){
-                Person person = personList.get(i);
-                String foundZip = person.getAddress().getCityInfo().getZipCode();
-                if(Objects.equals(zipCode, foundZip)){
-                    withGivenZip.add(personList.get(i));
-                    personsDTO = new PersonsDTO(withGivenZip);
-                    return personsDTO;
-                }
-                else{
-                    String text = "There is either not a zip with that value or persons with that zip";
-                    System.out.println(text);
-                }
-            }
-            em.getTransaction().commit();
-            return null;
-
-        }
-        finally {
-            em.close();
-        }
-    }
 
 
     //TODO: THIS IS IF WE HAVE EXTRA TIME (NICE TO HAVE BUT NOT NECESSARY) - WE STILL NEED SOME GETTER'S. EX.

@@ -14,6 +14,7 @@ import java.util.List;
         @NamedQuery(name = "CityInfo.getAllRows", query = "SELECT ci from CityInfo ci"),
         @NamedQuery(name = "CityInfo.getCityInfo", query = "SELECT ci from CityInfo ci WHERE ci.zipCode = :zipCode")
 })
+
 public class CityInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
