@@ -19,7 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonFacadeTestTwo {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    private static Person p1, p2;
+    private Person p1 = new Person("email 1", "First 1", "Last 1");
+    private Person p2 = new Person("email 2", "First 2", "Last 2");
+    private Phone ph1 = new Phone(111, "Privat");
+    private Phone ph2 = new Phone(222, "Arbejds");
+    private Address a1 = new Address("street 1", "1 th.");
+    private CityInfo c1 = new CityInfo("2000", "Frederiksberg");
+    private Hobby h1 = new Hobby("name1", "wikiLink1", "category1", "type1");
+    private Hobby h2 = new Hobby("name2", "wikiLink2", "category2", "type2");
 
     public PersonFacadeTestTwo() {
     }
@@ -40,27 +47,13 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-
-
-            Person p1 = new Person("Jack", "Nicklaus", "email@mail.dk");
-            Phone phone = new Phone(35604570, "privat");
-            Hobby hobby = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
-            Address address = new Address();
-            p1.addPhone(phone);
-            p1.addHobby(hobby);
-            p1.setAddress(address);
-            CityInfo cityInfo = new CityInfo("3450", "Allerød");
-            address.setCityInfo(cityInfo);
-
-            PersonDTO pers = new PersonDTO(p1);
-            facade.createPerson(pers);
-
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.persist(p1);
+            em.persist(p2);
             em.getTransaction().commit();
         } finally {
             em.close();
