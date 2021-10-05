@@ -275,6 +275,20 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
+
+    @Test
+    void deleteHobby() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            String name = h1.getName();
+            System.out.println("This hobby will be deleted" + h1.getName());
+            facade.deleteHobby(h1.getId());
+            assertEquals(true, facade.deleteHobby(h1.getId()));
+            System.out.println("This hobby should not exist" + h1.getName());
+            em.getTransaction().commit();
+        }
+    }
     
     
     
