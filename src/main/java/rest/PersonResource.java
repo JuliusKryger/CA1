@@ -38,7 +38,7 @@ public class PersonResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonById(@PathParam("id") int id) {
-        return GSON.toJson(iPersonFacade.getPersonByID(id), PersonDTO.class);
+        return GSON.toJson(personFacade.getPersonByID(id), PersonDTO.class);
     }
 
     @Path("/createPerson")
