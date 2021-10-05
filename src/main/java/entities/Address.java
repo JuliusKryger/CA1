@@ -15,17 +15,19 @@ import java.util.List;
         @NamedQuery(name = "Address.getAddress", query = "SELECT a from Address a WHERE a.street = :street")
 })
 public class Address implements Serializable {
-
-    //variables
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "street")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Integer id;
+    @Column(name = "street", length = 255, nullable = false, unique = false)
     private String street;
+    @Column(name = "info", length = 255, nullable = true, unique = false)
     private String additionalInfo;
 
-    @OneToMany
+    @OneToMany(mappedBy = "address", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Person> persons;
+
     @ManyToOne
     private CityInfo cityInfo;
 
@@ -38,8 +40,9 @@ public class Address implements Serializable {
         this.additionalInfo = additionalInfo;
     }
 
-    public Address(String street, CityInfo cityInfo) {
+    public Address(String street,String additionalInfo, CityInfo cityInfo) {
         this.street = street;
+        this.additionalInfo = additionalInfo;
         this.cityInfo = cityInfo;
     }
 
@@ -50,6 +53,16 @@ public class Address implements Serializable {
     }
 
     //getter and setters
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public List<Person> getPersons() {
         return persons;
     }

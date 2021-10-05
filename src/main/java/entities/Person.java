@@ -18,23 +18,25 @@ import java.util.List;
         @NamedQuery(name = "Person.deletePersonById", query = "DELETE FROM Person p WHERE p.id = :id")
 })
 public class Person implements Serializable {
-
-    // Variables
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
+    @Column(name = "firstname", length = 175, nullable = false, unique = false)
     private String firstName;
+    @Column(name = "lastname", length = 175, nullable = false, unique = false)
     private String lastName;
+    @Column(name = "email", length = 175, nullable = false, unique = true)
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Phone> phones;
+
     @ManyToOne
     private Address address;
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Hobby> hobbies;
 
     public Person() {
@@ -66,7 +68,6 @@ public class Person implements Serializable {
         this.address = address;
         this.hobbies = hobbies;
     }
-
 
     public Integer getId() {
         return id;

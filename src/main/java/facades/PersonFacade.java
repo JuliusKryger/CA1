@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonFacade implements IPersonFacade {
     private static PersonFacade instance;
@@ -74,31 +75,6 @@ public class PersonFacade implements IPersonFacade {
     //Delete - done ...
     // ... Which means we atleast have achived full crud.
 
-    //This method gets a single person based on ID.
-    /* //TODO: THIS IS ACTUALLY JUST DUPLICATE CODE SEE BELOW FOR ACTUAL METHOD.
-    public PersonDTO getPerson (int id){
-        EntityManager em = emf.createEntityManager();
-        try{
-            Person person1 = em.find(Person.class, id);
-            PersonDTO pdto1 = new PersonDTO(person1);
-            return pdto1;
-        }finally {
-            em.close();
-        }
-    }
-
-    //This method get all persons.
-    public List<Person> getAllPersons() {
-        EntityManager em = getEntityManager();
-        try {
-            TypedQuery<Person> query = em.createQuery("Select person from Person person", Person.class);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-*/
-
     //This finds a person from an given ID.
     public PersonDTO getPersonByID(Integer id) {
         EntityManager em = emf.createEntityManager();
@@ -112,33 +88,31 @@ public class PersonFacade implements IPersonFacade {
         } else {
             return null;
         }
+
     }
 
-    /* //TODO: WELL THIS METHOD IS SMARTER, BUT IT NEED SOME PREREQUISITES.
-    public PersonDTO getPersonById(Integer id) {
-        EntityManager em = emf.createEntityManager();
-        Person person = em.find(Person.class, id);
 
-        if (person != null) {
-            List<Phone> phones = getPhoneByPersonId(id);
-            List<Hobby> hobbies = getHobbyByPersonId(id);
-            Address address = getAddressByPersonId(id);
-
-            person.setPhones(phones);
-            person.setHobbies(hobbies);
-            person.setAddress(address);
-            return new PersonDTO(person);
-        } else {
-            throw new WebApplicationException(String.format("No person with provided id: (%d) found", id), 400);
-        }
-    }
-     */
-
-    //This method get all persons.
-    public List<PersonDTO> getAllPersons() {
+    //TODO: This method should be removed
+    public List<PersonDTO> getAllPersons2() {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.phones pp JOIN p.hobbies ph JOIN p.address pa", Person.class);
         return Utility.convertList(PersonDTO.class, query.getResultList());
+    }
+
+    //This method get all persons.
+    public PersonsDTO getAllPersons(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            TypedQuery <Person> typedQuery = em.createNamedQuery("Person.getAllRows", Person.class);
+            List<Person> personList = typedQuery.getResultList();
+            PersonsDTO personsDTO = new PersonsDTO(personList);
+            em.getTransaction().commit();
+            return personsDTO;
+        }
+        finally {
+            em.close();
+        }
     }
 
     //This is the method we use to create a person.
@@ -171,9 +145,10 @@ public class PersonFacade implements IPersonFacade {
                 em.persist(person);
                 if (person.getHobbies() != null) {
                     for (HobbyDTO h : hobbies) {
-                        Hobby ho = createHobby(h);
-                        em.find(Hobby.class, ho.getName());
-                        person.addHobby(ho);
+                        HobbyDTO hobby = createHobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType());
+                        em.find(Hobby.class, hobby.getName());
+                        Hobby hentity = new Hobby(hobby);
+                        person.addHobby(hentity);
                         em.merge(person);
                     }
                 }
@@ -188,9 +163,41 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    private Hobby createHobby(HobbyDTO hobby) {
+    public HobbyDTO createHobby(String name, String link, String type, String category) {
         EntityManager em = emf.createEntityManager();
+        Hobby hobby = new Hobby();
+
         try {
+            em.getTransaction().begin();
+            hobby.setName(name);
+            hobby.setCategory(category);
+            hobby.setWikiLink(link);
+            hobby.setType(type);
+            em.persist(hobby);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new HobbyDTO(hobby);
+    }
+
+    public boolean deleteHobby (int id){
+    EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM Hobby h WHERE h.id = :id").setParameter("id", id).executeUpdate();
+           // em.createNamedQuery("H").setParameter("id", hobby).executeUpdate();
+            em.getTransaction().commit();
+            return true;
+        }finally {
+            em.close();
+        }
+
+    }
+
+
+    //til createhobby hvis det skal bruges
+        /*try {
             Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
             query.setParameter("name", hobby.getName());
             //query.setParameter("wikiLink", hobby.getWikiLink());
@@ -205,12 +212,10 @@ public class PersonFacade implements IPersonFacade {
             return h;
         } finally {
             em.close();
-        }
-    }
+        }*/
 
-    //TODO: ONLY BASIS INFOMATION? CAN WE PLEASE EXPAND THIS METHOD TO EDIT ALL PERSON INFO.
-    //TODO: IT ALSO NEEDS TO UPDATE PERSON ON A GIVEN ID, NOT A PERSON DTO GET ID.
-    public synchronized PersonDTO updatePerson(Integer id, PersonDTO personDTO) {
+
+    public synchronized PersonDTO updatePerson(PersonDTO personDTO) {
         EntityManager em = emf.createEntityManager();
         Person updated = em.find(Person.class, personDTO.getId());
 
@@ -226,18 +231,18 @@ public class PersonFacade implements IPersonFacade {
         }
 
     }
-
-    /*
-    //TODO: THIS ONE NEEDS SOME WORK DONE.
-    public synchronized PersonDTO editAddressForPerson(PersonDTO personToEdit) {
+    //test er lavet og skal afprøves
+    public synchronized PersonDTO editAddressForPerson(String street, String addInfo, String zip, String city, PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
 
+        CityInfo cityInfo = new CityInfo(zip, city);
+        Address address =  new Address(street, addInfo, cityInfo);
+
         try {
             em.getTransaction().begin();
-            updated.setAddress(personToEdit.getAddress());
-            updated.setCityInfo(personToEdit.getCityInfo());
+            updated.setAddress(address);
             em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
@@ -246,14 +251,19 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //TODO: THIS ONE ALSO NEEDS SOME FIXIN' (BUT DO WE EVEN NEED IT?)
-    public synchronized PersonDTO editPersonPhone(PersonDTO personToEdit) {
+    //skal testes og se om den virker, test er skrevet
+    public synchronized PersonDTO editPersonPhone(int phoneNumber, String description, PersonDTO personToEdit) {
         EntityManager em = emf.createEntityManager();
         PersonDTO personDTO = getPersonByID(personToEdit.getId());
         Person updated = em.find(Person.class, personDTO.getId());
+
+        Phone phone = new Phone(phoneNumber, description);
+        List <Phone> newPhoneNumber = new ArrayList<>();
+        newPhoneNumber.add(phone);
+
         try {
             em.getTransaction().begin();
-            updated.setPhones(personToEdit.getPhones());
+            updated.setPhones(newPhoneNumber);
             em.merge(updated);
             em.getTransaction().commit();
 
@@ -264,15 +274,20 @@ public class PersonFacade implements IPersonFacade {
     }
 
 
-    //TODO: QUITE CERTAIN WE CAN JUST REMOVE THIS ONE.
-    public synchronized PersonDTO addHobbiesToPerson(Integer id) {
+    //TODO: QUITE CERTAIN WE CAN JUST REMOVE THIS ONE or edit it, so i works
+    public synchronized PersonDTO addHobbiesToPerson(Integer id, String hobbyName) {
         EntityManager em = emf.createEntityManager();
-        PersonDTO personDTO = getPersonByID(id);
+        Person person = em.find(Person.class, id);
+
         try {
             em.getTransaction().begin();
-
+            TypedQuery <Hobby> typedQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name =:name", Hobby.class);
+            typedQuery.setParameter("name", hobbyName);
+            Hobby hobby = typedQuery.getSingleResult();
+            person.addHobby(hobby);
+            em.merge(person);
             em.getTransaction().commit();
-            return personDTO;
+            return new PersonDTO(person);
         } finally {
             em.close();
         }
@@ -291,7 +306,6 @@ public class PersonFacade implements IPersonFacade {
             em.close();
         }
     }
-     */
 
     //return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
     //PersonResource.java
@@ -307,6 +321,41 @@ public class PersonFacade implements IPersonFacade {
         } finally {
             em.close();
         }
+
+    }
+
+    //test er lavet, men ikke kørt
+    public synchronized PersonsDTO getPersonListByZip(String zipCode){
+        EntityManager em = emf.createEntityManager();
+        List <Person> personList;
+        List<Person> withGivenZip = new ArrayList<>();
+        PersonsDTO personsDTO;
+        try{
+            em.getTransaction().begin();
+            //TypedQuery <CityInfo> typedQuery = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode",CityInfo.class);
+            //typedQuery.setParameter("zipCode", zipCode);
+            TypedQuery <Person> typedQuery1 = em.createNamedQuery("Person.getAllRows",Person.class);
+            personList = typedQuery1.getResultList();
+            for (int i = 0; i < personList.size(); i++){
+                Person person = personList.get(i);
+                String foundZip = person.getAddress().getCityInfo().getZipCode();
+                if(Objects.equals(zipCode, foundZip)){
+                    withGivenZip.add(personList.get(i));
+                    personsDTO = new PersonsDTO(withGivenZip);
+                    return personsDTO;
+                }
+                else{
+                    String text = "There is either not a zip with that value or persons with that zip";
+                    System.out.println(text);
+                }
+            }
+            em.getTransaction().commit();
+            return null;
+
+        }
+        finally {
+            em.close();
+        }
     }
 
 
@@ -314,6 +363,5 @@ public class PersonFacade implements IPersonFacade {
     // public List<Phone> getPhoneByPersonId(Integer id)
     // public List<Hobby> getHobbyByPersonId(Integer id)
     // public Address getAddressByPersonId(Integer id)
-    // public List<PersonDTO> getPersonListByZip(CityInfo ci)
-    // public List<PersonDTO> getPersonListByHobbyName(String hn)
+    // public PersonsDTO getPersonListByHobbyName(String hn)
 }

@@ -7,14 +7,19 @@ import javax.persistence.*;
 @Entity
 @Table(name = "phone")
 @NamedQueries({
-        @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone")
+        @NamedQuery(name = "Phone.deleteAllRows", query = "DELETE from Phone"),
+        @NamedQuery(name = "Phone.getAllRows", query = "SELECT p from Phone p"),
+        @NamedQuery(name = "Phone.getPhone", query = "SELECT p from Phone p WHERE p.id = :id")
 })
 public class Phone {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "number", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Integer id;
+    @Column(name = "number", length = 8, nullable = false, unique = true)
     private int number;
+    @Column(name = "des", length = 175, nullable = true, unique = false)
     private String description;
 
     @ManyToOne
@@ -36,6 +41,14 @@ public class Phone {
     public Phone(PhoneDTO dto) {
         this.number = dto.getNumber();
         this.description = dto.getDescription();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setPerson(Person person) {
@@ -67,7 +80,7 @@ public class Phone {
         return "Phone{" +
                 "number=" + number +
                 ", description='" + description + '\'' +
-                ", person=" + person +
+
                 '}';
     }
 }

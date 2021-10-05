@@ -10,16 +10,23 @@ import java.util.List;
 @Entity
 @Table(name = "hobby")
 @NamedQueries({
-        @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby")
+        @NamedQuery(name = "Hobby.deleteAllRows", query = "DELETE from Hobby"),
+        @NamedQuery(name = "Hobby.getAllRows", query = "SELECT h from Hobby h"),
+        @NamedQuery(name = "Hobby.getHobby", query = "SELECT h from Hobby h WHERE h.id = :id")
 })
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "name", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Integer id;
+    @Column(name = "name", length = 175, nullable = false, unique = true)
     private String name;
+    @Column(name = "wikiLink", length = 175, nullable = false, unique = true)
     private String wikiLink;
+    @Column(name = "category", length = 175, nullable = false, unique = true)
     private String category;
+    @Column(name = "type", length = 175, nullable = false, unique = true)
     private String type;
 
     @ManyToMany
@@ -51,6 +58,14 @@ public class Hobby implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setName(String name) {
