@@ -15,12 +15,10 @@ import java.util.List;
         @NamedQuery(name = "Address.getAddress", query = "SELECT a from Address a WHERE a.street = :street")
 })
 public class Address implements Serializable {
-
-    //variables
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "street", length = 255, nullable = false, unique = false)
     private String street;
@@ -55,6 +53,16 @@ public class Address implements Serializable {
     }
 
     //getter and setters
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public List<Person> getPersons() {
         return persons;
     }

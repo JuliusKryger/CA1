@@ -1,9 +1,6 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
-import dtos.PersonsDTO;
-import dtos.PhoneDTO;
+import dtos.*;
 import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -19,7 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonFacadeTestTwo {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
-    private static Person p1, p2;
+    private Person p1 = new Person("email 1", "First 1", "Last 1");
+    private Person p2 = new Person("email 2", "First 2", "Last 2");
+    private Phone ph1 = new Phone(111, "Privat");
+    private Phone ph2 = new Phone(222, "Arbejds");
+    private Address a1 = new Address("street 1", "1 th.");
+    private CityInfo c1 = new CityInfo("2000", "Frederiksberg");
+    private Hobby h1 = new Hobby("name1", "wikiLink1", "category1", "type1");
+    private Hobby h2 = new Hobby("name2", "wikiLink2", "category2", "type2");
 
     public PersonFacadeTestTwo() {
     }
@@ -40,27 +44,13 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.getTransaction().commit();
-
-
-            Person p1 = new Person("Jack", "Nicklaus", "email@mail.dk");
-            Phone phone = new Phone(35604570, "privat");
-            Hobby hobby = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
-            Address address = new Address();
-            p1.addPhone(phone);
-            p1.addHobby(hobby);
-            p1.setAddress(address);
-            CityInfo cityInfo = new CityInfo("3450", "Allerød");
-            address.setCityInfo(cityInfo);
-
-            PersonDTO pers = new PersonDTO(p1);
-            facade.createPerson(pers);
-
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.persist(p1);
+            em.persist(p2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -85,6 +75,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void getPersonByIdTwo() {
         System.out.println("getPerson");
@@ -97,6 +88,7 @@ class PersonFacadeTestTwo {
         System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonByID(id).getId().toString());
         assertEquals(expResult.getId(), result.getId());
     }
+
 
     @Test
     void getAllPersons() {
@@ -116,6 +108,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //
     @Test
     void createPerson() {
         EntityManager em = emf.createEntityManager();
@@ -165,14 +158,15 @@ class PersonFacadeTestTwo {
             em.getTransaction().begin();
             PersonDTO updated = new PersonDTO(p1);
 
-            updated = facade.updatePerson(1, updated);
-            assertEquals("Marie", updated.getFirstName());
+            PersonDTO newPerson = facade.updatePerson(updated);
+            assertEquals("Marie", newPerson.getFirstName());
             em.getTransaction().commit();
         } finally {
             em.close();
         }
     }
 
+    //virker
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
@@ -189,6 +183,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
@@ -213,6 +208,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void updateAddress(){
         EntityManager em = emf.createEntityManager();
@@ -239,6 +235,68 @@ class PersonFacadeTestTwo {
 
     }
 
+    @Test
+    void getPersonListZip(){
+        EntityManager em = emf.createEntityManager();
+        List <Person> personList = new ArrayList<>();
+        personList.add(p1);
+        personList.add(p2);
+
+        String zipcode = "3400";
+        PersonsDTO personlistDTO = new PersonsDTO(personList);
+        PersonsDTO personsDTO;
+        try{
+            em.getTransaction().begin();
+            personsDTO = facade.getPersonListByZip(zipcode);
+            assertEquals(personlistDTO.toString(), personsDTO.toString());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+    
+    @Test
+    void createHobby(){
+        EntityManager em = emf.createEntityManager();
+        String name = "Tennis";
+        String link = "tennis.dk";
+        String type = "boldspil";
+        String category = "udendørs";
+        Hobby hobby;
+        
+        try {
+            em.getTransaction().begin();
+            hobby = new Hobby(name, link, category, type);
+            HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+            assertEquals(hobbyDTO.getName(),"Tennis");
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+    
+    
+    
+    
+    
+
+    @Test
+    void addHobbies(){
+        EntityManager em = emf.createEntityManager();
+        String hobbyName = "ridning";
+        Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
+        int id = p1.getId();
+        try{
+            em.getTransaction().begin();
+            PersonDTO personDTO = facade.addHobbiesToPerson(id, hobbyName);
+            assertEquals( "ridning", p1.getHobbies().get(1).toString());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
 
 
 }

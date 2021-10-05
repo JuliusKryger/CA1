@@ -2,6 +2,7 @@ package rest;
 
 import dtos.PersonDTO;
 import entities.*;
+import facades.PersonFacade;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -28,7 +29,6 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonResourceTest {
-
     Address a1;
     Person p1;
     CityInfo c1;
@@ -69,6 +69,8 @@ class PersonResourceTest {
         ph1 = new Phone(8888888, "phone");
 
         p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
+        em.getTransaction().begin();
+        em.persist(p1);
 
         try {
             em.getTransaction().begin();

@@ -18,13 +18,10 @@ import java.util.List;
         @NamedQuery(name = "Person.deletePersonById", query = "DELETE FROM Person p WHERE p.id = :id")
 })
 public class Person implements Serializable {
-
-    // Variables
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "firstname", length = 175, nullable = false, unique = false)
     private String firstName;
