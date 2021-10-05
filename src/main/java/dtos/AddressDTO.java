@@ -2,6 +2,8 @@ package dtos;
 
 import entities.Address;
 
+import java.util.Objects;
+
 public class AddressDTO {
     private String street;
     private String additionalInfo;

@@ -146,7 +146,7 @@ public class PersonFacade implements IPersonFacade {
                 if (person.getHobbies() != null) {
                     for (HobbyDTO h : hobbies) {
                         HobbyDTO hobby = createHobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType());
-                        em.find(Hobby.class, hobby.getName());
+                        em.find(Hobby.class, hobby.getId());
                         Hobby hentity = new Hobby(hobby);
                         person.addHobby(hentity);
                         em.merge(person);

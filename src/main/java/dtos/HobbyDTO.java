@@ -2,7 +2,10 @@ package dtos;
 
 import entities.Hobby;
 
+import java.util.Objects;
+
 public class HobbyDTO {
+    private Integer id;
     private String name;
     private String wikiLink;
     private String category;
@@ -12,6 +15,7 @@ public class HobbyDTO {
     }
 
     public HobbyDTO(Hobby entity) {
+        this.id = entity.getId();
         this.name = entity.getName();
         this.wikiLink = entity.getWikiLink();
         this.category = entity.getCategory();
@@ -23,6 +27,14 @@ public class HobbyDTO {
         this.wikiLink = wikiLink;
         this.category = category;
         this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

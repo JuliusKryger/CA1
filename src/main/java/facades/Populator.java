@@ -41,13 +41,14 @@ public class Populator {
     //private static Hobby h3 = new Hobby("tennis", "www.tennis.dk", "ballplay", "ooutdoors");
 
     public static void populate() {
-        EntityManager em = emf.createEntityManager();
         emf = EMF_Creator.createEntityManagerFactory();
-        FacadeExample fe = FacadeExample.getFacadeExample(emf);
+        EntityManager em = emf.createEntityManager();
+        //FacadeExample fe = FacadeExample.getFacadeExample(emf);
+        PersonFacade pf = PersonFacade.getPersonFacade(emf);
 
-        fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
-        fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
-        fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
+        //fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
+        //fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
+        //fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
         try {
             em.getTransaction().begin();
             //Creating our hobby Array.
@@ -94,7 +95,6 @@ public class Populator {
             em.close();
         }
     }
-
 
     public static void main(String[] args) {
         populate();
