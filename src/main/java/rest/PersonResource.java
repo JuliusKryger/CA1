@@ -12,7 +12,8 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-/*
+
+
 @Path("/person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -20,7 +21,7 @@ public class PersonResource {
     private static final PersonFacade personFacade = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-
+/*
  @Operation(summary = "Get person by ID"),
     tags = {"person"},
     responses = {
@@ -31,17 +32,19 @@ public class PersonResource {
         @ApiResponse(responseCode = "200", description = "Found person"),
         @ApiResponse(responseCode = "400", description = "No persons found")})
 
+*/
+
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonById(@PathParam("id")int id) {
+    public String getPersonById(@PathParam("id") int id) {
         return GSON.toJson(iPersonFacade.getPersonByID(id), PersonDTO.class);
     }
 
     @Path("/createPerson")
     @POST
     @Produces("application/json")
-    public String getCreatePerson (String person){
+    public String getCreatePerson(String person) {
         PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
         PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
 
@@ -58,14 +61,15 @@ public class PersonResource {
         return GSON.toJson(personFirstName);
     }
 
-    /*
+/*
     @Path("/updatePerson")
     @PUT
     @Produces("application/json")
-    public String getupdatePerson (Integer id){
-        PersonDTO personDTO = GSON.fromJson(id,personFacade.createPerson());
+    public String getupdatePerson(Integer id) {
+        PersonDTO personDTO = GSON.fromJson(id, personFacade.createPerson());
         PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
 
         return GSON.toJson();
     }
-*/
+ */
+}

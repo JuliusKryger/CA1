@@ -145,9 +145,10 @@ public class PersonFacade implements IPersonFacade {
                 em.persist(person);
                 if (person.getHobbies() != null) {
                     for (HobbyDTO h : hobbies) {
-                        Hobby ho = createHobby(h);
-                        em.find(Hobby.class, ho.getName());
-                        person.addHobby(ho);
+                        HobbyDTO hobby = createHobby(h.getName(), h.getWikiLink(), h.getCategory(), h.getType());
+                        em.find(Hobby.class, hobby.getName());
+                        Hobby hentity = new Hobby(hobby);
+                        person.addHobby(hentity);
                         em.merge(person);
                     }
                 }
@@ -162,17 +163,22 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    public Hobby createHobby(HobbyDTO hobby) {
+    public HobbyDTO createHobby(String name, String link, String type, String category) {
         EntityManager em = emf.createEntityManager();
-        Hobby hobbyEntity = new Hobby(hobby.getName(), hobby.getWikiLink(), hobby.getCategory(), hobby.getType());
+        Hobby hobby = new Hobby();
+
         try {
             em.getTransaction().begin();
-            em.persist(hobbyEntity);
+            hobby.setName(name);
+            hobby.setCategory(category);
+            hobby.setWikiLink(link);
+            hobby.setType(type);
+            em.persist(hobby);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
-        return new Hobby(hobby);
+        return new HobbyDTO(hobby);
     }
 
     public boolean deleteHobby (int id){

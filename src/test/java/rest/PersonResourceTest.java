@@ -1,6 +1,8 @@
 package rest;
 
+import dtos.PersonDTO;
 import entities.*;
+import facades.PersonFacade;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -13,6 +15,7 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.util.HttpStatus;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import entities.Person;
 
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
@@ -26,10 +29,13 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonResourceTest {
-/*
+    Address a1;
+    Person p1;
+    CityInfo c1;
+    Phone ph1;
+
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
-    private static PersonResource r1, r2;
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -54,24 +60,36 @@ class PersonResourceTest {
     }
     @BeforeEach
     void setUp() {
-
-        //Used for test methods
-        Person r1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
-        CityInfo c1 = new CityInfo("9999", "Testhavnen");
-        Address a1 = new Address("4 Privet Drive", "hv", c1);
-        Phone ph1 = new Phone(88888888, "phone");
-        a1.setCityInfo(new CityInfo("9999", "Testhavnen"));
-        r1.setAddress(a1);
-        r1.addPhone(ph1);
-
         EntityManager em = emf.createEntityManager();
 
+        c1 = new CityInfo("2800", "Lyngby");
+
+        a1 = new Address("Nørgaardsvej", "28", c1);
+
+        ph1 = new Phone(8888888, "phone");
+
+        p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
         em.getTransaction().begin();
-        em.persist(r1);
-        //em.persist(r2);
+        em.persist(p1);
 
-        em.close();
+        try {
+            em.getTransaction().begin();
+            //Address
+            em.persist(c1);
+            a1.setCityInfo(c1);
+            em.persist(a1);
+            //phone
+            em.persist(ph1);
+            ph1.setPerson(p1);
+            em.merge(ph1);
+            //
+            em.persist(p1);
 
+            em.getTransaction().commit();
+            em.close();
+        } finally {
+            em.close();
+        }
     }
 
     @AfterAll
@@ -84,8 +102,8 @@ class PersonResourceTest {
     }
 
     @Test
-    void getPersonById() throws Exception{
-        String expectedName = r1.getFirstName();
+    void getPersonById() throws Exception {
+        String expectedName = p1.getFirstName();
 
         given()
                 .pathParam("id", 1)
@@ -94,7 +112,7 @@ class PersonResourceTest {
                 .then()
                 .assertThat()
                 .statusCode(200)
-                .body("firstName", equalToIgnoringCase(expectedName));
+                .body("Harry", equalToIgnoringCase(expectedName));
 
     }
 
@@ -105,6 +123,4 @@ class PersonResourceTest {
     @Test
     void getupdatePerson() {
     }
-
- */
 }

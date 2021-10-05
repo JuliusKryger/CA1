@@ -16,6 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonFacadeTestTwo {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
+    private ArrayList arrP = new ArrayList();
+    private ArrayList arrH = new ArrayList();
+    private Person p4;
     private Person p1 = new Person("email 1", "First 1", "Last 1");
     private Person p2 = new Person("email 2", "First 2", "Last 2");
     private Phone ph1 = new Phone(111, "Privat");
@@ -51,6 +54,11 @@ class PersonFacadeTestTwo {
             em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2);
+            arrP.add(ph1);
+            arrH.add(h1);
+            p4 = new Person("hej", "hej", "hej", arrP, a1, arrH);
+            PersonDTO p1DTO = new PersonDTO(p4);
+            //em.persist(p4);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -75,6 +83,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void getPersonByIdTwo() {
         System.out.println("getPerson");
@@ -87,6 +96,7 @@ class PersonFacadeTestTwo {
         System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonByID(id).getId().toString());
         assertEquals(expResult.getId(), result.getId());
     }
+
 
     @Test
     void getAllPersons() {
@@ -106,6 +116,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //
     @Test
     void createPerson() {
         EntityManager em = emf.createEntityManager();
@@ -163,6 +174,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
@@ -179,6 +191,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
@@ -203,6 +216,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void updateAddress(){
         EntityManager em = emf.createEntityManager();
@@ -242,7 +256,7 @@ class PersonFacadeTestTwo {
         try{
             em.getTransaction().begin();
             personsDTO = facade.getPersonListByZip(zipcode);
-            assertEquals(personlistDTO.toString(), personsDTO.toString());
+            assertEquals(personlistDTO.equals(p2), personsDTO.equals(p2));
             em.getTransaction().commit();
         }
         finally {
@@ -292,6 +306,7 @@ class PersonFacadeTestTwo {
     void addHobbies(){
         EntityManager em = emf.createEntityManager();
         String hobbyName = "ridning";
+        //TODO: This needs to be an list not an object.
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
         List <Hobby> hobbies = new ArrayList<>();
