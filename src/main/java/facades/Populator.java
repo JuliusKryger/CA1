@@ -39,31 +39,10 @@ public class Populator {
     public static void populate() {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fe = FacadeExample.getFacadeExample(emf);
+
         fe.create(new RenameMeDTO(new RenameMe("First 1", "Last 1")));
         fe.create(new RenameMeDTO(new RenameMe("First 2", "Last 2")));
         fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
-
-
-
-
-        /*
-            c1 = new CityInfo("2800", "Lyngby");
-
-            a1 = new Address("Nørgaardsvej", "28", c1);
-
-            ph1 = new Phone(8888888, "phone");
-
-            p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
-
-            em.persist(c1);
-            em.persist(a1);
-            a1.setCityInfo(c1);
-            em.merge(a1);
-
-            em.persist(p1);
-            p1.setAddress(a1);
-            em.merge(p1); */
-
     }
 
     public static void main(String[] args) {

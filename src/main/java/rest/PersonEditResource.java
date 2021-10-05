@@ -38,7 +38,7 @@ public class PersonEditResource {
         return "{\"msg\":\"Hi, here you can change the information for a person\"}";
     }
 
-    //Test er skrevet men ikke kørt
+    //virker, men ikke testet, men test skrevet
     @Path("/basis/{id}")
     @PUT
     @Produces("application/json")
@@ -50,35 +50,32 @@ public class PersonEditResource {
         return GSON.toJson(personDTO);
     }
 
-    //ikke testet, find ud af om der skal være en scanner
-    @Path("/address({id}")
+    //virker, men ingen test
+    @Path("/address/{id}")
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public String editAddress(@PathParam("id") int id, String person, String street, String addInfo, String zip, String city){
-        PersonDTO pdto = GSON.fromJson(person, PersonDTO.class);
-        pdto.setId(id);
-        /*CityInfo cityInfo = new CityInfo(zip, city);
-        Address address =  new Address(street, addInfo, cityInfo);
-        pdto.setAddress(new AddressDTO(address));*/
-        PersonDTO personDTO = FACADE.editAddressForPerson(street, addInfo, zip, city, pdto);
+    public String editAddress(@PathParam("id") int id, String addr){
+        AddressDTO addressDTO = GSON.fromJson(addr, AddressDTO.class);
+
+        PersonDTO personDTO = FACADE.editAddressForPerson(id, addressDTO);
+
         return GSON.toJson(personDTO);
     }
 
+    //virker, men ingen test
     @Path("/phone/{id}")
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public String editPhone(@PathParam("id") int id, String person, int phoneNumber, String description){
-        PersonDTO pdto = GSON.fromJson(person, PersonDTO.class);
-        pdto.setId(id);
-        /*List<PhoneDTO> phoneList = new ArrayList<>();
-        PhoneDTO phone = new PhoneDTO(new Phone(phoneNumber, description));
-        phoneList.add(phone);
-        pdto.setPhones(phoneList);*/
-        PersonDTO personDTO = FACADE.editPersonPhone(phoneNumber, description,pdto);
+    public String editPhone(@PathParam("id") int id, String phone){
+        PhoneDTO phoneDTO = GSON.fromJson(phone, PhoneDTO.class);
+
+        PersonDTO personDTO = FACADE.editPersonPhone(id, phoneDTO);
         return GSON.toJson(personDTO);
     }
+
+    //den virker måske
     @Path("/hobby/add/{id}")
     @PUT
     @Produces("application/json")

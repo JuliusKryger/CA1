@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "persons")
+@Table(name = "person")
 @NamedQueries({
         @NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person"),
         @NamedQuery(name = "Person.getAllRows", query = "SELECT p from Person p"),
