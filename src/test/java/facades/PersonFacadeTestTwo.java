@@ -23,8 +23,8 @@ class PersonFacadeTestTwo {
     private Person p2 = new Person("email 2", "First 2", "Last 2");
     private Phone ph1 = new Phone(111, "Privat");
     private Phone ph2 = new Phone(222, "Arbejds");
-    private Address a1 = new Address("street 1", "1 th.");
     private CityInfo c1 = new CityInfo("2000", "Frederiksberg");
+    private Address a1 = new Address("street 1", "1 th.", c1);
     private Hobby h1 = new Hobby("name1", "wikiLink1", "category1", "type1");
     private Hobby h2 = new Hobby("name2", "wikiLink2", "category2", "type2");
 
@@ -124,7 +124,7 @@ class PersonFacadeTestTwo {
         Person entity;
 
         //Setting up the Phone Array and populating it for our Person const.
-        ArrayList phonesList = new ArrayList<Phone>();
+        List<Phone> phonesList = new ArrayList<>();
         Phone po = new Phone(69420420, "Arbejds");
         phonesList.add(po);
 
@@ -135,7 +135,7 @@ class PersonFacadeTestTwo {
         Address address = new Address("Søvænget 58", "5 th", ci);
 
         //Lastly we're setting up an array of hobbies for the person const.
-        ArrayList hobbyList = new ArrayList<Hobby>();
+        List<Hobby> hobbyList = new ArrayList<>();
         Hobby h = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
         hobbyList.add(h);
 
@@ -183,7 +183,7 @@ class PersonFacadeTestTwo {
             int id = p2.getId();
             System.out.println("this is the person we will delete" + p2.getFirstName());
             facade.deletePerson(id);
-            assertEquals(true, facade.deletePerson(id));
+            assertTrue(facade.deletePerson(id));
             System.out.println("This person should no longer exist" + p2.getFirstName());
             em.getTransaction().commit();
         } finally {
@@ -195,7 +195,7 @@ class PersonFacadeTestTwo {
     @Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
-        * en liste derindeholder en phoneDTO, lavet udfra en int og en String
+        * en liste der indeholder en phoneDTO, lavet udfra en int og en String
         * */
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
@@ -250,7 +250,7 @@ class PersonFacadeTestTwo {
         personList.add(p1);
         personList.add(p2);
 
-        String zipcode = "2650";
+        String zipcode = "2000";
         PersonsDTO personlistDTO = new PersonsDTO(personList);
         PersonsDTO personsDTO;
         try{
@@ -263,7 +263,7 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
-    
+
     @Test
     void createHobby(){
         EntityManager em = emf.createEntityManager();
@@ -272,7 +272,7 @@ class PersonFacadeTestTwo {
         String type = "boldspil";
         String category = "udendørs";
         Hobby hobby;
-        
+
         try {
             em.getTransaction().begin();
             hobby = new Hobby(name, link, category, type);
@@ -297,11 +297,11 @@ class PersonFacadeTestTwo {
             em.getTransaction().commit();
         }
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
     @Test
     void addHobbies(){
@@ -310,10 +310,14 @@ class PersonFacadeTestTwo {
         //TODO: This needs to be an list not an object.
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
+        List <Hobby> hobbies = new ArrayList<>();
+        hobbies.add(hobby);
+        p1.setHobbies(hobbies);
+
         try{
             em.getTransaction().begin();
             PersonDTO personDTO = facade.addHobbiesToPerson(id, hobbyName);
-            assertEquals( "ridning", p1.getHobbies().get(1).toString());
+            assertEquals( "ridning", personDTO.getHobbies().get(1).toString());
             em.getTransaction().commit();
         }
         finally {

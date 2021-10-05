@@ -196,12 +196,6 @@ public class PersonFacade implements IPersonFacade {
     }
 
 
-
-
-
-
-
-
     //til createhobby hvis det skal bruges
         /*try {
             Query query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
