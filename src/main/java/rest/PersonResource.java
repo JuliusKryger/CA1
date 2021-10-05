@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
 import entities.Person;
 import facades.IPersonFacade;
 import facades.PersonFacade;
@@ -17,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 @Path("/person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final IPersonFacade iPersonFacade = PersonFacade.getPersonFacade(EMF);
     private static final PersonFacade personFacade = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -38,10 +38,11 @@ public class PersonResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonById(@PathParam("id") int id) {
-        return GSON.toJson(iPersonFacade.getPersonByID(id), PersonDTO.class);
+        PersonDTO personDTO = personFacade.getPersonByID(id);
+        return GSON.toJson(personDTO);
     }
 
-    @Path("/createPerson")
+    @Path("/createperson")
     @POST
     @Produces("application/json")
     public String getCreatePerson(String person) {
@@ -51,7 +52,7 @@ public class PersonResource {
         return GSON.toJson(newPersonDTO);
     }
 
-    @Path("/createPerson")
+    @Path("/createPerson/firstname")
     @POST
     @Produces("application/json")
     public String getFirstName(String firstname) {
@@ -61,15 +62,21 @@ public class PersonResource {
         return GSON.toJson(personFirstName);
     }
 
-/*
-    @Path("/updatePerson")
-    @PUT
+    @Path("/delete/{id}")
+    @DELETE
     @Produces("application/json")
-    public String getupdatePerson(Integer id) {
-        PersonDTO personDTO = GSON.fromJson(id, personFacade.createPerson());
-        PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
-
-        return GSON.toJson();
+    @Consumes("application/json")
+    public String deletePerson(@PathParam("id") int id){
+        PersonDTO personDeleted = personFacade.deletePerson(id);
+        return GSON.toJson(personDeleted);
     }
- */
+
+    @Path("/getziplist/{zip}")
+    @GET
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getZipList(@PathParam("zip") String zip){
+        PersonsDTO zipList = personFacade.getPersonListByZip(zip);
+        return GSON.toJson(zipList);
+    }
 }
