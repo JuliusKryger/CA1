@@ -173,8 +173,8 @@ class PersonFacadeTestTwo {
             em.getTransaction().begin();
             PersonDTO updated = new PersonDTO(p1);
 
-            updated = facade.updatePerson(1, updated);
-            assertEquals("Marie", updated.getFirstName());
+            PersonDTO newPerson = facade.updatePerson(updated);
+            assertEquals("Marie", newPerson.getFirstName());
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -247,6 +247,43 @@ class PersonFacadeTestTwo {
 
     }
 
+    @Test
+    void getPersonListZip(){
+        EntityManager em = emf.createEntityManager();
+        List <Person> personList = new ArrayList<>();
+        personList.add(p1);
+        personList.add(p2);
+
+        String zipcode = "3400";
+        PersonsDTO personlistDTO = new PersonsDTO(personList);
+        PersonsDTO personsDTO;
+        try{
+            em.getTransaction().begin();
+            personsDTO = facade.getPersonListByZip(zipcode);
+            assertEquals(personlistDTO.toString(), personsDTO.toString());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
+
+    @Test
+    void addHobbies(){
+        EntityManager em = emf.createEntityManager();
+        String hobbyName = "ridning";
+        Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
+        int id = p1.getId();
+        try{
+            em.getTransaction().begin();
+            PersonDTO personDTO = facade.addHobbiesToPerson(id, hobbyName);
+            assertEquals( "ridning", p1.getHobbies().get(1).toString());
+            em.getTransaction().commit();
+        }
+        finally {
+            em.close();
+        }
+    }
 
 
 }

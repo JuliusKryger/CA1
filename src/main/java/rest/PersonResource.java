@@ -48,14 +48,5 @@ public class PersonResource {
         return GSON.toJson(newPersonDTO);
     }
 
-    @Path("/updatePerson")
-    @PUT
-    @Produces("application/json")
-    public String getupdatePerson (Integer id){
-        PersonDTO personDTO = GSON.fromJson(id,personFacade.createPerson());
-        PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
-
-        return GSON.toJson();
-    }
 
 }
