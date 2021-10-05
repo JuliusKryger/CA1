@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 //@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class PersonFacadeTestTwo {
+class PersonFacadeTest {
 
     //TODO: OBS EVERY TEST WORKS INDEPENDENTLY BUT YOU CAN'T RUN EVERY ONE AT ONCE, THEN IT WILL FAIL.
 
@@ -49,7 +49,7 @@ class PersonFacadeTestTwo {
     private static Hobby h3 = new Hobby("tennis", "www.tennis.dk", "ballplay", "ooutdoors");
     private static Hobby h4 = new Hobby("Løb", "www.Løb.dk", "Running", "ooutdoors");
 
-    public PersonFacadeTestTwo() {
+    public PersonFacadeTest() {
     }
 
     @BeforeAll
