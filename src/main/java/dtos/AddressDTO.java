@@ -2,39 +2,84 @@ package dtos;
 
 import entities.Address;
 
+import java.util.Objects;
+
 public class AddressDTO {
-    private String streetName;
-    private int number;
-    private CityInfoDTO cityInfoDTO;
+    private String street;
+    private String additionalInfo;
+    private CityInfoDTO cityInfo;
+    String zip;
+    String city;
 
-    public AddressDTO(Address address){
-        if (address.getStreetName() !=null)
-            this.streetName = address.getStreetName();
-        this.number = address.getNumber();
-
+    public String getZip() {
+        return zip;
     }
 
-    public String getStreetName() {
-        return streetName;
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public String getCity() {
+        return city;
     }
 
-    public int getNumber() {
-        return number;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public AddressDTO() {
     }
 
-    public CityInfoDTO getCityInfoDTO() {
-        return cityInfoDTO;
+    public AddressDTO(String street, String additionalInfo, CityInfoDTO cityInfo) {
+        this.street = street;
+        this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
     }
 
-    public void setCityInfoDTO(CityInfoDTO cityInfoDTO) {
-        this.cityInfoDTO = cityInfoDTO;
+    public AddressDTO(String street, String addInfo, String zip, String cityInfo){
+        this.street = street;
+        this.additionalInfo = addInfo;
+        this.zip = zip;
+        this.city = city;
+    }
+
+    public AddressDTO(Address entity) {
+        this.street = entity.getStreet() == null ? null : entity.getStreet();
+        this.additionalInfo = entity.getAdditionalInfo();
+        this.cityInfo = entity.getCityInfo() == null ? null : new CityInfoDTO(entity.getCityInfo());
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
+
+    public CityInfoDTO getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfoDTO cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
+    @Override
+    public String toString() {
+        return "AddressDTO{" +
+                "street='" + street + '\'' +
+                ", additionalInfo='" + additionalInfo + '\'' +
+                ", cityInfo=" + cityInfo +
+                '}';
     }
 }
