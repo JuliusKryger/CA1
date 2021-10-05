@@ -15,7 +15,7 @@ public class Phone {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "number", length = 8, nullable = false, unique = true)
     private int number;
@@ -41,6 +41,14 @@ public class Phone {
     public Phone(PhoneDTO dto) {
         this.number = dto.getNumber();
         this.description = dto.getDescription();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setPerson(Person person) {
