@@ -59,7 +59,7 @@ class PersonFacadeTestTwo {
             address.setCityInfo(cityInfo);
 
             PersonDTO pers = new PersonDTO(p1);
-            em.persist(pers);
+            facade.createPerson(pers);
 
             em.getTransaction().commit();
         } finally {

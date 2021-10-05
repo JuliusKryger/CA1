@@ -53,6 +53,16 @@ public class Address implements Serializable {
     }
 
     //getter and setters
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public List<Person> getPersons() {
         return persons;
     }

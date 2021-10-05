@@ -43,6 +43,14 @@ public class Phone {
         this.description = dto.getDescription();
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public void setPerson(Person person) {
         this.person = person;
     }

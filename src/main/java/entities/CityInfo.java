@@ -31,10 +31,16 @@ public class CityInfo implements Serializable {
     public CityInfo() {
     }
 
-    public CityInfo(String zipCode, String city) {
+    public CityInfo(Integer id, String zipCode, String city) {
+        this.id = id;
         this.zipCode = zipCode;
         this.city = city;
         this.addresses = new ArrayList<>();
+    }
+
+    public CityInfo(String zipCode, String city) {
+        this.zipCode = zipCode;
+        this.city = city;
     }
 
     public CityInfo(String zipCode) {
@@ -46,16 +52,36 @@ public class CityInfo implements Serializable {
         this.city = dto.getCity();
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getZipCode() {
         return zipCode;
     }
 
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
     public String getCity() {
         return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public void addAddress(Address address) {
