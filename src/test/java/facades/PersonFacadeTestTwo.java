@@ -23,8 +23,8 @@ class PersonFacadeTestTwo {
     private Person p2 = new Person("email 2", "First 2", "Last 2");
     private Phone ph1 = new Phone(111, "Privat");
     private Phone ph2 = new Phone(222, "Arbejds");
-    private Address a1 = new Address("street 1", "1 th.");
     private CityInfo c1 = new CityInfo("2000", "Frederiksberg");
+    private Address a1 = new Address("street 1", "1 th.", c1);
     private Hobby h1 = new Hobby("name1", "wikiLink1", "category1", "type1");
     private Hobby h2 = new Hobby("name2", "wikiLink2", "category2", "type2");
 
@@ -116,7 +116,7 @@ class PersonFacadeTestTwo {
         Person entity;
 
         //Setting up the Phone Array and populating it for our Person const.
-        ArrayList phonesList = new ArrayList<Phone>();
+        List<Phone> phonesList = new ArrayList<>();
         Phone po = new Phone(69420420, "Arbejds");
         phonesList.add(po);
 
@@ -127,7 +127,7 @@ class PersonFacadeTestTwo {
         Address address = new Address("Søvænget 58", "5 th", ci);
 
         //Lastly we're setting up an array of hobbies for the person const.
-        ArrayList hobbyList = new ArrayList<Hobby>();
+        List<Hobby> hobbyList = new ArrayList<>();
         Hobby h = new Hobby("Golf", "www.golf.dk", "club-and-ball", "undendørs");
         hobbyList.add(h);
 
@@ -239,7 +239,7 @@ class PersonFacadeTestTwo {
         personList.add(p1);
         personList.add(p2);
 
-        String zipcode = "3400";
+        String zipcode = "2000";
         PersonsDTO personlistDTO = new PersonsDTO(personList);
         PersonsDTO personsDTO;
         try{
@@ -259,8 +259,9 @@ class PersonFacadeTestTwo {
         String hobbyName = "ridning";
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
-        List <Hobby>
-        p1.setHobbies(hobby);
+        List <Hobby> hobbies = new ArrayList<>();
+        hobbies.add(hobby);
+        p1.setHobbies(hobbies);
 
         try{
             em.getTransaction().begin();
