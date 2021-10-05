@@ -1,6 +1,7 @@
 package rest;
 
 import entities.*;
+import facades.PersonFacade;
 import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
@@ -29,7 +30,7 @@ class PersonResourceTest {
 
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
-    private static PersonResource r1, r2;
+    private static Person p1, p2;
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -56,18 +57,18 @@ class PersonResourceTest {
     void setUp() {
 
         //Used for test methods
-        Person r1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
+        p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
         CityInfo c1 = new CityInfo("9999", "Testhavnen");
         Address a1 = new Address("4 Privet Drive", "hv", c1);
         Phone ph1 = new Phone(88888888, "phone");
         a1.setCityInfo(new CityInfo("9999", "Testhavnen"));
-        r1.setAddress(a1);
-        r1.addPhone(ph1);
+        p1.setAddress(a1);
+        p1.addPhone(ph1);
 
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.persist(r1);
+        em.persist(p1);
         //em.persist(r2);
 
         em.close();
@@ -85,7 +86,7 @@ class PersonResourceTest {
 
     @Test
     void getPersonById() throws Exception{
-        String expectedName = r1.getFirstName();
+        String expectedName = p1.getFirstName();
 
         given()
                 .pathParam("id", 1)
