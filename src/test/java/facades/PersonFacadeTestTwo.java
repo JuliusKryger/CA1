@@ -174,7 +174,7 @@ class PersonFacadeTestTwo {
             int id = p2.getId();
             System.out.println("this is the person we will delete" + p2.getFirstName());
             facade.deletePerson(id);
-            assertEquals(true, facade.deletePerson(id));
+            assertTrue(facade.deletePerson(id));
             System.out.println("This person should no longer exist" + p2.getFirstName());
             em.getTransaction().commit();
         } finally {
@@ -185,7 +185,7 @@ class PersonFacadeTestTwo {
     @Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
-        * en liste derindeholder en phoneDTO, lavet udfra en int og en String
+        * en liste der indeholder en phoneDTO, lavet udfra en int og en String
         * */
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
@@ -259,10 +259,13 @@ class PersonFacadeTestTwo {
         String hobbyName = "ridning";
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
+        List <Hobby>
+        p1.setHobbies(hobby);
+
         try{
             em.getTransaction().begin();
             PersonDTO personDTO = facade.addHobbiesToPerson(id, hobbyName);
-            assertEquals( "ridning", p1.getHobbies().get(1).toString());
+            assertEquals( "ridning", personDTO.getHobbies().get(1).toString());
             em.getTransaction().commit();
         }
         finally {
