@@ -289,12 +289,15 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            String name = h1.getName();
+            h1.setId(1);
+            int id = h1.getId();
             System.out.println("This hobby will be deleted" + h1.getName());
-            facade.deleteHobby(h1.getId());
-            assertEquals(true, facade.deleteHobby(h1.getId()));
+            facade.deleteHobby(id);
+            assertEquals(true, facade.deleteHobby(id));
             System.out.println("This hobby should not exist" + h1.getName());
             em.getTransaction().commit();
+        }finally {
+            em.close();
         }
     }
 
