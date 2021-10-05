@@ -2,16 +2,12 @@ package facades;
 
 import dtos.*;
 import entities.*;
-//import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.*;
-//import org.junit.runners.MethodSorters;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,65 +62,77 @@ class PersonFacadeTest {
     @BeforeEach
     void setUp() {
         EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+        em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+        em.getTransaction().commit();
+        try {
             em.getTransaction().begin();
-            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-            try {
-                //Creating our hobby Array.
-                p1.addHobby(h1);
-                p2.addHobby(h2);
-                p3.addHobby(h3);
+            //Creating our hobby Array.
+            p1.addHobby(h1);
+            p2.addHobby(h2);
+            p3.addHobby(h3);
 
-                //Creating our phone Array.
-                p1.addPhone(ph1);
-                p2.addPhone(ph2);
-                p3.addPhone(ph3);
+            //Creating our phone Array.
+            p1.addPhone(ph1);
+            p2.addPhone(ph2);
+            p3.addPhone(ph3);
 
-                //Person 1
-                em.persist(ci1);
-                em.persist(a1);
-                a1.setCityInfo(ci1);
-                em.merge(a1);
+            //Person 1
+            em.persist(ci1);
+            em.persist(a1);
+            a1.setCityInfo(ci1);
+            em.merge(a1);
 
-                em.persist(p1);
-                p1.setAddress(a1);
-                em.merge(p1);
+            em.persist(p1);
+            p1.setAddress(a1);
+            em.merge(p1);
 
-                //Person 2
-                em.persist(ci2);
-                em.persist(a2);
-                a2.setCityInfo(ci2);
-                em.merge(a2);
+            //Person 2
+            em.persist(ci2);
+            em.persist(a2);
+            a2.setCityInfo(ci2);
+            em.merge(a2);
 
-                em.persist(p2);
-                p2.setAddress(a2);
-                em.merge(p2);
+            em.persist(p2);
+            p2.setAddress(a2);
+            em.merge(p2);
 
-                //Person 3
-                em.persist(ci3);
-                em.persist(a3);
-                a3.setCityInfo(ci3);
-                em.merge(a3);
+            //Person 3
+            em.persist(ci3);
+            em.persist(a3);
+            a3.setCityInfo(ci3);
+            em.merge(a3);
 
-                em.persist(p3);
-                p3.setAddress(a3);
-                em.merge(p3);
+            em.persist(p3);
+            p3.setAddress(a3);
+            em.merge(p3);
 
-                em.getTransaction().commit();
-            } finally {
-                em.close();
-            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
+    }
 
     @AfterEach
     void tearDown() {
+        EntityManager em = emf.createEntityManager();
+        /*
+        em.getTransaction().begin();
+        em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+        em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+        em.getTransaction().commit();
+         */
     }
 
-    //
-    @Test //Does not work need to be redone.
+    @Test
+    //Also works perfectly fine now!.
     void createPerson() {
         EntityManager em = emf.createEntityManager();
 
@@ -146,20 +154,22 @@ class PersonFacadeTest {
         }
     }
 
-    @Test //This test works do not touch the test or method anymore.
+    @Test
+    //This test works do not touch the test or method anymore.
     void getPersonById() {
         System.out.println("getPerson");
         int id = 1;
         EntityManagerFactory _emf = null;
         PersonFacade instance = PersonFacade.getPersonFacade(_emf);
         System.out.println("This is the test person we have created in our database, with an ID of: " + p1.getId().toString());
-        PersonDTO result = instance.getPersonByID(id);
-        System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonByID(id).getId().toString());
+        PersonDTO result = instance.getPersonById(id);
+        System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonById(id).getId().toString());
         assertEquals(p1.getId(), result.getId());
     }
 
 
-    @Test //This dosen't currently work, we need to find a way to compare two array results preferbly object equals to method.
+    @Test
+    //Also works now!.
     void getAllPersons() {
         EntityManager em = emf.createEntityManager();
         List<Person> arrayContent = new ArrayList<>();
@@ -178,7 +188,8 @@ class PersonFacadeTest {
         }
     }
 
-    @Test //This test works do not touch the test or method anymore.
+    @Test
+    //This test works do not touch the test or method anymore.
     void updatePerson() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -196,10 +207,10 @@ class PersonFacadeTest {
         }
     }
 
-    @Test //Does not work, change back to boolean =)
+    @Test
+        //Also works fine now!
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
-        PersonDTO personDTO = new PersonDTO(p1);
         try {
             em.getTransaction().begin();
             int id = p1.getId();
@@ -213,12 +224,9 @@ class PersonFacadeTest {
         }
     }
 
-    //virker
-    /*@Test
+    /*
+    @Test
     void editPersonPhone(){
-        /* for at kunne teste denne metode, skal der bruges 2 personDTO
-        * en liste der indeholder en phoneDTO, lavet udfra en int og en String
-        * *//*
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToUpdate =  new PersonDTO(p2);
@@ -236,8 +244,8 @@ class PersonFacadeTest {
         finally {
             em.close();
         }
-    }*/
-  /*
+    }
+
     @Test
     void updateAddress(){
         EntityManager em = emf.createEntityManager();
@@ -262,9 +270,8 @@ class PersonFacadeTest {
             em.close();
         }
 
-    }*/
+    }
 
-    /*
     @Test
     void getPersonListZip(){
         EntityManager em = emf.createEntityManager();
@@ -285,9 +292,7 @@ class PersonFacadeTest {
             em.close();
         }
     }
-     */
 
-    /*
     @Test
     void createHobby(){
         EntityManager em = emf.createEntityManager();
@@ -346,8 +351,5 @@ class PersonFacadeTest {
             em.close();
         }
     }
-
      */
-
-
 }

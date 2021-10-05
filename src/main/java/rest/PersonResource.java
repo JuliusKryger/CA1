@@ -15,14 +15,77 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
-@Path("person")
+@Path("/person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final PersonFacade personFacade = PersonFacade.getPersonFacade(EMF);
+    private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    @Path("/status")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String status() {
+        return "{\"msg\":\"API is up and running.\"}";
+    }
 
-    @Path("{id}")
+    @Path("/create")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public PersonDTO createNewPerson(PersonDTO p) {
+        return FACADE.createPerson(p);
+    }
+
+    @Path("/{id}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPersonById(@PathParam("id") int id) {
+        return GSON.toJson(FACADE.getPersonById(id), PersonDTO.class);
+    }
+
+    @Path("/all")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getAllPersons() {
+        return GSON.toJson(FACADE.getAllPersons());
+    }
+
+    //TODO: Hmmm ... vi skal kunne vælge en specifik person ikke?
+    @Path("/update/{id}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public PersonDTO updatePerson(@PathParam("id") int id, PersonDTO p) {
+        return FACADE.updatePerson(p);
+    }
+
+    @Path("/delete/{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String editPerson(@PathParam("id") int id) {
+        return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
+    }
+
+    /*
+    @POST
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String getCreatePerson(PersonDTO p) {
+        PersonDTO personDTO = GSON.fromJson(p, PersonDTO.class);
+        PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
+
+        return GSON.toJson(newPersonDTO);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public PersonDTO createNewPerson(PersonDTO p) {
+        return GSON.toJson(personFacade.createPerson(p));
+    }
+
+    @Path("/id/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonById(@PathParam("id") int id) {
@@ -30,14 +93,13 @@ public class PersonResource {
         return GSON.toJson(personDTO);
     }
 
-    @POST
+    @Path("/deleteP/{id}")
+    @DELETE
     @Produces("application/json")
     @Consumes("application/json")
-    public String getCreatePerson(String person) {
-        PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
-        PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
-
-        return GSON.toJson(newPersonDTO);
+    public String deletePerson(@PathParam("id") int id){
+        boolean personDeleted = personFacade.deletePersonById(id);
+        return GSON.toJson(personDeleted);
     }
 
     @Path("/createPerson/firstname")
@@ -50,15 +112,6 @@ public class PersonResource {
         return GSON.toJson(personFirstName);
     }
 
-    @Path("{id}")
-    @DELETE
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String deletePerson(@PathParam("id") int id){
-        boolean personDeleted = personFacade.deletePersonById(id);
-        return GSON.toJson(personDeleted);
-    }
-
     @Path("getziplist/{zip}")
     @GET
     @Produces("application/json")
@@ -67,4 +120,5 @@ public class PersonResource {
         PersonsDTO zipList = personFacade.getPersonListByZip(zip);
         return GSON.toJson(zipList);
     }
+ */
 }

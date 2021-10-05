@@ -67,6 +67,7 @@ class PersonResourceTest {
         RestAssured.port = SERVER_PORT;
         RestAssured.defaultParser = Parser.JSON;
     }
+
     @BeforeEach
     void setUp() {
         EntityManager em = emf.createEntityManager();
@@ -87,7 +88,7 @@ class PersonResourceTest {
             a2 = new Address("Sønder blvd", "18", c2);
 
             ph1 = new Phone(88888888, "phone");
-            ph2 = new Phone(11111111,"phone");
+            ph2 = new Phone(11111111, "phone");
 
             p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
             p2 = new Person("Ron", "Weasley", "ronweasley@gmail.com");
@@ -131,10 +132,19 @@ class PersonResourceTest {
         httpServer.shutdownNow();
     }
 
+
+    @Test
+    void status() {
+    }
+
+    @Test
+    void createNewPerson() {
+    }
+
     @Test
     void getPersonById() throws Exception {
         System.out.println("Searching for ID: " + p1.getId());
-
+        String expectedName = p1.getFirstName();
         given()
                 .pathParam("id", p1.getId())
                 .contentType("application/json")
@@ -142,14 +152,18 @@ class PersonResourceTest {
                 .then()
                 .assertThat()
                 .statusCode(200);
-                //.body("Harry", equalToIgnoringCase(expectedName));
+        //.body("John", equalToIgnoringCase(expectedName));
     }
 
-//    @Test
-    void getCreatePerson() {
+    @Test
+    void getAllPersons() {
     }
 
-//    @Test
-    void getupdatePerson() {
+    @Test
+    void updatePerson() {
+    }
+
+    @Test
+    void editPerson() {
     }
 }

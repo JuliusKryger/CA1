@@ -14,7 +14,7 @@ public interface IPersonFacade {
     ////TODO: When doing (Rest-Endpoints) This is the methods we wanna call.
 
     //Enter Comment Here!
-    PersonDTO getPersonByID(Integer id);
+    PersonDTO getPersonById(Integer id);
 
     //Enter Comment Here!
     PersonsDTO getAllPersons();

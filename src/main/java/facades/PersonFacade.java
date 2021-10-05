@@ -76,7 +76,7 @@ public class PersonFacade implements IPersonFacade {
     // ... Which means we atleast have achived full crud.
 
     //Endpoint er lavet
-    public PersonDTO getPersonByID(Integer id) {
+    public PersonDTO getPersonById(Integer id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Person person = em.find(Person.class, id);
@@ -349,7 +349,7 @@ public class PersonFacade implements IPersonFacade {
     // deleteHobbiesFromPerson
     public synchronized PersonDTO deleteHobbiesFromPerson(Integer id) {
         EntityManager em = emf.createEntityManager();
-        PersonDTO personDTO = getPersonByID(id);
+        PersonDTO personDTO = getPersonById(id);
         try {
             em.getTransaction().begin();
 
