@@ -133,7 +133,7 @@ class PersonResourceTest {
 
     @Test
     void getPersonById() throws Exception {
-        String expectedName = p1.getFirstName();
+        System.out.println("Searching for ID: " + p1.getId());
 
         given()
                 .pathParam("id", p1.getId())

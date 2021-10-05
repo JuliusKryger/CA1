@@ -15,26 +15,14 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 
-@Path("/person")
+@Path("person")
 public class PersonResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final PersonFacade personFacade = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-/*
- @Operation(summary = "Get person by ID"),
-    tags = {"person"},
-    responses = {
-        @ApiResponse(
-                content = @content(mediaType = "aaplication/json",
-                schema = @Schema(implementation = PersonDTO.class))
-        ),
-        @ApiResponse(responseCode = "200", description = "Found person"),
-        @ApiResponse(responseCode = "400", description = "No persons found")})
 
-*/
-
-    @Path("/{id}")
+    @Path("{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonById(@PathParam("id") int id) {
@@ -42,9 +30,9 @@ public class PersonResource {
         return GSON.toJson(personDTO);
     }
 
-    @Path("/createperson")
     @POST
     @Produces("application/json")
+    @Consumes("application/json")
     public String getCreatePerson(String person) {
         PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
         PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
@@ -62,7 +50,7 @@ public class PersonResource {
         return GSON.toJson(personFirstName);
     }
 
-    @Path("/delete/{id}")
+    @Path("{id}")
     @DELETE
     @Produces("application/json")
     @Consumes("application/json")
@@ -71,7 +59,7 @@ public class PersonResource {
         return GSON.toJson(personDeleted);
     }
 
-    @Path("/getziplist/{zip}")
+    @Path("getziplist/{zip}")
     @GET
     @Produces("application/json")
     @Consumes("application/json")
