@@ -178,12 +178,13 @@ class PersonFacadeTestTwo {
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
+        PersonDTO personDTO = new PersonDTO(p2);
         try {
             em.getTransaction().begin();
             int id = p2.getId();
             System.out.println("this is the person we will delete" + p2.getFirstName());
             facade.deletePerson(id);
-            assertTrue(facade.deletePerson(id));
+            assertEquals(personDTO, facade.deletePerson(id));
             System.out.println("This person should no longer exist" + p2.getFirstName());
             em.getTransaction().commit();
         } finally {
@@ -217,8 +218,8 @@ class PersonFacadeTestTwo {
     }*/
 
     //virker
-    @Test
-    /*void updateAddress(){
+    /*@Test
+    void updateAddress(){
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToEdit = new PersonDTO(p2);
