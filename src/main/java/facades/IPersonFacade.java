@@ -3,7 +3,9 @@ package facades;
 import dtos.PersonDTO;
 import dtos.PersonsDTO;
 
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 
 public interface IPersonFacade {
     //This is implemented as a kind of security, as this will hide the actual logic of our methods.
@@ -19,7 +21,7 @@ public interface IPersonFacade {
     PersonDTO createPerson(PersonDTO personDTO);
 
     //Enter Comment Here!
-    PersonDTO updatePerson(Integer id, PersonDTO personDTO);
+    PersonDTO updatePerson(PersonDTO personDTO);
 
     PersonDTO editPersonPhone(int phone, String description, PersonDTO personDTO);
 
@@ -27,5 +29,7 @@ public interface IPersonFacade {
 
     //Enter Comment Here!
     boolean deletePerson(int id);
+
+    //static PersonFacade getPersonFacade(EntityManagerFactory _emf);
 
 }
