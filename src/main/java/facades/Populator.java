@@ -20,7 +20,22 @@ import java.util.ArrayList;
  * @author tha
  */
 public class Populator {
-    private static Person p1, p2;
+    private static Person p1 = new Person("Ole", "Sørensen", "oleelskerhunde@gmail.com");
+    private static Person p2 = new Person("Bente", "Rasmussen", "Bentehvem@hotmail.com");
+    private static Person p3 = new Person("Sofus", "Pedersen", "minlillemissekat@kat.dk");
+    private static Phone ph1 = new Phone(12345678, "Private");
+    private static Phone ph2 = new Phone(87654321, "Private");
+    private static Phone ph3 = new Phone(88888888, "Private");
+    private static CityInfo ci1 = new CityInfo("2850", "Nærum", );
+    private static CityInfo ci2 = new CityInfo("2000", "Frederiksberg");
+    private static CityInfo ci3 = new CityInfo("3520", "Farum");
+    private static Address a1 = new Address("Satsvej", "1 th.", ci1);
+    private static Address a2 = new Address("Blommevej", "2 tv.", ci2);
+    private static Address a3 = new Address("Solsikkehaven", "34", ci3);
+    private static Hobby h1 = new Hobby("golf", "www.golf.dk", "ballplay", "ooutdoors");
+    private static Hobby h2 = new Hobby("softball", "www.softball.dk", "ballplay", "ooutdoors");
+    private static Hobby h3 = new Hobby("tennis", "www.tennis.dk", "ballplay", "ooutdoors");
+
     public static void populate() {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         FacadeExample fe = FacadeExample.getFacadeExample(emf);
@@ -29,18 +44,25 @@ public class Populator {
         fe.create(new RenameMeDTO(new RenameMe("First 3", "Last 3")));
 
 
-        Person p1 = new Person("kaj@mail.dk", "Kaj", "Testesen");
-        Phone phone = new Phone(54667283, "This is Kaj's phone");
-        p1.addPhone(phone);
-        Hobby hobby = new Hobby("Turisme", "https://da.wikipedia.org/wiki/Turisme", "General", "Fritid");
-        p1.addHobby(hobby);
 
-        CityInfo cityInfo = new CityInfo("2800", "Kongens Lyngby");
-        Address address = new Address("Lyngby Hovedgade 5", "Lyngby", cityInfo);
-        p1.setAddress(address);
 
-        PersonFacade pf = PersonFacade.getPersonFacade(emf);
-        pf.createPerson(new PersonDTO(p1));
+        /*
+            c1 = new CityInfo("2800", "Lyngby");
+
+            a1 = new Address("Nørgaardsvej", "28", c1);
+
+            ph1 = new Phone(8888888, "phone");
+
+            p1 = new Person("Harry", "Potter", "harrypotter@gmail.com");
+
+            em.persist(c1);
+            em.persist(a1);
+            a1.setCityInfo(c1);
+            em.merge(a1);
+
+            em.persist(p1);
+            p1.setAddress(a1);
+            em.merge(p1); */
 
     }
 
