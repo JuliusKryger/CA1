@@ -72,7 +72,6 @@ public class Person implements Serializable {
         this.hobbies = hobbies;
     }
 
-
     public Integer getId() {
         return id;
     }
