@@ -1,9 +1,6 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
-import dtos.PersonsDTO;
-import dtos.PhoneDTO;
+import dtos.*;
 import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -86,6 +83,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void getPersonByIdTwo() {
         System.out.println("getPerson");
@@ -98,6 +96,7 @@ class PersonFacadeTestTwo {
         System.out.println("This is the person we receive using our facade method, with an ID of: " + instance.getPersonByID(id).getId().toString());
         assertEquals(expResult.getId(), result.getId());
     }
+
 
     @Test
     void getAllPersons() {
@@ -117,6 +116,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //
     @Test
     void createPerson() {
         EntityManager em = emf.createEntityManager();
@@ -174,6 +174,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void deletePerson() {
         EntityManager em = emf.createEntityManager();
@@ -190,6 +191,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
@@ -214,6 +216,7 @@ class PersonFacadeTestTwo {
         }
     }
 
+    //virker
     @Test
     void updateAddress(){
         EntityManager em = emf.createEntityManager();
@@ -260,6 +263,31 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }
+    
+    @Test
+    void createHobby(){
+        EntityManager em = emf.createEntityManager();
+        String name = "Tennis";
+        String link = "tennis.dk";
+        String type = "boldspil";
+        String category = "udendørs";
+        Hobby hobby;
+        
+        try {
+            em.getTransaction().begin();
+            hobby = new Hobby(name, link, category, type);
+            HobbyDTO hobbyDTO = new HobbyDTO(hobby);
+            assertEquals(hobbyDTO.getName(),"Tennis");
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
+    
+    
+    
+    
+    
 
     @Test
     void addHobbies(){

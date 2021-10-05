@@ -19,7 +19,7 @@ import java.util.Scanner;
 @Path("/personedit")
 public class PersonEditResource {
 
-    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
+    private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactoryForTest();
     //private static final IPersonFacade I_PERSON_FACADE = null;
     private static final PersonFacade FACADE = PersonFacade.getPersonFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -31,7 +31,7 @@ public class PersonEditResource {
         return "{\"msg\":\"Hi, here you can change the information for a person\"}";
     }
 
-    //ikke testet
+    //Test er skrevet men ikke kørt
     @Path("/basis/{id}")
     @PUT
     @Produces("application/json")
@@ -44,12 +44,11 @@ public class PersonEditResource {
     }
 
     //ikke testet, find ud af om der skal være en scanner
-    @Path("/address")
+    @Path("/address({id}")
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public String editAddress(){
-        int id = scanner.nextInt();
+    public String editAddress(@PathParam("id") int id){
         String street = scanner.next();
         String addInfo = scanner.next();
         String zip = scanner.next();
