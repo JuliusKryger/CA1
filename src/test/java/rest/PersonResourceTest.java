@@ -7,7 +7,10 @@ import utils.EMF_Creator;
 import io.restassured.RestAssured;
 import static io.restassured.RestAssured.given;
 import io.restassured.parsing.Parser;
+
+import java.awt.*;
 import java.net.URI;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
@@ -73,7 +76,12 @@ class PersonResourceTest {
         em.persist(p1);
 
         try {
-            em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+
             //Address
             em.persist(c1);
             a1.setCityInfo(c1);
@@ -84,9 +92,7 @@ class PersonResourceTest {
             em.merge(ph1);
             //
             em.persist(p1);
-
             em.getTransaction().commit();
-            em.close();
         } finally {
             em.close();
         }
