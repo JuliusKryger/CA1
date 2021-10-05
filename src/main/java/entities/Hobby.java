@@ -17,8 +17,8 @@ import java.util.List;
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
     @Column(name = "name", length = 175, nullable = false, unique = true)
     private String name;

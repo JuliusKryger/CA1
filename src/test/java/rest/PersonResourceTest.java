@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonResourceTest {
-
+/*
     private static final int SERVER_PORT = 7777;
     private static final String SERVER_URL = "http://localhost/api";
     private static PersonResource r1, r2;
@@ -105,4 +105,6 @@ class PersonResourceTest {
     @Test
     void getupdatePerson() {
     }
+
+ */
 }
