@@ -236,11 +236,11 @@ class PersonFacadeTestTwo {
     }
 
     //virker
-    @Test
+    /*@Test
     void editPersonPhone(){
         /* for at kunne teste denne metode, skal der bruges 2 personDTO
         * en liste der indeholder en phoneDTO, lavet udfra en int og en String
-        * */
+        * *//*
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToUpdate =  new PersonDTO(p2);
@@ -258,11 +258,11 @@ class PersonFacadeTestTwo {
         finally {
             em.close();
         }
-    }
+    }*/
 
     //virker
     @Test
-    void updateAddress(){
+    /*void updateAddress(){
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToEdit = new PersonDTO(p2);
@@ -285,7 +285,7 @@ class PersonFacadeTestTwo {
             em.close();
         }
 
-    }
+    }*/
 
     @Test
     void getPersonListZip(){
@@ -337,7 +337,7 @@ class PersonFacadeTestTwo {
             int id = h1.getId();
             System.out.println("This hobby will be deleted" + h1.getName());
             facade.deleteHobby(id);
-            assertEquals(true, facade.deleteHobby(id));
+            assertTrue(facade.deleteHobby(id));
             System.out.println("This hobby should not exist" + h1.getName());
             em.getTransaction().commit();
         }finally {
@@ -346,15 +346,10 @@ class PersonFacadeTestTwo {
     }
 
 
-
-
-
-
     @Test
     void addHobbies(){
         EntityManager em = emf.createEntityManager();
         String hobbyName = "ridning";
-        //TODO: This needs to be an list not an object.
         Hobby hobby = new Hobby(hobbyName, "ridning.dk", "dyr", "udendørs");
         int id = p1.getId();
         List <Hobby> hobbies = new ArrayList<>();

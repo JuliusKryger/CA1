@@ -231,18 +231,23 @@ public class PersonFacade implements IPersonFacade {
         }
 
     }
-    //test er lavet og skal afprøves
-    public synchronized PersonDTO editAddressForPerson(String street, String addInfo, String zip, String city, PersonDTO personToEdit) {
+    //endpoint er lavet og tutor emil siger den virker
+    public synchronized PersonDTO editAddressForPerson(int id, AddressDTO addressDTO) {
         EntityManager em = emf.createEntityManager();
-        PersonDTO personDTO = getPersonByID(personToEdit.getId());
-        Person updated = em.find(Person.class, personDTO.getId());
+        Person updated = em.find(Person.class, id);
 
-        CityInfo cityInfo = new CityInfo(zip, city);
-        Address address =  new Address(street, addInfo, cityInfo);
+        Address curAddress = updated.getAddress();
+        CityInfo curCI = updated.getAddress().getCityInfo();
+
+        curCI.setZipCode(addressDTO.getZip());
+        curCI.setCity(addressDTO.getCity());
+        curAddress.setStreet(addressDTO.getStreet());
+        curAddress.setAdditionalInfo(addressDTO.getAdditionalInfo());
 
         try {
             em.getTransaction().begin();
-            updated.setAddress(address);
+            curAddress.setCityInfo(curCI);
+            updated.setAddress(curAddress);
             em.merge(updated);
             em.getTransaction().commit();
             return new PersonDTO(updated);
@@ -251,19 +256,20 @@ public class PersonFacade implements IPersonFacade {
         }
     }
 
-    //skal testes og se om den virker, test er skrevet
-    public synchronized PersonDTO editPersonPhone(int phoneNumber, String description, PersonDTO personToEdit) {
+    //endpoint er lavet
+    public synchronized PersonDTO editPersonPhone(int id, PhoneDTO phoneDTO) {
         EntityManager em = emf.createEntityManager();
-        PersonDTO personDTO = getPersonByID(personToEdit.getId());
-        Person updated = em.find(Person.class, personDTO.getId());
+        Person updated = em.find(Person.class, id);
 
-        Phone phone = new Phone(phoneNumber, description);
-        List <Phone> newPhoneNumber = new ArrayList<>();
-        newPhoneNumber.add(phone);
+        List <Phone> phones= updated.getPhones();
+
+        Phone newPhone = new Phone(phoneDTO);
+
+        phones.set(phones.size()-1,newPhone);
 
         try {
             em.getTransaction().begin();
-            updated.setPhones(newPhoneNumber);
+            updated.setPhones(phones);
             em.merge(updated);
             em.getTransaction().commit();
 
