@@ -49,19 +49,12 @@ class PersonFacadeTestTwo {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
-            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+            em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
 
-            //Creating our hobby Array.
-            hobbyArray.add(h1);
-            hobbyArray.add(h2);
-
-            //Creating our phone Array.
-            phoneArray.add(ph1);
-            phoneArray.add(ph2);
 
             //Person 1
             em.persist(c1);
@@ -73,13 +66,11 @@ class PersonFacadeTestTwo {
             p1.setAddress(a1);
             em.merge(p1);
 
-            em.persist(hobbyArray);
-            p1.setHobbies(hobbyArray);
-            em.merge(p1);
+            //Creating our phone Array.
+            p1.addPhone(ph1);
 
-            em.persist(phoneArray);
-            p1.setHobbies(phoneArray);
-            em.merge(p1);
+            //Creating our hobby Array.
+            p1.addHobby(h1);
 
             //Person 2
             em.persist(c2);
@@ -91,17 +82,11 @@ class PersonFacadeTestTwo {
             p2.setAddress(a2);
             em.merge(p2);
 
-            em.persist(hobbyArray);
-            p2.setHobbies(hobbyArray);
-            em.merge(p2);
+            //Creating our hobby Array.
+            p1.addHobby(h2);
 
-            em.persist(hobbyArray);
-            p2.setHobbies(hobbyArray);
-            em.merge(p2);
-
-            em.persist(phoneArray);
-            p2.setHobbies(phoneArray);
-            em.merge(p2);
+            //Creating our phone Array.
+            p1.addPhone(ph2);
 
 
         } finally {
@@ -259,10 +244,10 @@ class PersonFacadeTestTwo {
             em.close();
         }
     }*/
-
+  /*
     //virker
     @Test
-    /*void updateAddress(){
+  void updateAddress(){
         EntityManager em = emf.createEntityManager();
         PersonDTO updated;
         PersonDTO personToEdit = new PersonDTO(p2);
