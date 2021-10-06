@@ -99,7 +99,7 @@ public class PersonFacade implements IPersonFacade {
         return Utility.convertList(PersonDTO.class, query.getResultList());
     }
 
-    //Endpoint mangler
+    //Endpoint er lavet
     public PersonsDTO getAllPersons(){
         EntityManager em = emf.createEntityManager();
         try{
