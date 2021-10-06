@@ -32,22 +32,39 @@ public class PersonResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public PersonDTO createNewPerson(PersonDTO p) {
-        return FACADE.createPerson(p);
+    //virker
+    public String createNewPerson(String person) {
+        PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
+        PersonDTO newPerson = FACADE.createPerson(personDTO);
+
+        return GSON.toJson(newPerson);
     }
 
     @Path("/{id}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    //virker
     public String getPersonById(@PathParam("id") int id) {
-        return GSON.toJson(FACADE.getPersonById(id), PersonDTO.class);
+        PersonDTO personDTO  = FACADE.getPersonById(id);
+        return GSON.toJson(personDTO);
     }
 
     @Path("/all")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
+    //virker
     public String getAllPersons() {
-        return GSON.toJson(FACADE.getAllPersons());
+        PersonsDTO persons = FACADE.getAllPersons();
+        return GSON.toJson(persons);
+    }
+
+    @Path("/delete/{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    //virker
+    public String deletePerson(@PathParam("id") int id) {
+        return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
     }
 
     //TODO: Hmmm ... vi skal kunne vælge en specifik person ikke?
@@ -55,63 +72,15 @@ public class PersonResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public PersonDTO updatePerson(@PathParam("id") int id, PersonDTO p) {
-        return FACADE.updatePerson(p);
+    //Virker
+    public String updatePerson(@PathParam("id") int id, String person) {
+        PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
+        personDTO.setId(id);
+        PersonDTO updatedPerson = FACADE.updatePerson(personDTO);
+        return GSON.toJson(updatedPerson);
     }
 
-    @Path("/delete/{id}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String editPerson(@PathParam("id") int id) {
-        return "{\"result\":\"" + FACADE.deletePersonById(id) + "\"}";
-    }
-
-    /*
-    @POST
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String getCreatePerson(PersonDTO p) {
-        PersonDTO personDTO = GSON.fromJson(p, PersonDTO.class);
-        PersonDTO newPersonDTO = personFacade.createPerson(personDTO);
-
-        return GSON.toJson(newPersonDTO);
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public PersonDTO createNewPerson(PersonDTO p) {
-        return GSON.toJson(personFacade.createPerson(p));
-    }
-
-    @Path("/id/{id}")
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonById(@PathParam("id") int id) {
-        PersonDTO personDTO = personFacade.getPersonByID(id);
-        return GSON.toJson(personDTO);
-    }
-
-    @Path("/deleteP/{id}")
-    @DELETE
-    @Produces("application/json")
-    @Consumes("application/json")
-    public String deletePerson(@PathParam("id") int id){
-        boolean personDeleted = personFacade.deletePersonById(id);
-        return GSON.toJson(personDeleted);
-    }
-
-    @Path("/createPerson/firstname")
-    @POST
-    @Produces("application/json")
-    public String getFirstName(String firstname) {
-        Person newPersonFirstName = new Person();
-        String personFirstName = newPersonFirstName.getFirstName();
-
-        return GSON.toJson(personFirstName);
-    }
-
+/*
     @Path("getziplist/{zip}")
     @GET
     @Produces("application/json")

@@ -41,8 +41,8 @@ public class PersonEditResource {
     //virker, men ikke testet, men test skrevet
     @Path("/basis/{id}")
     @PUT
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String editBasis(@PathParam("id") int id, String person){
         PersonDTO pdto = GSON.fromJson(person, PersonDTO.class);
         pdto.setId(id);
@@ -53,8 +53,8 @@ public class PersonEditResource {
     //virker, men ingen test
     @Path("/address/{id}")
     @PUT
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String editAddress(@PathParam("id") int id, String addr){
         AddressDTO addressDTO = GSON.fromJson(addr, AddressDTO.class);
 
@@ -66,8 +66,8 @@ public class PersonEditResource {
     //virker, men ingen test
     @Path("/phone/{id}")
     @PUT
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String editPhone(@PathParam("id") int id, String phone){
         PhoneDTO phoneDTO = GSON.fromJson(phone, PhoneDTO.class);
 
@@ -78,8 +78,8 @@ public class PersonEditResource {
     //den virker måske
     @Path("/hobby/add/{id}")
     @PUT
-    @Produces("application/json")
-    @Consumes("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public String addHobby(@PathParam("id") int id, String person,String hobbyName ){
         PersonDTO pdto = GSON.fromJson(person, PersonDTO.class);
         pdto.setId(id);
