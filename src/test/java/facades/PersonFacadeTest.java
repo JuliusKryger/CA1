@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/*
 //@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class PersonFacadeTest {
 
@@ -128,10 +128,8 @@ class PersonFacadeTest {
         em.createNamedQuery("Address.deleteAllRows").executeUpdate();
         em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
         em.getTransaction().commit();
-         */
-    }
 
-    @Test
+
     //Also works perfectly fine now!.
     void createPerson() {
         EntityManager em = emf.createEntityManager();
@@ -224,7 +222,7 @@ class PersonFacadeTest {
         }
     }
 
-    /*
+
     @Test
     void editPersonPhone(){
         EntityManager em = emf.createEntityManager();
@@ -351,5 +349,6 @@ class PersonFacadeTest {
             em.close();
         }
     }
-     */
+
 }
+*/
