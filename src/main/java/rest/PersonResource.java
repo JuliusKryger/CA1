@@ -32,7 +32,7 @@ public class PersonResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    //virker
+    //virker    
     public String createNewPerson(String person) {
         PersonDTO personDTO = GSON.fromJson(person, PersonDTO.class);
         PersonDTO newPerson = FACADE.createPerson(personDTO);
